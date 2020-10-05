@@ -181,16 +181,19 @@ public class EyeValidationManager : MonoBehaviour
         if (wasSuccessful)
         {
             ValidationSuccessful = true;
-            ApplicationManager.Instance.StoreMainMenuLastState("SeatCalibration");
             SetValidationSuccesfulStatus();
             Destroy(relativeFixedPoint);
-            CalibrationManager.Instance.StoreValidationErrorData(EyetrackingManager.Instance.GetEyeValidationErrorAngles());
-            CalibrationManager.Instance.EyeValidationSuccessful();
+            
+            // TODO we need a similar instance for it
+            /*CalibrationManager.Instance.StoreValidationErrorData(EyetrackingManager.Instance.GetEyeValidationErrorAngles());
+            CalibrationManager.Instance.EyeValidationSuccessful();*/
             Debug.Log("was successful");
         }
         else
         {
-            CalibrationManager.Instance.StoreValidationErrorData(EyetrackingManager.Instance.GetEyeValidationErrorAngles());
+            // TODO we need a similar instance for it
+            // CalibrationManager.Instance.StoreValidationErrorData(EyetrackingManager.Instance.GetEyeValidationErrorAngles());
+            
             ShowFailedValidationStatus(5f);
         }
         runningValidation = false;
@@ -201,7 +204,8 @@ public class EyeValidationManager : MonoBehaviour
         return relativeFixedPoint;
     }
 
-    private void OnGUI()
+    // TODO check if we need some of it
+    /*private void OnGUI()
     {
         float height = Screen.height;
         float width = Screen.width;
@@ -218,8 +222,7 @@ public class EyeValidationManager : MonoBehaviour
             CalibrationManager.Instance.EyeValidationSkipped();
             EyetrackingManager.Instance.AbortValidation();
             Destroy(relativeFixedPoint);
-            ApplicationManager.Instance.StoreMainMenuLastState("SeatCalibration");
             SceneManager.LoadSceneAsync("MainMenu");
         }
-    }
+    }*/
 }

@@ -97,7 +97,6 @@ public class EyetrackingDataRecorder : MonoBehaviour
             }
 
             dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-            
             dataFrame.FPS = SavingManager.Instance.GetCurrentFPS();
             
             dataFrame.HmdPosition = EyetrackingManager.Instance.GetHmdTransform().position;

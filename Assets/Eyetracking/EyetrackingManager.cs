@@ -89,7 +89,9 @@ public class EyetrackingManager : MonoBehaviour
         if (SRanipal_Eye_v2.LaunchEyeCalibration())
         {
             Debug.Log("<color=green>calibration successful :)</color>");
-            CalibrationManager.Instance.EyeCalibrationSuccessful();
+            
+            // TODO check the necessity
+            // CalibrationManager.Instance.EyeCalibrationSuccessful();
         }
         else
         {
