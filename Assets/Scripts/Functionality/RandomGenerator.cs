@@ -11,7 +11,7 @@ public class RandomGenerator : MonoBehaviour
     private int _counter = 1;
     private List<RandomBlock> _Blocks;
     
-    private void Start()
+    /*private void Start()
     {
         _Blocks = new List<RandomBlock>();
 
@@ -20,8 +20,8 @@ public class RandomGenerator : MonoBehaviour
         /*for (int i = 0; i < 6; i++)
         {
             _Blocks.Add(GenerateBlocks());   
-        }*/
-    }
+        }#1#
+    }*/
 
     void Update()
     {
@@ -65,10 +65,6 @@ public class RandomGenerator : MonoBehaviour
             if (grid.Position != Vector3.zero)
             {
                 gridElements.Add(grid);
-            }
-            else
-            {
-                i--;
             }
         }
         
