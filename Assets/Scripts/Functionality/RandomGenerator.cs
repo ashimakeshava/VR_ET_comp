@@ -47,9 +47,11 @@ public class RandomGenerator : MonoBehaviour
         
         hits = Physics.BoxCastAll(fixationPoint.transform.position, halfExtents, fixationPoint.transform.forward, fixationPoint.transform.rotation, 100f);
 
+
         foreach (var hit in hits)
         {
-            if (hit.collider.name != "FixationPoint")
+            if (hit.collider.name != "FixationPoint" || hit.collider.name != "LargeGrid (1)")
+
             {
                 hitList.Add(hit);
             }
@@ -62,19 +64,6 @@ public class RandomGenerator : MonoBehaviour
             
             fixationPoint.transform.position = hitList[index].collider.transform.position;
             hitList[index].collider.gameObject.SetActive(false);
-            
-            /*foreach (var hit in hits)
-            {
-                //Output the name of the Collider your Box hit
-                Debug.Log("Hit : " + hit.collider.name);
-            }*/
         }
-        
-        Debug.Log(hits.Length);
-    }
-    
-    void FixedUpdate()
-    {
-        
     }
 }
