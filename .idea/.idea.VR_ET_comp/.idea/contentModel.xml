@@ -585,16 +585,31 @@
             </e>
           </e>
         </e>
-        <e p="Eyetracking" t="Include">
-          <e p="EyetrackingDataRecorder.cs" t="Include" />
-          <e p="EyetrackingManager.cs" t="Include" />
-          <e p="EyteTrackingDataFrame.cs" t="Include" />
-          <e p="HitObjectInfo.cs" t="Include" />
-          <e p="Validation" t="Include">
-            <e p="EyetrackingValidation.cs" t="Include" />
-            <e p="EyeValidationData.cs" t="Include" />
-            <e p="EyeValidationManager.cs" t="Include" />
-            <e p="FixationDot.cs" t="Include" />
+        <e p="Scripts" t="Include">
+          <e p="DataSaving" t="Include">
+            <e p="FPSDisplay.cs" t="Include" />
+            <e p="SavingManager.cs" t="Include" />
+          </e>
+          <e p="Eyetracking" t="Include">
+            <e p="EyetrackingDataRecorder.cs" t="Include" />
+            <e p="EyetrackingManager.cs" t="Include" />
+            <e p="EyteTrackingDataFrame.cs" t="Include" />
+            <e p="HitObjectInfo.cs" t="Include" />
+            <e p="Validation" t="Include">
+              <e p="EyetrackingValidation.cs" t="Include" />
+              <e p="EyeValidationData.cs" t="Include" />
+              <e p="EyeValidationManager.cs" t="Include" />
+              <e p="FixationDot.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Functionality" t="Include">
+            <e p="RandomGenerator.cs" t="Include" />
+          </e>
+          <e p="TimeManager" t="Include">
+            <e p="TimeManager.cs" t="Include" />
+          </e>
+          <e p="Trials" t="Include">
+            <e p="MicroSaccade.cs" t="Include" />
           </e>
         </e>
       </e>

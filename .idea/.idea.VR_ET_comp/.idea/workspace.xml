@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2199f71c-7c26-4041-beab-68ae40e13034" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VR_ET_comp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Eyetracking/Validation/EyeValidationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Eyetracking/Validation/EyeValidationManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Sphere.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Sphere.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,12 +17,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Eyetracking/Validation/EyeValidationManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Functionality/RandomGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Trials/MicroSaccade.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/Eyetracking/Validation/EyeValidationManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Functionality/RandomGenerator.cs" />
       </list>
     </option>
   </component>
@@ -61,6 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1601900956603</updated>
       <workItem from="1601900970887" duration="118000" />
+      <workItem from="1602073349014" duration="6095000" />
     </task>
     <servers />
   </component>
