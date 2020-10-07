@@ -38,6 +38,7 @@ public class RandomGenerator : MonoBehaviour
         Debug.Log("here");
         
         RaycastHit[] hits;
+        List<RaycastHit> hitList = new List<RaycastHit>();
         Vector3 halfExtents = new Vector3(.2f, .13f, .07f);
         
         //Test to see if there is a hit using a BoxCast
@@ -45,25 +46,28 @@ public class RandomGenerator : MonoBehaviour
         //Also fetch the hit data
         
         hits = Physics.BoxCastAll(fixationPoint.transform.position, halfExtents, fixationPoint.transform.forward, fixationPoint.transform.rotation, 100f);
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider.name != "FixationPoint")
+            {
+                hitList.Add(hit);
+            }
+        }
         
-        if (hits.Any())
+        if (hitList.Any())
         {
             Random rand = new Random();
-            int index;
+            int index = rand.Next(hitList.Count);
             
-            do
-            {
-                index = rand.Next(hits.Length);
-            } while (hits[index].collider.gameObject.name == "FixationPoint");
+            fixationPoint.transform.position = hitList[index].collider.transform.position;
+            hitList[index].collider.gameObject.SetActive(false);
             
-            fixationPoint.transform.position = hits[index].collider.transform.position;
-            hits[index].collider.gameObject.SetActive(false);
-            
-            foreach (var hit in hits)
+            /*foreach (var hit in hits)
             {
                 //Output the name of the Collider your Box hit
                 Debug.Log("Hit : " + hit.collider.name);
-            }
+            }*/
         }
         
         Debug.Log(hits.Length);
