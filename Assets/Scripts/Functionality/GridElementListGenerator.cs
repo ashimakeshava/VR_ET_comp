@@ -20,15 +20,16 @@ public class GridElementListGenerator : MonoBehaviour
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
     }
 
+
+    
+
     private List<RaycastHit> GetHitList(Vector3 position, float x=.2f, float y=.13f)
     {
-        RaycastHit[] hits;
         List<RaycastHit> hitList = new List<RaycastHit>();
         
-        Vector3 _halfExtents = new Vector3(x, y, .07f);
-        // Debug.Log("halfExtents: " + halfExtents);
+        Vector3 halfExtents = new Vector3(x, y, .07f);
 
-        hits = Physics.BoxCastAll(position, _halfExtents, 
+        var hits = Physics.BoxCastAll(position, halfExtents, 
             _fixationPoint.transform.forward, _fixationPoint.transform.rotation, 300f);
         
         foreach (var hit in hits)
@@ -45,7 +46,7 @@ public class GridElementListGenerator : MonoBehaviour
     }
 
 
-    IEnumerator Traverse(GameObject grid)
+    /*IEnumerator Traverse(GameObject grid)
     {
         int count = grid.transform.childCount;
 
@@ -55,8 +56,11 @@ public class GridElementListGenerator : MonoBehaviour
 
             if (!hitList.Any())
             {
+                Debug.Log("I'm empty");
                 for (int i = 2; i < 5; i++)
                 {
+                    Debug.Log("i: " + i);
+
                     hitList= GetHitList(_fixationPoint.transform.position,.2f*i, .13f*i);
                     if (hitList.Any())
                     {
@@ -64,37 +68,97 @@ public class GridElementListGenerator : MonoBehaviour
                     }
                 }
 
-                break;
+                // break;
             }
             
             int index = _random.Next(hitList.Count);
             Vector3 newPosition = hitList[index].collider.transform.position;
             _fixationPoint.transform.position = newPosition;
-            GridElement gridElement = new GridElement {Position = newPosition};
-            _gridElements.Add(gridElement);
+            GridElement gridElement = new GridElement 
+            {ObjectName = hitList[index].collider.name,
+                Position = newPosition};
             
+            hitList[index].collider.gameObject.SetActive(false);
+            _gridElements.Add(gridElement);
+
             count--;
         }
-
+        
+        foreach (var VARIABLE in _gridElements)
+        {
+            Debug.Log(VARIABLE.ObjectName);
+            Debug.Log(VARIABLE.Position);
+        }
+        
+        Debug.Log(_gridElements.Count);
+        
         yield return null;
+    }*/
+    
+    private void Traverse(GameObject grid)
+    {
+        int count = grid.transform.childCount;
+        
+        while (count != 0)
+        {
+            List<RaycastHit> hitList = GetHitList(_fixationPoint.transform.position);
+            Debug.Log("count hit list" + hitList.Count);
+
+            if (!hitList.Any())
+            {
+                for (int i = 2; i < 5; i++)
+                {
+                    Debug.Log("i: " + i);
+
+                    hitList= GetHitList(_fixationPoint.transform.position,.2f*i, .13f*i);
+                    Debug.Log("count hit list in for" + hitList.Count);
+                    
+                    if (hitList.Any())
+                    {
+                        break;
+                    }
+                }
+            }
+            
+            int index = _random.Next(hitList.Count);
+            Vector3 newPosition = hitList[index].collider.transform.position;
+            _fixationPoint.transform.position = newPosition;
+            GridElement gridElement = new GridElement 
+            {ObjectName = hitList[index].collider.name,
+                Position = newPosition};
+            
+            hitList[index].collider.gameObject.SetActive(false);
+            _gridElements.Add(gridElement);
+            
+            Debug.Log(gridElement.ObjectName);
+            Debug.Log(gridElement.Position);
+
+            count--;
+        }
+        
+        foreach (var VARIABLE in _gridElements)
+        {
+            Debug.Log(VARIABLE.ObjectName);
+            Debug.Log(VARIABLE.Position);
+        }
+        
+        Debug.Log(_gridElements.Count);
     }
     
-    public IEnumerator GetList(GameObject grid)
+    /*private IEnumerator GetElementList(GameObject grid)
     {
         yield return Traverse(grid);
-        
     }
     
-    public List<GridElement> GetGridElements(GameObject grid)
+    private List<GridElement> GetGridElements(GameObject grid)
     {
-        StartCoroutine(GetList(grid));
-
-         GetList(grid);
+        StartCoroutine(GetElementList(grid));
         return _gridElements;
-    }
+    }*/
 
-    public void GenerateGEL(GameObject grid)
+    public void GenerateGridElementList(GameObject grid)
     {
-        StartCoroutine(GetList(grid));
+        Traverse(grid);
+        // StartCoroutine(GetElementList(grid));
     }
 }

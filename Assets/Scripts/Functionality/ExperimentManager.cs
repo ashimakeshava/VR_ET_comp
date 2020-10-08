@@ -30,19 +30,19 @@ public class ExperimentManager : MonoBehaviour
         _blocks = new List<Block>();
         _gridElements = new List<GridElement>();
 
-        _blocks.Add(GenerateBlocks());
-        
+        // _blocks.Add(GenerateBlocks());
+
         /*for (int i = 0; i < 6; i++)
         {
             _blocks.Add(GenerateBlocks());   
         }*/
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Debug.Log(GetNextPosition());
+            GetComponent<GridElementListGenerator>().GenerateGridElementList(largeGrid1);
         }
     }
 
