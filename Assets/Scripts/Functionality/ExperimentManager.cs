@@ -11,10 +11,11 @@ public class ExperimentManager : MonoBehaviour
     
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private GameObject largeGrid1;
-    
+    [SerializeField] private GameObject largeGrid2;
+    [SerializeField] private GameObject smallGrid;
+    [SerializeField] private GameObject smoothPursuit;
     
     private List<Block> _blocks;
-    private List<GridElement> _gridElements;
 
 
     private void Awake()
@@ -28,93 +29,47 @@ public class ExperimentManager : MonoBehaviour
     private void Start()
     {
         _blocks = new List<Block>();
-        _gridElements = new List<GridElement>();
 
-        // _blocks.Add(GenerateBlocks());
-
-        /*for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
-            _blocks.Add(GenerateBlocks());   
-        }*/
+            _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock());
+        }
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<GridElementListGenerator>().GenerateGridElementList(largeGrid1);
-        }
-    }
-
-    
-    
-    Block GenerateBlocks()
-    {
-        Block block = new Block();
-        
-        block.LargeGridClose = GetPositionList(25);
-        /*block.LargeGridFar = GetPositionList(24);
-        block.SmallGrid = GetPositionList(12);
-        block.SmoothPursuit = GetPositionList(24);*/
-
-        // TODO fill out the rest
-
-        return block;
-    }
-
-    private List<GridElement> GetPositionList(int numberOfElements)
-    {
-        for (int i = 0; i < numberOfElements; i++)
-        {
-            Debug.Log("i: " + i);
-            GridElement grid = new GridElement();
-            
-            // GetNextPosition(grid);
-
-            // TODO 
-            /*grid.FixationDuration
-            grid.MovementDuration*/
-            
-            /*if (grid.Position != Vector3.zero)
-            {
-                Debug.Log("pos: " + grid.Position);
-                gridElements.Add(grid);
-            }*/
-            /*gridElements.Add(grid);
-            Debug.Log("pos: " + grid.Position);*/
-
-        }
-
-        Debug.Log("Grid element count: " + _gridElements.Count);
-        return _gridElements;
-    }
-
-    /*private void GetNextPosition(GridElement grid, int counter=1)
-    {
-        List<RaycastHit> hitList = GetHitList(.2f*counter, .13f*counter);
-        Random rand = new Random();
-        int index = rand.Next(hitList.Count);
-        
-        if (hitList.Any())
-        {
-            counter = 1;
-            
-            fixationPoint.transform.position = hitList[index].collider.transform.position;
-            grid.Position = hitList[index].collider.transform.position;
-            Debug.Log("name: " + hitList[index].collider.name);
-            
-            hitList[index].collider.gameObject.SetActive(false);
-        }
-
-        if (counter <= 5)
-        {
-            counter += 1;
-            GetNextPosition(counter);
+            GetComponent<GridElementsGenerator>().Traverse(smallGrid);
         }
     }*/
-
+    
+    
     public GameObject GetFixationPoint()
     {
         return fixationPoint;
     }
+    
+    public GameObject GetLargeGrid1()
+    {
+        return largeGrid1;
+    }
+    
+    public GameObject GetLargeGrid2()
+    {
+        return largeGrid2;
+    }
+    public GameObject GetSmallGrid()
+    {
+        return smallGrid;
+    }
+    
+    public GameObject GetSmoothPursuit()
+    {
+        return smoothPursuit;
+    }
 }
+
+        
+    // TODO implement movement
+    // TODO smoothPursuit has too few elements
