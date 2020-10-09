@@ -42,7 +42,7 @@ public class ExperimentManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<GridElementListGenerator>().GenerateGridElementList(largeGrid1);
+            GetComponent<GridElementsGenerator>().GenerateGridElementList(largeGrid1);
         }
 
         if (Input.GetKeyDown(KeyCode.A))

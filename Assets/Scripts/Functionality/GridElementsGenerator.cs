@@ -6,7 +6,7 @@ using Random = System.Random;
 using System.Linq;
 
 
-public class GridElementListGenerator : MonoBehaviour
+public class GridElementsGenerator : MonoBehaviour
 {
     private GameObject _fixationPoint;
     private Random _random;
