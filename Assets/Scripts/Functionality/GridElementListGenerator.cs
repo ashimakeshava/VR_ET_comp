@@ -126,76 +126,108 @@ public class GridElementListGenerator : MonoBehaviour
                     {
                         break;
                     }
-                    
+
+                    if (i == 4)
+                    {
+                        _inValid = true;
+                    }
                 }
+
+               
             }
 
-            oldPos = _fixationPoint.transform.position;
-            int index = _random.Next(hitList.Count);
-            Vector3 newPosition = hitList[index].collider.transform.position;
-            _fixationPoint.transform.position = newPosition;
-            GridElement gridElement = new GridElement 
-            {ObjectName = hitList[index].collider.name,
-                Position = newPosition};
             
-            hitList[index].collider.gameObject.SetActive(false);
-            _gridRoute.Add(gridElement);
-
-            
-            Debug.Log(gridElement.ObjectName);
-            Debug.Log(gridElement.Position);
-
-
-            
-
-            if (oldPos.x == newPosition.x)
+            if(!_inValid)
             {
-                if (Vector3.Distance(oldPos, newPosition) < 0.13)
+                 oldPos = _fixationPoint.transform.position;
+                int index = _random.Next(hitList.Count);
+                Vector3 newPosition = hitList[index].collider.transform.position;
+                _fixationPoint.transform.position = newPosition;
+                GridElement gridElement = new GridElement
                 {
-                    Debug.Log("<color=green>level 1 jump </color>" + "Old: " + OldElement.ObjectName+  "New: " + gridElement.ObjectName+  " distance :  " +Vector3.Distance(oldPos, newPosition));
-                }else if (Vector3.Distance(oldPos, newPosition) < 0.26 )
+                    ObjectName = hitList[index].collider.name,
+                    Position = newPosition
+                };
+
+                hitList[index].collider.gameObject.SetActive(false);
+                _gridRoute.Add(gridElement);
+
+
+                Debug.Log(gridElement.ObjectName);
+                Debug.Log(gridElement.Position);
+
+
+
+
+                if (oldPos.x == newPosition.x)
                 {
-                    Debug.Log("<color=yellow>level 2 jump </color>" +  "Old: " + OldElement.ObjectName + "New: "+ gridElement.ObjectName+ " distance :  " +Vector3.Distance(oldPos, newPosition));
-                }else if (Vector3.Distance(oldPos, newPosition) > 0.26)
-                {
-                    Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + OldElement.ObjectName + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
+                    if (Vector3.Distance(oldPos, newPosition) < 0.13)
+                    {
+                        Debug.Log("<color=green>level 1 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) < 0.26)
+                    {
+                        Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) > 0.26)
+                    {
+                        Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) > 0.45)
+                    {
+                        Debug.Log("<color=red>level 4 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                        _inValid = true;
+                        Debug.Log("is invalid retry...");
+                    }
                 }
-                else if (Vector3.Distance(oldPos, newPosition) > 0.45)
+                else
                 {
-                    Debug.Log("<color=red>level 4 jump </color>" + "Old: " + OldElement.ObjectName  + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
-                    _inValid = true;
-                    Debug.Log("is invalid retry...");
-                    break;
+                    if (Vector3.Distance(oldPos, newPosition) < 0.25)
+                    {
+                        Debug.Log("<color=green>level 1 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) < 0.45)
+                    {
+                        Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) < 0.75)
+                    {
+                        Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                    }
+                    else if (Vector3.Distance(oldPos, newPosition) > 0.75)
+                    {
+                        Debug.Log("<color=red>level 4 jump </color>" + "Old: " + OldElement.ObjectName + "New: " +
+                                  gridElement.ObjectName + " distance :  " + Vector3.Distance(oldPos, newPosition));
+                        _inValid = true;
+                        Debug.Log("is invalid retry...");
+                    }
                 }
+                OldElement = gridElement;
+                
+                count--;
             }
             else
             {
-                if (Vector3.Distance(oldPos, newPosition) < 0.25)
-                {
-                    Debug.Log("<color=green>level 1 jump </color>" +  "Old: " + OldElement.ObjectName + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
-                }else if (Vector3.Distance(oldPos, newPosition) < 0.45 )
-                {
-                    Debug.Log("<color=yellow>level 2 jump </color>" +  "Old: " + OldElement.ObjectName  + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
-                }else if (Vector3.Distance(oldPos, newPosition) < 0.75)
-                {
-                    Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + OldElement.ObjectName  + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
-                }
-                else if (Vector3.Distance(oldPos, newPosition) > 0.75)
-                {
-                    Debug.Log("<color=red>level 4 jump </color>" + "Old: " + OldElement.ObjectName  + "New: "+ gridElement.ObjectName + " distance :  " +Vector3.Distance(oldPos, newPosition));
-                    _inValid = true;
-                    Debug.Log("is invalid retry...");
-                    count = 0;
-                }
+                count=0;
             }
+        }
 
-
-            OldElement = gridElement;
-            
-            count--;
+        if (!_inValid)
+        {
+            Debug.Log("is valid and can be checked with other grids"); 
+        }
+        else
+        {
+            Debug.Log("needs to be rerouted"); 
         }
         
-        Debug.Log("is valid and can be checked with other grids");
         
         
     }
@@ -216,16 +248,9 @@ public class GridElementListGenerator : MonoBehaviour
         {
             return;
         }
-        
-        foreach (var validRoute in _validGridRoutes)
+        else
         {
-            for (int i = 0; i < validRoute.Count; i++)
-            {
-                if (validRoute[i] == route[i])
-                {
-                    _inValid = true;
-                }
-            }
+            Debug.Log("HELLO!");
         }
     }
     public void GenerateGridElementList(GameObject grid)
@@ -241,7 +266,7 @@ public class GridElementListGenerator : MonoBehaviour
             if (_inValid)
                 continue;
             
-            CheckWithOtherRoutes(_gridRoute);
+            //CheckWithOtherRoutes(_gridRoute);
         }
         
         _validGridRoutes.Add(_gridRoute);
