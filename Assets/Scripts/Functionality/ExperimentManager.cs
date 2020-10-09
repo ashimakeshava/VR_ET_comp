@@ -36,18 +36,18 @@ public class ExperimentManager : MonoBehaviour
         }
     }
 
-    /*private void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<GridElementsGenerator>().GenerateGridElementList(largeGrid1);
+            GetComponent<RouteGenerator>().GenerateGridElementList(smallGrid);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            for (int i = 0; i < largeGrid1.transform.childCount;i++)
+            for (int i = 0; i < smallGrid.transform.childCount;i++)
             {
-                largeGrid1.transform.GetChild(i).gameObject.SetActive(true);
+                smallGrid.transform.GetChild(i).gameObject.SetActive(true);
 
             }
             fixationPoint.transform.position= new Vector3(0,0,1);

@@ -252,20 +252,13 @@ public class RouteGenerator : MonoBehaviour
     }
     public void GenerateGridElementList(GameObject grid)
     {
-        int iter=0;
-        _inValid = true;
-        while (_inValid)
-        {
-            iter++;
-            Debug.Log("iteration: " + iter);
-            grid.gameObject.SetActive(true);
-            Traverse(grid);
-            if (_inValid)
-                continue;
-            
-            //CheckWithOtherRoutes(_gridRoute);
-        }
+        grid.gameObject.SetActive(true);
         
-        _validGridRoutes.Add(_gridRoute);
+        Traverse(grid);
+
+        if (_inValid)
+        {
+            Debug.Log("invalid");
+        }
     }
 }
