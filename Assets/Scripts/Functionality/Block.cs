@@ -11,13 +11,13 @@ public class Block
    public List<GridElement> SmallGrid;
    public List<GridElement> SmoothPursuit;
    
-   public List<float> Blink;
-   
-   public List<Luminance> PupilDilation;
-   
    public List<HeadMovement> Roll;
    public List<HeadMovement> Yaw;
    public List<HeadMovement> Pitch;
+   
+   public List<float> Blink;
+   
+   public List<Luminance> PupilDilation;
    
    public int FreeViewingIndex;
    public int SmoothPursuitIndex;
