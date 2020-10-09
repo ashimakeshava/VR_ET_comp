@@ -40,9 +40,21 @@ public class ExperimentManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<GridElementsGenerator>().Traverse(smallGrid);
+            GetComponent<GridElementsGenerator>().GenerateGridElementList(largeGrid1);
         }
-    }*/
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            for (int i = 0; i < largeGrid1.transform.childCount;i++)
+            {
+                largeGrid1.transform.GetChild(i).gameObject.SetActive(true);
+
+            }
+            fixationPoint.transform.position= new Vector3(0,0,1);
+            Debug.Log("___________________________________-----_____________________________");
+        }
+    }
+
     
     
     public GameObject GetFixationPoint()
