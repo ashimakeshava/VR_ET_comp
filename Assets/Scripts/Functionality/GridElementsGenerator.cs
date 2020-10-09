@@ -7,7 +7,7 @@ using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
 
 
-public class GridElementListGenerator : MonoBehaviour
+public class GridElementsGenerator : MonoBehaviour
 {
     private GameObject _fixationPoint;
     private Random _random;
@@ -64,27 +64,31 @@ public class GridElementListGenerator : MonoBehaviour
                     }
                 }
             }
-            
-            int index = _random.Next(hitList.Count);
-            
-            Vector3 newPosition = hitList[index].collider.transform.position;
-            
-            // TODO should move in a coroutine and according to the read time should fixate
-            _fixationPoint.transform.position = newPosition;
-            
-            GridElement gridElement = new GridElement 
-            {ObjectName = hitList[index].collider.name,
-                Position = newPosition,
-                FixationDuration = GenerateRandomFixationTime(),
-                MovementDuration = GenerateMovementTime()
-            };
 
-            hitList[index].collider.gameObject.SetActive(false);
-            gridElements.Add(gridElement);
+            if (hitList.Any())
+            {
+                int index = _random.Next(hitList.Count);
+            
+                Vector3 newPosition = hitList[index].collider.transform.position;
+            
+                // TODO should move in a coroutine and according to the read time should fixate
+                _fixationPoint.transform.position = newPosition;
+            
+                GridElement gridElement = new GridElement 
+                {ObjectName = hitList[index].collider.name,
+                    Position = newPosition,
+                    FixationDuration = GenerateRandomFixationTime(),
+                    MovementDuration = GenerateMovementTime()
+                };
+
+                hitList[index].collider.gameObject.SetActive(false);
+                gridElements.Add(gridElement);
+            }
             
             count--;
         }
 
+        Debug.Log(gridElements.Count);
         return gridElements;
     }
 
