@@ -6,6 +6,8 @@ using UnityEngine;
 [Serializable]
 public class Block
 {
+   public List<int> SequenceOfTrials;
+   
    public List<GridElement> LargeGridClose;
    public List<GridElement> LargeGridFar;
    public List<GridElement> SmallGrid;
