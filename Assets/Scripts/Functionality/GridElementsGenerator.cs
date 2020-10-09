@@ -6,7 +6,6 @@ using System.Linq;
 using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
 
-
 public class GridElementsGenerator : MonoBehaviour
 {
     private GameObject _fixationPoint;
@@ -80,8 +79,9 @@ public class GridElementsGenerator : MonoBehaviour
                     FixationDuration = GenerateRandomFixationTime(),
                     MovementDuration = GenerateMovementTime()
                 };
-
+                
                 hitList[index].collider.gameObject.SetActive(false);
+                
                 gridElements.Add(gridElement);
             }
             
