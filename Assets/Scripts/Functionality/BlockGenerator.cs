@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using Random = System.Random;
 
@@ -9,7 +10,7 @@ public class BlockGenerator : MonoBehaviour
     private Block _block;
     private Random _random;
     private GridElementsGenerator _gridElementsGenerator;
-    private List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
+    [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
     
     private void Start()
     {
@@ -17,18 +18,21 @@ public class BlockGenerator : MonoBehaviour
         _random = new Random();
     }
 
-    public Block GenerateBlock()
+    public Block GenerateBlock(GameObject picture, List<GridElement> smoothPursuit)
     {
         _block = new Block
         {
             SequenceOfTrials = RandomizeTrials(),
             
-            LargeGridClose = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid1()),
-            LargeGridFar = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid2()),
+            LargeGridClose = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
+            LargeGridFar = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
             SmallGrid = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetSmallGrid()),
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
-            // SmoothPursuit = ,
+            SmoothPursuit = smoothPursuit,
+            FreeViewingPicture = picture,
+            
+            
             
             // todo take the free viewing from experiment manager (from and already randomized list for that)
             // todo fill out the rest
@@ -41,7 +45,7 @@ public class BlockGenerator : MonoBehaviour
 
     private List<int> RandomizeTrials()
     {
-        List<int> list = new List<int> {1};
+        List<int> list = new List<int> {0, 1};
 
         for (int i = 0; i < _trialsToShuffle.Count+1; i++)
         {
@@ -53,15 +57,5 @@ public class BlockGenerator : MonoBehaviour
         list.Add(1);
 
         return list;
-    }
-    
-    public void SetFreeViewingIndex(int picNum)
-    {
-        _block.FreeViewingIndex = picNum;
-    }
-    
-    public void SetSmoothPursuitIndex(int seqNum)
-    {
-        _block.SmoothPursuitIndex = seqNum;
     }
 }
