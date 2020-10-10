@@ -16,11 +16,11 @@ public class Validation : MonoBehaviour
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
         _gridClose = ExperimentManager.Instance.GetLargeGrid();
-        _gridClose.gameObject.SetActive(true);
     }
 
     IEnumerator StartFirstValidation()
     {
+        _gridClose.gameObject.SetActive(true);
         _fixationPoint.gameObject.SetActive(true);
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
 
