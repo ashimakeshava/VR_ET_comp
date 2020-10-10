@@ -14,6 +14,7 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject largeGrid2;
     [SerializeField] private GameObject smallGrid;
     [SerializeField] private GameObject smoothPursuit;
+    [SerializeField] private GameObject mainCamera;
     
     private List<Block> _blocks;
 
@@ -25,6 +26,7 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
     }
+    
 
     private void Start()
     {
@@ -40,7 +42,8 @@ public class ExperimentManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<RouteGenerator>().GenerateGridRoute(smallGrid);
+            //GetCurrentActiveGrid();
+            //GetComponent<RouteGenerator>().GenerateGridRoute(GetCurrentActiveGrid());
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -61,7 +64,40 @@ public class ExperimentManager : MonoBehaviour
     {
         return fixationPoint;
     }
-    
+
+    public GameObject GetCurrentActiveGrid()
+    {
+        var GridList = GetGridList();
+        GameObject activeGrid=new GameObject();
+        bool found=false;
+        foreach (var grid in GridList)
+        {
+            if (grid.activeInHierarchy&& !found)
+            {
+                activeGrid = grid;
+                found = true;
+            }
+
+            if (grid.activeInHierarchy && found)
+            {
+                Debug.LogWarning("Two Grids are active, this can cause problems, deactivate one");
+            }
+        }
+        return activeGrid;
+    }
+
+    private List<GameObject> GetGridList()
+    {
+        List<GameObject> GridList = new List<GameObject>();
+        foreach (Transform child in mainCamera.transform)
+        {
+            if (child.gameObject != fixationPoint)
+                GridList.Add(child.gameObject);
+        }
+
+        return GridList;
+    }
+
     public GameObject GetLargeGrid1()
     {
         return largeGrid1;
