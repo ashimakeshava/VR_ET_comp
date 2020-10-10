@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Packages.Rider.Editor.UnitTesting;
 using UnityEngine;
 
 public class DataSavingManager : MonoBehaviour
@@ -26,6 +27,15 @@ public class DataSavingManager : MonoBehaviour
             
             SaveToJson(_gridRoute,"test.txt");
         }
+        
+        
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            
+            string filePath = GetPathForSaveFile("test.txt");
+            Debug.Log(filePath);
+            _gridRoute = LoadRoute(filePath);
+        }
     }
 
     private void StoreGridRoute(List<GridElement> gridRoute)
@@ -37,15 +47,15 @@ public class DataSavingManager : MonoBehaviour
     private List <string> ConvertToJson<T>(List<T> genericList)
     {
         List<string> list = new List<string>();
-        list.Add("[");
+        //list.Add("[");
         foreach (var g in genericList)
         {
            // Debug.Log(g.ToString());
-            string jsonString = JsonUtility.ToJson(g, true);
+            string jsonString = JsonUtility.ToJson(g);
             list.Add(jsonString);
         }
         
-        list.Add("]");
+        //list.Add("]");
 
         return list;
     }
@@ -70,9 +80,29 @@ public class DataSavingManager : MonoBehaviour
         
         Debug.Log("saved  " +fileName + " to : " + SavePath );
     }
-    
-    
-    
+
+
+    public List<GridElement> LoadRoute(string path)
+    {
+        List<GridElement> Route=new List<GridElement>();
+
+        if (File.Exists(path))
+        {
+            string[] data = File.ReadAllLines(path);
+            foreach (var line in data)
+            {
+                GridElement tmp= JsonUtility.FromJson<GridElement>(line);
+                Route.Add(tmp);
+            }
+            
+        }
+
+        return Route;
+        
+    }
+
+
+
     private string GetPathForSaveFile(string fileName)
     {
         return Path.Combine(SavePath, fileName);
