@@ -7,6 +7,8 @@ using Random = System.Random;
 
 public class ExperimentManager : MonoBehaviour
 {
+    #region Fields
+
     public static ExperimentManager Instance { get ; private set; } 
     
     [SerializeField] private GameObject fixationPoint;
@@ -21,24 +23,12 @@ public class ExperimentManager : MonoBehaviour
 
     private Random _random;
     private bool _continueTrials;
-    
-    private enum Trials
-    {
-        Validation = 1,
-        SmoothPursuit = 2,
-        SmallGrid = 3,
-        Blink = 4,
-        PupilDilation = 5,
-        FreeViewing = 6,
-        Roll = 7,
-        Yaw = 8,
-        Pitch = 9,
-        MicroSaccades = 10
-    }
 
-    private Trials _trial;
-    
-    
+    #endregion
+
+
+    #region PrivateMethods
+
     private void Awake()
     {
         if (Instance == null)
@@ -49,8 +39,12 @@ public class ExperimentManager : MonoBehaviour
 
     private void Start()
     {
+        // todo read the randomization from the list
+        
         _random = new Random();
         _randomizedPictureList = RandomizeFreeViewingPictures();
+        
+        // todo read the routes, then randomize
         _smoothPursuitRoutes = new List<GridElement>();
         
         _blocks = new List<Block>();
@@ -66,7 +60,10 @@ public class ExperimentManager : MonoBehaviour
     private void Update()
     {
         // TODO click or push trigger to start the experiment
-        
+
+
+        #region DebugingPurpose
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<RouteGenerator>().GenerateGridRoute(smallGrid);
@@ -82,6 +79,8 @@ public class ExperimentManager : MonoBehaviour
             fixationPoint.transform.position= new Vector3(0,0,1);
             Debug.Log("___________________________________-----_____________________________");
         }
+
+        #endregion
         
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -156,6 +155,8 @@ public class ExperimentManager : MonoBehaviour
         
         return list;
     }
+
+    #endregion
     
     #region Getter and Setters
 
