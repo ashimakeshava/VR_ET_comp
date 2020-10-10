@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class Block
 {
    public List<int> SequenceOfTrials;
-   
+
    public List<GridElement> LargeGridClose;
    public List<GridElement> LargeGridFar;
    public List<GridElement> SmallGrid;
@@ -21,6 +22,6 @@ public class Block
    
    public List<Luminance> PupilDilation;
    
-   public int FreeViewingIndex;
+   public GameObject FreeViewingPicture;
    public int SmoothPursuitIndex;
 }

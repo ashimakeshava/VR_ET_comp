@@ -30,6 +30,7 @@ public class BlockGenerator : MonoBehaviour
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
+            FreeViewingPicture = picture,
             
             
             
@@ -44,7 +45,7 @@ public class BlockGenerator : MonoBehaviour
 
     private List<int> RandomizeTrials()
     {
-        List<int> list = new List<int> {1};
+        List<int> list = new List<int> {0, 1};
 
         for (int i = 0; i < _trialsToShuffle.Count+1; i++)
         {
@@ -56,16 +57,5 @@ public class BlockGenerator : MonoBehaviour
         list.Add(1);
 
         return list;
-    }
-    
-    
-    public void SetFreeViewingIndex(int picNum)
-    {
-        _block.FreeViewingIndex = picNum;
-    }
-    
-    public void SetSmoothPursuitIndex(int seqNum)
-    {
-        _block.SmoothPursuitIndex = seqNum;
     }
 }
