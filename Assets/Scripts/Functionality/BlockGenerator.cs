@@ -18,7 +18,7 @@ public class BlockGenerator : MonoBehaviour
         _random = new Random();
     }
 
-    public Block GenerateBlock()
+    public Block GenerateBlock(GameObject picture, List<GridElement> smoothPursuit)
     {
         _block = new Block
         {
@@ -29,7 +29,9 @@ public class BlockGenerator : MonoBehaviour
             SmallGrid = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetSmallGrid()),
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
-            // SmoothPursuit = ,
+            SmoothPursuit = smoothPursuit,
+            
+            
             
             // todo take the free viewing from experiment manager (from and already randomized list for that)
             // todo fill out the rest

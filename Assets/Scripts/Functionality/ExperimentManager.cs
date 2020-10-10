@@ -17,7 +17,8 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject smallGrid;
     [SerializeField] private List<GameObject> freeViewingPictures;
 
-    private List<GridElement> _smoothPursuitRoutes;
+    private List<List<GridElement>> _smoothPursuitRoutes;
+    private List<List<GridElement>> _randimizedSmoothPursuitRoutes;
     private List<GameObject> _randomizedPictureList;
     private List<Block> _blocks;
 
@@ -39,19 +40,21 @@ public class ExperimentManager : MonoBehaviour
 
     private void Start()
     {
-        // todo read the randomization from the list
+        // todo read all of the randomization lists from the list
         
         _random = new Random();
-        _randomizedPictureList = RandomizeFreeViewingPictures();
         
-        // todo read the routes, then randomize
-        _smoothPursuitRoutes = new List<GridElement>();
+        // todo read the routes from file
+        _smoothPursuitRoutes = new List<List<GridElement>>();
+        
+        _randomizedPictureList = RandomizeFreeViewingPictures();
+        _randimizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
         
         _blocks = new List<Block>();
 
         for (int i = 0; i < 6; i++)
         {
-            _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock());
+            _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock(_randomizedPictureList[i], _smoothPursuitRoutes[i]));
         }
         
         // todo show instruction and welcome message
@@ -151,6 +154,20 @@ public class ExperimentManager : MonoBehaviour
             int index = _random.Next(freeViewingPictures.Count);
             list.Add(freeViewingPictures[index]);
             freeViewingPictures.RemoveAt(index);
+        }
+        
+        return list;
+    }
+    
+    private List<List<GridElement>> RandomizeSmoothPursuitSequence()
+    {
+        List<List<GridElement>> list = new List<List<GridElement>>();
+
+        for (int i = 0; i < _smoothPursuitRoutes.Count+1; i++)
+        {
+            int index = _random.Next(_smoothPursuitRoutes.Count);
+            list.Add(_smoothPursuitRoutes[index]);
+            _smoothPursuitRoutes.RemoveAt(index);
         }
         
         return list;
