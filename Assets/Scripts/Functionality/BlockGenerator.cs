@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using Random = System.Random;
 
@@ -9,7 +10,7 @@ public class BlockGenerator : MonoBehaviour
     private Block _block;
     private Random _random;
     private GridElementsGenerator _gridElementsGenerator;
-    private List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
+    [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
     
     private void Start()
     {
@@ -54,6 +55,7 @@ public class BlockGenerator : MonoBehaviour
 
         return list;
     }
+    
     
     public void SetFreeViewingIndex(int picNum)
     {
