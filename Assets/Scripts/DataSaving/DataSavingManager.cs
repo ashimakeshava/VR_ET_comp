@@ -16,6 +16,7 @@ public class DataSavingManager : MonoBehaviour
     private void Start()
     {
         routeGenerator= GetComponent<RouteGenerator>();
+        _gridRoute= new List<GridElement>();
         SavePath = Application.persistentDataPath;
     }
 
@@ -25,7 +26,7 @@ public class DataSavingManager : MonoBehaviour
         {
             StoreGridRoute(routeGenerator.GetGridRoute());
             
-            SaveToJson(_gridRoute,"test.txt");
+            SaveList(_gridRoute,"test.txt");
         }
         
         
@@ -34,7 +35,21 @@ public class DataSavingManager : MonoBehaviour
             
             string filePath = GetPathForSaveFile("test.txt");
             Debug.Log(filePath);
-            _gridRoute = LoadRoute(filePath);
+            _gridRoute = LoadList<GridElement>(filePath);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            routeGenerator.CreateTestFile();
+            TestFrame bunny = routeGenerator.bunny;
+            Save(bunny,"bunny.txt");
+        }
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            
+            string filePath = GetPathForSaveFile("test.txt");
+            Debug.Log(filePath);
+            _gridRoute = LoadList<GridElement>(filePath);
         }
     }
 
@@ -59,9 +74,70 @@ public class DataSavingManager : MonoBehaviour
 
         return list;
     }
+    
+    private string ConvertToJson<T>(T generic)
+    {
+        string json= JsonUtility.ToJson(generic);
+    
+        return json;
+    }
 
 
-    public void SaveToJson<T>(List<T> file, string  fileName)
+  
+    
+    
+    
+
+    public List<T> LoadList<T>(string path)
+    {
+        
+        List<T> genericList=new List<T>();
+
+        if (File.Exists(path))
+        {
+            string[] data = File.ReadAllLines(path);
+            foreach (var line in data)
+            {
+                T tmp= JsonUtility.FromJson<T>(line);
+                genericList.Add(tmp);
+            }
+            
+        }
+        
+        return genericList;
+        
+    }
+    
+    public T Load<T>(string path)
+    {
+        if (File.Exists(path))
+        {
+            string data = File.ReadAllText(path);
+            return JsonUtility.FromJson<T>(data);
+        }
+        else
+        {
+            throw new Exception("file not found");
+        }
+    }
+    
+    public void Save<T>(T file, string  fileName)
+    {
+        var data = ConvertToJson(file);
+
+        string path = GetPathForSaveFile(fileName);
+        
+        FileStream fileStream= new FileStream(path, FileMode.Create);
+        using (var fileWriter= new StreamWriter(fileStream))
+        {
+            fileWriter.WriteLine(data);
+        }
+        
+        
+        Debug.Log("saved  " +fileName + " to : " + SavePath );
+    }
+    
+    public void SaveList<T>(List<T> file, string  fileName)
     {
         var RouteData = ConvertToJson(file);
 
@@ -79,26 +155,6 @@ public class DataSavingManager : MonoBehaviour
         
         
         Debug.Log("saved  " +fileName + " to : " + SavePath );
-    }
-
-
-    public List<GridElement> LoadRoute(string path)
-    {
-        List<GridElement> Route=new List<GridElement>();
-
-        if (File.Exists(path))
-        {
-            string[] data = File.ReadAllLines(path);
-            foreach (var line in data)
-            {
-                GridElement tmp= JsonUtility.FromJson<GridElement>(line);
-                Route.Add(tmp);
-            }
-            
-        }
-
-        return Route;
-        
     }
 
 

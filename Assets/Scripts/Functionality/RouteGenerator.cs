@@ -22,6 +22,8 @@ public class RouteGenerator : MonoBehaviour
     private int level2Jumps;
     private int level3Jumps;
     private int level4Jumps;
+
+    public TestFrame bunny;
     
     private void Start()
     {
@@ -236,6 +238,15 @@ public class RouteGenerator : MonoBehaviour
     private float GenerateMovementTime()
     {
         return (_isSmoothPursuit) ? 2 : 0;
+    }
+
+    public void CreateTestFile()
+    {
+        TestFrame test= new TestFrame
+        {
+            Position = Vector3.back,Velocity = 0.3f, ObjectName = "Bunny"
+        };
+        bunny = test;
     }
     
     private void LogJump(GridElement oldPos, GridElement newPos)
