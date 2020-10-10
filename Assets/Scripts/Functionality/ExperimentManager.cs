@@ -24,6 +24,8 @@ public class ExperimentManager : MonoBehaviour
 
     private Random _random;
     private bool _continueTrials;
+    private bool _experimentIsRunning;
+    private int _blockCounter;
 
     #endregion
 
@@ -40,12 +42,10 @@ public class ExperimentManager : MonoBehaviour
 
     private void Start()
     {
-        // todo read all of the randomization lists from the list
-        
         _random = new Random();
-        
-        // todo read the routes from file
-        _smoothPursuitRoutes = new List<List<GridElement>>();
+
+        // todo read all of the randomization lists from the list
+        _smoothPursuitRoutes = new List<List<GridElement>>();    // todo read the routes from file
         
         _randomizedPictureList = RandomizeFreeViewingPictures();
         _randimizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
@@ -64,6 +64,13 @@ public class ExperimentManager : MonoBehaviour
     {
         // TODO click or push trigger to start the experiment
 
+        if (!_experimentIsRunning)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                _continueTrials = true;
+            }
+        }
 
         #region DebugingPurpose
 
@@ -82,18 +89,43 @@ public class ExperimentManager : MonoBehaviour
             fixationPoint.transform.position= new Vector3(0,0,1);
             Debug.Log("___________________________________-----_____________________________");
         }
-
-        #endregion
         
         if (Input.GetKeyDown(KeyCode.S))
         {
             StartExperiment();
         }
+        
+        #endregion
     }
 
 
     void StartExperiment()
     {
+        #region Done
+        // creat block counter
+
+        
+
+        #endregion
+        
+        // block 0.seq 0 (read the trial)
+        // write it to the participant progress file // todo??? blocks + seq
+        // calibrate
+        // show trial instruction // todo a canvas with different instructions
+        // wait for click
+        // execute trial
+        // experiment is running == true
+        // done?
+            // if yes ? remove seq 0 && exp is running = false : repeat trial 
+        // if block 0.seq == empty ? remove block 0
+            // counter++
+            // show take a break
+            // wait for click
+            // calibrate
+        // if counter 3 -> force break
+        // if blocks == empty ? show thank you text
+        // repeat
+            
         // todo iterate through blocks   
         foreach (var block in _blocks)
         {
@@ -172,6 +204,11 @@ public class ExperimentManager : MonoBehaviour
         
         return list;
     }
+    
+    private void ShowInstructionForNextTrial()
+    {
+        throw new NotImplementedException();
+    }
 
     #endregion
     
@@ -179,9 +216,9 @@ public class ExperimentManager : MonoBehaviour
 
     public void TrialEnded()
     {
-        _continueTrials = true;
+        ShowInstructionForNextTrial();
     }
-    
+
     public GameObject GetFixationPoint()
     {
         return fixationPoint;
