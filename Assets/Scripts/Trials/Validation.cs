@@ -15,6 +15,9 @@ public class Validation : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
+        _gridClose = ExperimentManager.Instance.GetLargeGrid1();
+        _gridFar = ExperimentManager.Instance.GetLargeGrid2();
+        _gridClose.gameObject.SetActive(true);
     }
 
     IEnumerator StartFirstValidation()
@@ -26,11 +29,15 @@ public class Validation : MonoBehaviour
            yield return new WaitForSeconds(element.FixationDuration);
         }
 
+        _gridClose.gameObject.SetActive(false);
+        _gridFar.gameObject.SetActive(true);
         StartCoroutine(StartSecondValidation());
     }
     
     IEnumerator StartSecondValidation()
     {
+        _fixationPoint.transform.position = new Vector3(0, 0, 2);
+        
         foreach (var element in _gridElementsFar)
         {
             _fixationPoint.transform.position = element.Position;
@@ -38,6 +45,7 @@ public class Validation : MonoBehaviour
             yield return new WaitForSeconds(element.FixationDuration);
         }
 
+        _gridFar.gameObject.SetActive(false);
         ExperimentManager.Instance.TrialEnded();
     }
 
