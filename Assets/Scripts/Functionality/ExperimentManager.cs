@@ -40,7 +40,7 @@ public class ExperimentManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<RouteGenerator>().GenerateGridElementList(smallGrid);
+            GetComponent<RouteGenerator>().GenerateGridRoute(smallGrid);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
