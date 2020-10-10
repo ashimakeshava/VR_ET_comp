@@ -13,11 +13,28 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject largeGrid1;
     [SerializeField] private GameObject largeGrid2;
     [SerializeField] private GameObject smallGrid;
-    [SerializeField] private GameObject smoothPursuit;
     
     private List<Block> _blocks;
 
+    private bool _continueTrials;
+    
+    private enum Trials
+    {
+        Validation = 1,
+        SmoothPursuit = 2,
+        SmallGrid = 3,
+        Blink = 4,
+        PupilDilation = 5,
+        FreeViewing = 6,
+        Roll = 7,
+        Yaw = 8,
+        Pitch = 9,
+        MicroSaccades = 10
+    }
 
+    private Trials _trial;
+    
+    
     private void Awake()
     {
         if (Instance == null)
@@ -34,6 +51,8 @@ public class ExperimentManager : MonoBehaviour
         {
             _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock());
         }
+        
+        // TODO click to start the experiment
     }
 
     private void Update()
@@ -53,9 +72,73 @@ public class ExperimentManager : MonoBehaviour
             fixationPoint.transform.position= new Vector3(0,0,1);
             Debug.Log("___________________________________-----_____________________________");
         }
+        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartExperiment();
+        }
+    }
+
+
+    void StartExperiment()
+    {
+        // todo iterate through blocks   
+        foreach (var block in _blocks)
+        {
+            foreach (var value in block.SequenceOfTrials)
+            {
+                _continueTrials = false;
+                ExecuteTrials(value, block);
+                while (!_continueTrials) {}
+            }
+        }
     }
 
     
+    // todo implement 
+    void ExecuteTrials(int value, Block block)
+    {
+        switch (value)
+        {
+            case 1:
+                GetComponent<Validation>().StartValidation(block.LargeGridClose, block.LargeGridFar);
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+            case 6:
+                
+                break;
+            case 7:
+                
+                break;
+            case 8:
+                
+                break;
+            case 9:
+                
+                break;
+            case 10:
+                
+                break;
+        }
+    }
+
+    #region Getter and Setters
+
+    public void TrialEnded()
+    {
+        _continueTrials = true;
+    }
     
     public GameObject GetFixationPoint()
     {
@@ -75,13 +158,11 @@ public class ExperimentManager : MonoBehaviour
     {
         return smallGrid;
     }
-    
-    public GameObject GetSmoothPursuit()
-    {
-        return smoothPursuit;
-    }
+
+    #endregion
 }
 
         
     // TODO implement movement
     // TODO smoothPursuit has too few elements
+    // TODO read from the file to go on with the movement 
