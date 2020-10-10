@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using System.Threading;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -173,7 +174,7 @@ public class ExperimentManager : MonoBehaviour
                 
                 break;
             case 4:    // Blink
-                
+                GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
                 break;
             case 5:    // Pupil dilation
                 
