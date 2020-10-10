@@ -24,8 +24,8 @@ public class BlockGenerator : MonoBehaviour
         {
             SequenceOfTrials = RandomizeTrials(),
             
-            LargeGridClose = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid1()),
-            LargeGridFar = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid2()),
+            LargeGridClose = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
+            LargeGridFar = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
             SmallGrid = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetSmallGrid()),
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
