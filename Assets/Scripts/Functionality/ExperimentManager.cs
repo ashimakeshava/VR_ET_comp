@@ -13,9 +13,13 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject largeGrid1;
     [SerializeField] private GameObject largeGrid2;
     [SerializeField] private GameObject smallGrid;
-    
+    [SerializeField] private List<GameObject> freeViewingPictures;
+
+    private List<GridElement> _smoothPursuitRoutes;
+    private List<GameObject> _randomizedPictureList;
     private List<Block> _blocks;
 
+    private Random _random;
     private bool _continueTrials;
     
     private enum Trials
@@ -45,6 +49,10 @@ public class ExperimentManager : MonoBehaviour
 
     private void Start()
     {
+        _random = new Random();
+        _randomizedPictureList = RandomizeFreeViewingPictures();
+        _smoothPursuitRoutes = new List<GridElement>();
+        
         _blocks = new List<Block>();
 
         for (int i = 0; i < 6; i++)
@@ -52,11 +60,13 @@ public class ExperimentManager : MonoBehaviour
             _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock());
         }
         
-        // TODO click to start the experiment
+        // todo show instruction and welcome message
     }
 
     private void Update()
     {
+        // TODO click or push trigger to start the experiment
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<RouteGenerator>().GenerateGridRoute(smallGrid);
@@ -133,6 +143,20 @@ public class ExperimentManager : MonoBehaviour
         }
     }
 
+    private List<GameObject> RandomizeFreeViewingPictures()
+    {
+        List<GameObject> list = new List<GameObject>();
+
+        for (int i = 0; i < freeViewingPictures.Count+1; i++)
+        {
+            int index = _random.Next(freeViewingPictures.Count);
+            list.Add(freeViewingPictures[index]);
+            freeViewingPictures.RemoveAt(index);
+        }
+        
+        return list;
+    }
+    
     #region Getter and Setters
 
     public void TrialEnded()
