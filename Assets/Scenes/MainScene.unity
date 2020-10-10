@@ -462,10 +462,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &256367371
 MonoBehaviour:
@@ -499,7 +499,23 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Roll
+  m_Text: 'Tilt \n
+
+    
+
+    In the next condition you will see a a line together
+    with a fixation target at the center of the screen. Please tilt your head (in
+    other words: rotate one ear to the shoulder) so that your eyes are in line with
+    the line, while fixating the target. Once your eyes are aligned with the line,
+    press SPACE to continue to the next line. \n
+
+    
+
+    Before the condition
+    starts you will be shown a green target. Please fixate it and press SPACE in
+    order to start with the trial. \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &256367372
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -711,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &298434860
 RectTransform:
   m_ObjectHideFlags: 0
@@ -726,10 +742,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &298434861
 MonoBehaviour:
@@ -754,16 +770,23 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Welcome
+  m_Text: "Welcome to our experiment.\nThis experiment consists of 10 small tasks
+    that will repeat six time. Before each condition you will you will be shown instructions
+    to your task.\nAt the beginning of the experiment and after each block, we will
+    calibrate the eytracker. At each instruction screen you can take a break for
+    as long as you want to. \n\r\nWhenever you see a fixation cross, it is important
+    that you look at it and don't move your eyes away.\n\r\nThe experiment will take
+    about 35 minutes to complete. \nPlease let us know if there are any open questions.
+    Otherwise press TRIGGER to start."
 --- !u!222 &298434862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -804,10 +827,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &312281568
 MonoBehaviour:
@@ -1161,10 +1184,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &396776578
 MonoBehaviour:
@@ -1198,7 +1221,42 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SmallGrid
+  m_Text: 'Small Guided Viewing \n \n
+
+    
+
+    In the next condition you will
+    see a target moving around the screen. Once you look at the target (but not before!)
+    and the eyes are not moving anymore, press space to select the next target and
+    repeat. \n
+
+    In total you will be shown 13 targets. \n
+
+    Before the condition
+    starts you will be shown a green target. Please fixate it and press SPACE in
+    order to start with the trial. \n \n
+
+    Press SPACE to continue.
+
+
+
+    Small
+    Guided Viewing \n \n
+
+    
+
+    In the next condition you will see a target
+    moving around the screen. Once you look at the target (but not before!) and the
+    eyes are not moving anymore, press space to select the next target and repeat.
+    \n
+
+    In total you will be shown 13 targets. \n
+
+    Before the condition
+    starts you will be shown a green target. Please fixate it and press SPACE in
+    order to start with the trial. \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &396776579
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1645,7 +1703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &661732234
 Transform:
   m_ObjectHideFlags: 0
@@ -1995,10 +2053,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754796290
 MonoBehaviour:
@@ -2032,7 +2090,22 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Validation
+  m_Text: 'Large Guided Viewing \n \n
+
+    
+
+    In the next condition you will
+    see a target moving around the screen. Once you look at the target (but not before!)
+    and the eyes are not moving anymore, press space to select the next target and
+    repeat. \n
+
+    In total you will be shown 49 targets. \n
+
+    Before the condition
+    starts you will be shown a green target. Please fixate it and press SPACE in
+    order to start with the trial. \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &754796291
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2073,10 +2146,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766795458
 MonoBehaviour:
@@ -2616,10 +2689,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &884922142
 MonoBehaviour:
@@ -2653,7 +2726,23 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Micro Saccades
+  m_Text: 'Centered Fixation
+
+    
+
+    In the next condition you will be shown
+    a fixation target. Please fixate it and remain fixated until it disappears after
+    approximately 20s. \n
+
+    
+
+    Before the condition starts you will be shown
+    a green target. Please fixate it and press SPACE in order to start with the trial.
+    \n \n
+
+    Press SPACE to continue.
+
+'
 --- !u!222 &884922143
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2880,10 +2969,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &935420092
 MonoBehaviour:
@@ -2917,7 +3006,33 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SmoothPursuit
+  m_Text: 'Smooth Pursuit \n \n
+
+    
+
+    In the next condition you will see a
+    target in the center that you have to fixate. Once you fixate it press SPACE
+    to start the movement. Then the target will move across the screen. Try to follow
+    the target with your eyes as long as possible. \n \n
+
+    
+
+    After the movement
+    the next target will appear in the center of the screen. Please again fixate
+    it and press enter to start the next movement.\n
+
+    In total you will be shown
+    20 targets.
+
+    
+
+    
+
+    Before the condition starts you will be shown
+    a green target. Please fixate it and press SPACE in order to start with the trial.
+    \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &935420093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3262,10 +3377,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033934883
 MonoBehaviour:
@@ -3871,10 +3986,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1210248368
 MonoBehaviour:
@@ -3908,7 +4023,22 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pitch
+  m_Text: 'Rotate \n
+
+    
+
+    In the next condition you will see a target, please
+    rotate your head so that your nose points to the target and fixate it. Once you
+    fixate it press SPACE to lock the position. Then the next target will appear.
+    \n
+
+    
+
+    Before the condition starts you will be shown a green target.
+    Please fixate it and press SPACE in order to start with the trial. \n \n
+
+    Press
+    SPACE to continue.'
 --- !u!222 &1210248369
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3979,10 +4109,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1412742000
 MonoBehaviour:
@@ -4180,10 +4310,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1458169221
 MonoBehaviour:
@@ -4217,7 +4347,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Blink
+  m_Text: "Blinks \\n\r\n\r\nIn the next condition you will be shown a fixation target
+    in the center of the screen. Please fixate it. \\n\r\nYou will hear 6 beeps.
+    Please blink each time you hear a beep and then fixate the target again.\r\n\r\nBefore
+    the condition starts you will be shown a green target. Please fixate it and press
+    SPACE in order to start with the trial. \\n \\n\r\nPress SPACE to continue.\r"
 --- !u!222 &1458169222
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4312,7 +4446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1551134024
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4698,10 +4832,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1818046361
 MonoBehaviour:
@@ -4735,7 +4869,30 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: FreeViewing
+  m_Text: 'Freeviewing \n \n
+
+    
+
+    In the following, you will see 3 images
+    for 6 seconds each. \n
+
+    Please freely explore the image. \n
+
+    
+
+    After
+    each image you can rest shortly and continue with the next image by pressing
+    space \n
+
+    
+
+    Before the condition starts you will be shown a green target.
+    Please fixate it and press SPACE in order to start with the trial. \n \n
+
+    Press
+    SPACE to continue.
+
+'
 --- !u!222 &1818046362
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5258,10 +5415,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1976906293
 MonoBehaviour:
@@ -5295,7 +5452,28 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PupilDilation
+  m_Text: 'Contrast Variation
+
+    
+
+    In the next condition you will be shown
+    a fixation target in the center of the screen. Please fixate it and remain fixated
+    until it disappears. \n
+
+    
+
+    The background lumination will vary across
+    the trial. You can ignore this, please keep fixating on the fixation dot. \n
+
+    
+
+    Before
+    the condition starts you will be shown a green target. Please fixate it and press
+    SPACE in order to start with the trial. \n \n
+
+    Press SPACE to continue.
+
+'
 --- !u!222 &1976906294
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5336,10 +5514,10 @@ RectTransform:
   m_Father: {fileID: 402837071}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: -700, y: -360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1991286558
 MonoBehaviour:
@@ -5373,7 +5551,22 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Yaw
+  m_Text: 'Rotate \n
+
+    
+
+    In the next condition you will see a target, please
+    rotate your head so that your nose points to the target and fixate it. Once you
+    fixate it press SPACE to lock the position. Then the next target will appear.
+    \n
+
+    
+
+    Before the condition starts you will be shown a green target.
+    Please fixate it and press SPACE in order to start with the trial. \n \n
+
+    Press
+    SPACE to continue.'
 --- !u!222 &1991286559
 CanvasRenderer:
   m_ObjectHideFlags: 0
