@@ -18,19 +18,21 @@ public class Blink : MonoBehaviour
 
     IEnumerator RunBeep()
     {
-
+        _fixationPoint.transform.position = new Vector3(0,0,1);
+        _fixationPoint.gameObject.SetActive(true);
+        
         foreach (var delay in _delays)
         {
             _audioSource.Play();
             yield return new WaitForSeconds(delay);
         }
+        
+        ExperimentManager.Instance.TrialEnded();
     }
 
     public void RunBeepBlink(List<float> delays)
     {
         _delays = delays;
-        _fixationPoint.transform.position = new Vector3(0, 0, 1);
-        _fixationPoint.gameObject.SetActive(true);
         StartCoroutine(RunBeep());
     }
 }
