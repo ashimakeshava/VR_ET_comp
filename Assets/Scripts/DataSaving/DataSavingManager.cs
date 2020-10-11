@@ -12,6 +12,8 @@ public class DataSavingManager : MonoBehaviour
 
     private List<GridElement> _gridRoute;
 
+    private TestFrame Bunny;
+
     [SerializeField] private String SavePath;
     private void Start()
     {
@@ -19,39 +21,7 @@ public class DataSavingManager : MonoBehaviour
         _gridRoute= new List<GridElement>();
         SavePath = Application.persistentDataPath;
     }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StoreGridRoute(routeGenerator.GetGridRoute());
-            
-            SaveList(_gridRoute,"test.txt");
-        }
-        
-        
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            
-            string filePath = GetPathForSaveFile("test.txt");
-            Debug.Log(filePath);
-            _gridRoute = LoadList<GridElement>(filePath);
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            routeGenerator.CreateTestFile();
-            TestFrame bunny = routeGenerator.bunny;
-            Save(bunny,"bunny.txt");
-        }
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            
-            string filePath = GetPathForSaveFile("test.txt");
-            Debug.Log(filePath);
-            _gridRoute = LoadList<GridElement>(filePath);
-        }
-    }
+    
 
     private void StoreGridRoute(List<GridElement> gridRoute)
     {
@@ -88,7 +58,7 @@ public class DataSavingManager : MonoBehaviour
     
     
 
-    public List<T> LoadList<T>(string path)
+    public List<T> LoadFileList<T>(string path)
     {
         
         List<T> genericList=new List<T>();
@@ -101,25 +71,36 @@ public class DataSavingManager : MonoBehaviour
                 T tmp= JsonUtility.FromJson<T>(line);
                 genericList.Add(tmp);
             }
-            
+            return genericList;
+        }
+        else
+        {
+            throw new Exception("file not found");
         }
         
-        return genericList;
+        
         
     }
     
-    public T Load<T>(string path)
+    public T LoadFile<T>(string path)
     {
+        if (typeof(T).IsArray)
+        {
+            Debug.Log("no!");
+        }
+        
         if (File.Exists(path))
         {
-            string data = File.ReadAllText(path);
-            return JsonUtility.FromJson<T>(data);
+            string[] data = File.ReadAllLines(path);
+            T tmp= JsonUtility.FromJson<T>(data[0]);
+            return tmp;
         }
         else
         {
             throw new Exception("file not found");
         }
     }
+    
     
     public void Save<T>(T file, string  fileName)
     {
@@ -163,4 +144,6 @@ public class DataSavingManager : MonoBehaviour
     {
         return Path.Combine(SavePath, fileName);
     }
+    
+    
 }

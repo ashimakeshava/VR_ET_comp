@@ -56,7 +56,7 @@ public class RouteGenerator : MonoBehaviour
         return hitList;
     }
 
-    private void Traverse(GameObject grid)
+    private void Traverse(GameObject grid,int maximumJumpSize)
     {
         int count = grid.transform.childCount;
         Vector3 oldPos;
@@ -92,9 +92,13 @@ public class RouteGenerator : MonoBehaviour
                     
                     if (i == 4)
                     {
-                        _inValid = true;
                         level4Jumps++;
                         jumpsize = 4;
+                    }
+
+                    if (i > maximumJumpSize)
+                    {
+                        _inValid = true;
                     }
                     
                     hitList= GetHitList(.2f*i, .13f*i);
@@ -183,7 +187,7 @@ public class RouteGenerator : MonoBehaviour
             }
         }
     }
-    private void GenerateGridRoute(GameObject grid)
+    private void GenerateGridRoute(GameObject grid, int allowedJumpSize=4)
     {
         int iter=0;
         do
@@ -199,7 +203,7 @@ public class RouteGenerator : MonoBehaviour
                 grid.transform.GetChild(i).gameObject.SetActive(true);
 
             }
-            Traverse(grid);
+            Traverse(grid, allowedJumpSize);
 
             if (_inValid)
             {
@@ -244,7 +248,7 @@ public class RouteGenerator : MonoBehaviour
     {
         TestFrame test= new TestFrame
         {
-            Position = Vector3.back,Velocity = 0.3f, ObjectName = "Bunny"
+            Position = 1f,Velocity = 0.3f, ObjectName = "Bunny"
         };
         bunny = test;
     }
