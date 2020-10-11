@@ -110,8 +110,6 @@ public class RouteGenerator : MonoBehaviour
                     {
                         break;
                     }
-
-                    
                 }
             }
             else
@@ -263,52 +261,52 @@ public class RouteGenerator : MonoBehaviour
     private void LogJump(GridElement oldPos, GridElement newPos)
     {
         if (oldPos.Position.x == newPos.Position.x)
-                {
-                    if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.13)
-                    {
-                        Debug.Log("<color=green>level 1 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.26)
-                    {
-                        Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.26)
-                    {
-                        Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.45)
-                    {
-                        Debug.Log("<color=red>level 4 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                        Debug.Log("is invalid retry...");
-                    }
-                }
-                else
-                {
-                    if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.25)
-                    {
-                        Debug.Log("<color=green>level 1 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.45)
-                    {
-                        Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.75)
-                    {
-                        Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                    }
-                    else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.75)
-                    {
-                        Debug.Log("<color=red>level 4 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
-                                  newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
-                        Debug.Log("is invalid retry...");
-                    }
-                }
+        {
+            if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.13)
+            {
+                Debug.Log("<color=green>level 1 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.26)
+            {
+                Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.26)
+            {
+                Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.45)
+            {
+                Debug.Log("<color=red>level 4 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+                Debug.Log("is invalid retry...");
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.25)
+            {
+                Debug.Log("<color=green>level 1 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.45)
+            {
+                Debug.Log("<color=yellow>level 2 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) < 0.75)
+            {
+                Debug.Log("<color=orange>level 3 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+            }
+            else if (Vector3.Distance(oldPos.Position, newPos.Position) > 0.75)
+            {
+                Debug.Log("<color=red>level 4 jump </color>" + "Old: " + oldPos.ObjectName + "New: " +
+                          newPos.ObjectName + " distance :  " + Vector3.Distance(oldPos.Position, newPos.Position));
+                Debug.Log("is invalid retry...");
+            }
+        }
     }
 }
