@@ -9,12 +9,12 @@ public class BlockGenerator : MonoBehaviour
 {
     private Block _block;
     private Random _random;
-    private GridElementsGenerator _gridElementsGenerator;
+    private RouteGenerator _routeGenerator;
     [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
     
     private void Start()
     {
-        _gridElementsGenerator = GetComponent<GridElementsGenerator>();
+        _routeGenerator = GetComponent<RouteGenerator>();
         _random = new Random();
     }
 
@@ -24,9 +24,9 @@ public class BlockGenerator : MonoBehaviour
         {
             SequenceOfTrials = RandomizeTrials(),
             
-            LargeGridClose = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
-            LargeGridFar = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetLargeGrid()),
-            SmallGrid = _gridElementsGenerator.Traverse(ExperimentManager.Instance.GetSmallGrid()),
+            LargeGridClose = _routeGenerator.GetGridRoute(),
+            LargeGridFar = _routeGenerator.GetGridRoute(),
+            SmallGrid = _routeGenerator.GetGridRoute(),
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
