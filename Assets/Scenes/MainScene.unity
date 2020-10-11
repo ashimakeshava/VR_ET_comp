@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: d4276aed379c550498d8417e07849ba6, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 321bbd0a185393d4b8dd01951497c35d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.10205071, g: 0.10449199, b: 0.10205071, a: 1}
+  m_IndirectSpecularColor: {r: 0.2119132, g: 0.21582027, b: 0.2119132, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6475,11 +6475,11 @@ GameObject:
   - component: {fileID: 1820246657}
   - component: {fileID: 1820246650}
   - component: {fileID: 1820246655}
-  - component: {fileID: 1820246654}
-  - component: {fileID: 1820246656}
-  - component: {fileID: 1820246653}
   - component: {fileID: 1820246652}
+  - component: {fileID: 1820246653}
+  - component: {fileID: 1820246656}
   - component: {fileID: 1820246658}
+  - component: {fileID: 1820246654}
   m_Layer: 0
   m_Name: ExperimentManager
   m_TagString: Untagged
@@ -6513,6 +6513,21 @@ MonoBehaviour:
   - {fileID: 253355626}
   - {fileID: 641750098}
   - {fileID: 995510156}
+  - {fileID: 53220557}
+  - {fileID: 1100258589}
+  - {fileID: 620549847}
+  - {fileID: 1832990250}
+  - {fileID: 1296446373}
+  - {fileID: 1631083624}
+  - {fileID: 553601264}
+  - {fileID: 402827076}
+  - {fileID: 744178895}
+  - {fileID: 1490635316}
+  - {fileID: 4743819}
+  - {fileID: 507122044}
+  - {fileID: 241833521}
+  - {fileID: 1136787476}
+  - {fileID: 1060621485}
   trialInstructions: []
   welcome: {fileID: 298434861}
   blockEnd: {fileID: 312281568}
