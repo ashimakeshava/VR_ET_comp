@@ -15,15 +15,15 @@ public class RouteGenerator : MonoBehaviour
     private bool _isSmoothPursuit;
 
     private List<GridElement> _gridRoute;
-    private List <List<GridElement>> _validGridRoutes; // TODo maybe in another class?
-
+    private List <List<GridElement>> uniqueSmallGridRoutes;
+    private List<List<GridElement>> uniqueLargeGridRoutse; // TODo maybe in another class?
+    private List<List<GridElement>> uniqueSmoothPursuitRoutes;
     private bool _inValid;
     private int level1Jumps;
     private int level2Jumps;
     private int level3Jumps;
     private int level4Jumps;
-
-    public TestFrame bunny;
+    
     
     private void Start()
     {
@@ -47,7 +47,7 @@ public class RouteGenerator : MonoBehaviour
         {
             if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid(1)" 
                                                      && hit.collider.name != "LargeGrid(2)"
-                                                     && hit.collider.name != "SmallGrid")
+                                                     && hit.collider.name != "SmallGrid") //TODO check and change the names
             {
                 hitList.Add(hit);
             }
@@ -99,6 +99,7 @@ public class RouteGenerator : MonoBehaviour
                     if (i > maximumJumpSize)
                     {
                         _inValid = true;
+                        break;
                     }
                     
                     hitList= GetHitList(.2f*i, .13f*i);
@@ -122,16 +123,17 @@ public class RouteGenerator : MonoBehaviour
             
             if(!_inValid)
             {
-                oldPos = _fixationPoint.transform.position;
                 int index = _random.Next(hitList.Count);
                 Vector3 newPosition = hitList[index].collider.transform.position;
-                _fixationPoint.transform.position = newPosition;
+                _fixationPoint.transform.position = newPosition; //TODO this is only a Generator Script , movement happens in trail script
                 GridElement gridElement = new GridElement
                 {
                     ObjectName = hitList[index].collider.name,
                     Position = newPosition,
                     JumpSize =jumpsize,
-                    PreviousObject = OldElement.ObjectName
+                    PreviousObject = OldElement.ObjectName,
+                    FixationDuration = GenerateRandomFixationTime(),
+                    MovementDuration = GenerateMovementTime()
                 };
 
                 hitList[index].collider.gameObject.SetActive(false);
@@ -150,43 +152,55 @@ public class RouteGenerator : MonoBehaviour
                 Debug.Log("invalid");
             }
         }
-        //grid.SetActive(true);
 
-        if (!_inValid)
-        {
-            Debug.Log("is valid and can be checked with other grids"); 
-        }
-        else
-        {
-            Debug.Log("needs to be rerouted"); 
-        }
     }
     
     
-    private void CheckWithOtherRoutes(List<GridElement> route )
+    private void AddRouteToUniqueList(List<GridElement> route, List<List<GridElement>> uniqueRouteList, int familarityLevel)
     {
         bool same=false;
-        if (!_validGridRoutes.Any())
+        if (!uniqueRouteList.Any())
         {
+            uniqueRouteList.Add(route);
+            return;
+        }
+
+        if (route.Count != uniqueRouteList.Count)
+        {
+            Debug.Log("the Routes have a different size, Route will not be added");
+            
         }
         else
         {
-            foreach (var gridRoute in _validGridRoutes)
+            foreach (var gridRoute in uniqueRouteList)
             {
+                int familarity = familarityLevel;
                 for (int i = 0; i < gridRoute.Count; i++)
                 {
-                    if (route[i] == gridRoute[i])
+                    if (route[i].Position == gridRoute[i].Position)
                     {
-                        same = true;
+                        familarity--;
                     }
-                    else
+
+                    if (i + 1 < gridRoute.Count)
                     {
-                        same = false;
+                        if (route[i].Position == gridRoute[i + 1].Position)
+                        {
+                            familarity--;
+                        }
+                        
+                    }
+                    if (familarity == 0)
+                    {
+                        Debug.Log("too familiar abort...");
+                        return;
                     }
                 }
+                uniqueRouteList.Add(route);
             }
         }
     }
+    
     private void GenerateGridRoute(GameObject grid, int allowedJumpSize=4)
     {
         int iter=0;
@@ -219,10 +233,11 @@ public class RouteGenerator : MonoBehaviour
             
         } while (_inValid);
         
-        
     }
     
-    private float GenerateRandomFixationTime()
+    
+    
+    private float GenerateRandomFixationTime()        //TODO Add jitter and first position time: duration
     {
         if (_isSmoothPursuit) return 1;
         else
@@ -243,15 +258,7 @@ public class RouteGenerator : MonoBehaviour
     {
         return (_isSmoothPursuit) ? 2 : 0;
     }
-
-    public void CreateTestFile()
-    {
-        TestFrame test= new TestFrame
-        {
-            Position = 1f,Velocity = 0.3f, ObjectName = "Bunny"
-        };
-        bunny = test;
-    }
+    
     
     private void LogJump(GridElement oldPos, GridElement newPos)
     {
