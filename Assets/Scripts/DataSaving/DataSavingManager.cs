@@ -147,9 +147,10 @@ public class DataSavingManager : MonoBehaviour
 
 
 
-    private string GetPathForSaveFile(string fileName)
+    private string GetPathForSaveFile(string fileName, string format=".txt")
     {
-        return Path.Combine(SavePath, fileName);
+        string name = fileName + format;
+        return Path.Combine(SavePath, name);
     }
     
     

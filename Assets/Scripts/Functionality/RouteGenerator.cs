@@ -29,7 +29,7 @@ public class RouteGenerator : MonoBehaviour
     {
         _random = new Random();
         _gridRoute = new List<GridElement>();
-        _validGridRoutes = new List<List<GridElement>>();
+        //_validGridRoutes = new List<List<GridElement>>();
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
     }
 
