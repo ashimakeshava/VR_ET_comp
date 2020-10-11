@@ -8,13 +8,20 @@ using UnityEngine;
 
 public class DataSavingManager : MonoBehaviour
 {
+    public static DataSavingManager Instance { get ; private set; } 
     private RouteGenerator routeGenerator;
 
     private List<GridElement> _gridRoute;
-
-    private TestFrame Bunny;
-
     [SerializeField] private String SavePath;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     private void Start()
     {
         routeGenerator= GetComponent<RouteGenerator>();
