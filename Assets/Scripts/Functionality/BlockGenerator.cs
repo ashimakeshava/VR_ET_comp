@@ -18,7 +18,7 @@ public class BlockGenerator : MonoBehaviour
         _random = new Random();
     }
 
-    public Block GenerateBlock(List<GameObject> picture, List<GridElement> smoothPursuit)
+    public Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit)
     {
         _block = new Block
         {
@@ -30,7 +30,7 @@ public class BlockGenerator : MonoBehaviour
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
-            FreeViewingPictureList = picture,
+            FreeViewingPictureList = freeViewingDataFrames,
             
             
             
