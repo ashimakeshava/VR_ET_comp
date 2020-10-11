@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
@@ -23,8 +24,10 @@ public class RouteGenerator : MonoBehaviour
     private int level2Jumps;
     private int level3Jumps;
     private int level4Jumps;
-    
-    
+
+    private List<PupilDilationDataFrame> _pupilDilationDataFrames;
+    [ReadOnly] private readonly List<int> _pupilDilationSequence = new List<int> {0,1,2,3};
+
     private void Start()
     {
         _random = new Random();
@@ -308,5 +311,37 @@ public class RouteGenerator : MonoBehaviour
                 Debug.Log("is invalid retry...");
             }
         }
+    }
+
+    public List<T> RandomiseSequence<T>(List<T> listToRand)
+    {
+        List<T> list = new List<T>();
+        
+        foreach (var item in listToRand)
+        {
+            int index = RandomUnity.Range(0, listToRand.Count);
+            
+            list.Add(item);
+            listToRand.Remove(item);
+        }
+        
+        return list;
+    }
+
+    public List<PupilDilationDataFrame> RandomisePupilDilationDataFrame()
+    {
+        List<PupilDilationDataFrame> pupilDilationDataFrames = new List<PupilDilationDataFrame>();
+        
+        for (int i = 0; i < _pupilDilationSequence.Count; i++)
+        {
+            int index = _random.Next(_pupilDilationSequence.Count);
+            
+            pupilDilationDataFrames[i].ColorIndex = index;
+            pupilDilationDataFrames[i].ColorDuration = 3f + RandomUnity.Range(-.2f, .2f);
+
+            _pupilDilationSequence.RemoveAt(index);
+        }
+
+        return pupilDilationDataFrames;
     }
 }
