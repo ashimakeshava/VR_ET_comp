@@ -6,6 +6,8 @@ using System;
 using System.Threading;
 using UnityEngine.UI;
 using Random = System.Random;
+using RandomUnity = UnityEngine.Random;
+
 
 public class ExperimentManager : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class ExperimentManager : MonoBehaviour
 
     private List<List<GridElement>> _smoothPursuitRoutes;
     private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
-    private List<GameObject> _randomizedPictureList;
+    private List<List<FreeViewingDataFrame>> _randomizedPictureList;
     private List<Block> _blocks;
 
     private Random _random;
@@ -171,22 +173,22 @@ public class ExperimentManager : MonoBehaviour
                 // calibration
                 break;
             case 1:    // Validation
-                GetComponent<Validation>().StartValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
+                GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
-                
+                GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
                 break;
             case 3:    // Small grid
-                
+                GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
                 break;
             case 4:    // Blink
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
                 break;
             case 5:    // Pupil dilation
-                
+                GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
                 break;
             case 6:    // Free viewing
-                
+                GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
                 
@@ -239,15 +241,29 @@ public class ExperimentManager : MonoBehaviour
     }
 
 
-    private List<GameObject> RandomizeFreeViewingPictures()
+    private List<List<FreeViewingDataFrame>> RandomizeFreeViewingPictures()
     {
-        List<GameObject> list = new List<GameObject>();
+        List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
 
-        for (int i = 0; i < freeViewingPictures.Count+1; i++)
+        for (int i = 0; i < _blocks.Count; i++)
         {
-            int index = _random.Next(freeViewingPictures.Count);
-            list.Add(freeViewingPictures[index]);
-            freeViewingPictures.RemoveAt(index);
+            List<FreeViewingDataFrame> dataFrames = new List<FreeViewingDataFrame>();
+            
+            for (int j = 0; j < 3; j++)
+            {
+                int index = _random.Next(freeViewingPictures.Count);
+                float jitter = RandomUnity.Range(-.2f, .2f);
+
+                dataFrames[j].ObjectName = freeViewingPictures[index].name;
+                dataFrames[j].Position = freeViewingPictures[index].transform.position;
+                dataFrames[j].PhotoFixationDuration = 6;
+                dataFrames[j].FixationPointDuration = .9f + jitter;
+                dataFrames[j].Picture = freeViewingPictures[index];
+                
+                freeViewingPictures.RemoveAt(index);
+            }
+            
+            list.Add(dataFrames);
         }
         
         return list;

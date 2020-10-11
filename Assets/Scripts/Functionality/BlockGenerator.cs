@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Random = System.Random;
+using RandomUnity = UnityEngine.Random;
+
 
 public class BlockGenerator : MonoBehaviour
 {
@@ -18,7 +20,7 @@ public class BlockGenerator : MonoBehaviour
         _random = new Random();
     }
 
-    public Block GenerateBlock(GameObject picture, List<GridElement> smoothPursuit)
+    public Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit)
     {
         _block = new Block
         {
@@ -30,7 +32,10 @@ public class BlockGenerator : MonoBehaviour
             
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
-            FreeViewingPicture = picture,
+            FreeViewingPictureList = freeViewingDataFrames,
+            /*Blink = ;*/
+            PupilDilation = _routeGenerator.RandomisePupilDilationDataFrame(),
+            PupilDilationBlackFixationDuration = 7f + RandomUnity.Range(-.25f, .25f),
             
             
             

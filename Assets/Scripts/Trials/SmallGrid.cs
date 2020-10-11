@@ -14,10 +14,10 @@ public class SmallGrid : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetLargeGrid();
+        _grid = ExperimentManager.Instance.GetSmallGrid();    // todo change it to only grid after serialization is done
     }
 
-    IEnumerator StartFirstValidation()
+    IEnumerator StartSmallGrid()
     {
         _grid.gameObject.SetActive(true);
         _fixationPoint.gameObject.SetActive(true);
@@ -30,13 +30,12 @@ public class SmallGrid : MonoBehaviour
             yield return new WaitForSeconds(element.FixationDuration);
         }
         
-        _grid.gameObject.transform.position = new Vector3(0, 0, 2);
         ExperimentManager.Instance.TrialEnded();
     }
 
-    public void StartValidation(List<GridElement> smallGrid)
+    public void RunSmallGrid(List<GridElement> smallGrid)
     {
         _smallGrid = smallGrid;
-        StartCoroutine(StartFirstValidation());
+        StartCoroutine(StartSmallGrid());
     }
 }
