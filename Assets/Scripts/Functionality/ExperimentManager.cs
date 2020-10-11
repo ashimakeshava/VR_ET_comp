@@ -67,7 +67,7 @@ public class ExperimentManager : MonoBehaviour
         // todo read all of the randomization lists from the list
         _smoothPursuitRoutes = new List<List<GridElement>>();    // todo get routes from file
         
-        _randomizedPictureList = RandomizeFreeViewingPictures();
+        /*_randomizedPictureList = RandomizeFreeViewingPictures();
         _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
         
         
@@ -77,7 +77,7 @@ public class ExperimentManager : MonoBehaviour
             // todo save the data
         }
         
-        welcome.gameObject.SetActive(true);
+        welcome.gameObject.SetActive(true);*/
     }
 
     private void Update()
@@ -155,7 +155,7 @@ public class ExperimentManager : MonoBehaviour
     private void TrialInstructionActivation(bool activate)
     {
         welcome.gameObject.SetActive(false);
-        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
+//        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
     
     
