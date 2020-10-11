@@ -20,8 +20,9 @@ public class Block
    
    public List<float> Blink;
    
-   public List<Luminance> PupilDilation;
-   
+   public List<PupilDilationDataFrame> PupilDilation;
+   public float PupilDilationBlackFixationDuration;
+
    public List<FreeViewingDataFrame> FreeViewingPictureList;
    public int SmoothPursuitIndex;
 }

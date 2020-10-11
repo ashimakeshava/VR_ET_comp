@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Random = System.Random;
+using RandomUnity = UnityEngine.Random;
+
 
 public class BlockGenerator : MonoBehaviour
 {
@@ -31,6 +33,9 @@ public class BlockGenerator : MonoBehaviour
             // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
             FreeViewingPictureList = freeViewingDataFrames,
+            /*Blink = ;*/
+            PupilDilation = _routeGenerator.RandomisePupilDilationDataFrame(),
+            PupilDilationBlackFixationDuration = 7f + RandomUnity.Range(-.25f, .25f),
             
             
             
