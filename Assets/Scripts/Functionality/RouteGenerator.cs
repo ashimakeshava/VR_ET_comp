@@ -239,7 +239,7 @@ public class RouteGenerator : MonoBehaviour
     {
         if (_isSmoothPursuit) return 1;
         else
-            return (RandomUnity.value <= 0.5) ? 1 : 1.5f;
+            return ((RandomUnity.value <= 0.5) ? 1 : 1.5f) + (RandomUnity.Range(-.2f, .2f));
     }
 
 
