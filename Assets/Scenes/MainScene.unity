@@ -501,19 +501,19 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Tilt \n
 
-    
 
-    In the next condition you will see a a line together
-    with a fixation target at the center of the screen. Please tilt your head (in
-    other words: rotate one ear to the shoulder) so that your eyes are in line with
-    the line, while fixating the target. Once your eyes are aligned with the line,
-    press SPACE to continue to the next line. \n
 
-    
+    In the next condition you will see a a line together with
+    a fixation target at the center of the screen. Please tilt your head (in other
+    words: rotate one ear to the shoulder) so that your eyes are in line with the
+    line, while fixating the target. Once your eyes are aligned with the line, press
+    SPACE to continue to the next line. \n
 
-    Before the condition
-    starts you will be shown a green target. Please fixate it and press SPACE in
-    order to start with the trial. \n \n
+
+
+    Before the condition starts you
+    will be shown a green target. Please fixate it and press SPACE in order to start
+    with the trial. \n \n
 
     Press SPACE to continue.'
 --- !u!222 &256367372
@@ -1223,10 +1223,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Small Guided Viewing \n \n
 
-    
 
-    In the next condition you will
-    see a target moving around the screen. Once you look at the target (but not before!)
+
+    In the next condition you will see a
+    target moving around the screen. Once you look at the target (but not before!)
     and the eyes are not moving anymore, press space to select the next target and
     repeat. \n
 
@@ -1243,18 +1243,18 @@ MonoBehaviour:
     Small
     Guided Viewing \n \n
 
-    
 
-    In the next condition you will see a target
-    moving around the screen. Once you look at the target (but not before!) and the
-    eyes are not moving anymore, press space to select the next target and repeat.
-    \n
 
-    In total you will be shown 13 targets. \n
+    In the next condition you will see a target moving
+    around the screen. Once you look at the target (but not before!) and the eyes
+    are not moving anymore, press space to select the next target and repeat. \n
 
-    Before the condition
-    starts you will be shown a green target. Please fixate it and press SPACE in
-    order to start with the trial. \n \n
+    In
+    total you will be shown 13 targets. \n
+
+    Before the condition starts you will
+    be shown a green target. Please fixate it and press SPACE in order to start with
+    the trial. \n \n
 
     Press SPACE to continue.'
 --- !u!222 &396776579
@@ -2092,10 +2092,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Large Guided Viewing \n \n
 
-    
 
-    In the next condition you will
-    see a target moving around the screen. Once you look at the target (but not before!)
+
+    In the next condition you will see a
+    target moving around the screen. Once you look at the target (but not before!)
     and the eyes are not moving anymore, press space to select the next target and
     repeat. \n
 
@@ -2728,19 +2728,19 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Centered Fixation
 
-    
 
-    In the next condition you will be shown
-    a fixation target. Please fixate it and remain fixated until it disappears after
-    approximately 20s. \n
 
-    
+    In the next condition you will be shown a fixation
+    target. Please fixate it and remain fixated until it disappears after approximately
+    20s. \n
 
-    Before the condition starts you will be shown
-    a green target. Please fixate it and press SPACE in order to start with the trial.
-    \n \n
 
-    Press SPACE to continue.
+
+    Before the condition starts you will be shown a green target.
+    Please fixate it and press SPACE in order to start with the trial. \n \n
+
+    Press
+    SPACE to continue.
 
 '
 --- !u!222 &884922143
@@ -3008,31 +3008,31 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Smooth Pursuit \n \n
 
-    
 
-    In the next condition you will see a
-    target in the center that you have to fixate. Once you fixate it press SPACE
-    to start the movement. Then the target will move across the screen. Try to follow
-    the target with your eyes as long as possible. \n \n
 
-    
+    In the next condition you will see a target
+    in the center that you have to fixate. Once you fixate it press SPACE to start
+    the movement. Then the target will move across the screen. Try to follow the
+    target with your eyes as long as possible. \n \n
 
-    After the movement
-    the next target will appear in the center of the screen. Please again fixate
-    it and press enter to start the next movement.\n
 
-    In total you will be shown
-    20 targets.
 
-    
+    After the movement the
+    next target will appear in the center of the screen. Please again fixate it and
+    press enter to start the next movement.\n
 
-    
+    In total you will be shown 20
+    targets.
 
-    Before the condition starts you will be shown
-    a green target. Please fixate it and press SPACE in order to start with the trial.
-    \n \n
 
-    Press SPACE to continue.'
+
+
+
+    Before the condition starts you will be shown a green target.
+    Please fixate it and press SPACE in order to start with the trial. \n \n
+
+    Press
+    SPACE to continue.'
 --- !u!222 &935420093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4025,20 +4025,19 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Rotate \n
 
-    
 
-    In the next condition you will see a target, please
-    rotate your head so that your nose points to the target and fixate it. Once you
-    fixate it press SPACE to lock the position. Then the next target will appear.
-    \n
 
-    
+    In the next condition you will see a target, please rotate
+    your head so that your nose points to the target and fixate it. Once you fixate
+    it press SPACE to lock the position. Then the next target will appear. \n
 
-    Before the condition starts you will be shown a green target.
-    Please fixate it and press SPACE in order to start with the trial. \n \n
 
-    Press
-    SPACE to continue.'
+
+    Before
+    the condition starts you will be shown a green target. Please fixate it and press
+    SPACE in order to start with the trial. \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &1210248369
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4871,26 +4870,25 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Freeviewing \n \n
 
-    
 
-    In the following, you will see 3 images
-    for 6 seconds each. \n
+
+    In the following, you will see 3 images for 6
+    seconds each. \n
 
     Please freely explore the image. \n
 
-    
 
-    After
-    each image you can rest shortly and continue with the next image by pressing
-    space \n
 
-    
+    After each image
+    you can rest shortly and continue with the next image by pressing space \n
 
-    Before the condition starts you will be shown a green target.
-    Please fixate it and press SPACE in order to start with the trial. \n \n
 
-    Press
-    SPACE to continue.
+
+    Before
+    the condition starts you will be shown a green target. Please fixate it and press
+    SPACE in order to start with the trial. \n \n
+
+    Press SPACE to continue.
 
 '
 --- !u!222 &1818046362
@@ -4910,13 +4908,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1820246651}
+  - component: {fileID: 1820246657}
   - component: {fileID: 1820246650}
-  - component: {fileID: 1820246652}
-  - component: {fileID: 1820246653}
   - component: {fileID: 1820246655}
   - component: {fileID: 1820246654}
   - component: {fileID: 1820246656}
-  - component: {fileID: 1820246657}
+  - component: {fileID: 1820246653}
+  - component: {fileID: 1820246652}
   m_Layer: 0
   m_Name: ExperimentManager
   m_TagString: Untagged
@@ -4937,6 +4935,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fixationPoint: {fileID: 1551134023}
+  largeGrid1: {fileID: 2890066795422448538}
+  largeGrid2: {fileID: 2890066795422448538}
+  smoothPursuit: {fileID: 2890066795422448538}
+  mainCamera: {fileID: 963194225}
   largeGrid: {fileID: 2890066795422448538}
   smallGrid: {fileID: 661732233}
   freeViewingPictures:
@@ -4974,7 +4976,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1820246649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d3785de3af4b342bd563343308908a, type: 3}
+  m_Script: {fileID: 11500000, guid: 812838d737888d544b6b64c1e239a9ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1820246653
@@ -4986,7 +4988,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1820246649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e2b606946348c47b41f2efe28897c8, type: 3}
+  m_Script: {fileID: 11500000, guid: ec525e0477e12d04cacdca430a72b992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1820246654
@@ -5564,18 +5566,18 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Contrast Variation
 
-    
 
-    In the next condition you will be shown
-    a fixation target in the center of the screen. Please fixate it and remain fixated
-    until it disappears. \n
 
-    
+    In the next condition you will be shown a fixation
+    target in the center of the screen. Please fixate it and remain fixated until
+    it disappears. \n
 
-    The background lumination will vary across
-    the trial. You can ignore this, please keep fixating on the fixation dot. \n
 
-    
+
+    The background lumination will vary across the trial.
+    You can ignore this, please keep fixating on the fixation dot. \n
+
+
 
     Before
     the condition starts you will be shown a green target. Please fixate it and press
@@ -5663,20 +5665,19 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Rotate \n
 
-    
 
-    In the next condition you will see a target, please
-    rotate your head so that your nose points to the target and fixate it. Once you
-    fixate it press SPACE to lock the position. Then the next target will appear.
-    \n
 
-    
+    In the next condition you will see a target, please rotate
+    your head so that your nose points to the target and fixate it. Once you fixate
+    it press SPACE to lock the position. Then the next target will appear. \n
 
-    Before the condition starts you will be shown a green target.
-    Please fixate it and press SPACE in order to start with the trial. \n \n
 
-    Press
-    SPACE to continue.'
+
+    Before
+    the condition starts you will be shown a green target. Please fixate it and press
+    SPACE in order to start with the trial. \n \n
+
+    Press SPACE to continue.'
 --- !u!222 &1991286559
 CanvasRenderer:
   m_ObjectHideFlags: 0
