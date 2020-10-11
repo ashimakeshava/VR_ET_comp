@@ -22,6 +22,6 @@ public class Block
    
    public List<Luminance> PupilDilation;
    
-   public GameObject FreeViewingPicture;
+   public List<GameObject> FreeViewingPictureList;
    public int SmoothPursuitIndex;
 }
