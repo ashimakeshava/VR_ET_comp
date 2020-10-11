@@ -6,6 +6,8 @@ using System;
 using System.Threading;
 using UnityEngine.UI;
 using Random = System.Random;
+using RandomUnity = UnityEngine.Random;
+
 
 public class ExperimentManager : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class ExperimentManager : MonoBehaviour
 
     private List<List<GridElement>> _smoothPursuitRoutes;
     private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
-    private List<List<GameObject>> _randomizedPictureList;
+    private List<List<FreeViewingDataFrame>> _randomizedPictureList;
     private List<Block> _blocks;
 
     private Random _random;
@@ -239,22 +241,29 @@ public class ExperimentManager : MonoBehaviour
     }
 
 
-    private List<List<GameObject>> RandomizeFreeViewingPictures()
+    private List<List<FreeViewingDataFrame>> RandomizeFreeViewingPictures()
     {
-        List<List<GameObject>> list = new List<List<GameObject>>();
+        List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
 
         for (int i = 0; i < _blocks.Count; i++)
         {
-            List<GameObject> pictureList = new List<GameObject>();
+            List<FreeViewingDataFrame> dataFrames = new List<FreeViewingDataFrame>();
             
             for (int j = 0; j < 3; j++)
             {
                 int index = _random.Next(freeViewingPictures.Count);
-                pictureList.Add(freeViewingPictures[index]);
+                float jitter = RandomUnity.Range(-.2f, .2f);
+
+                dataFrames[j].ObjectName = freeViewingPictures[index].name;
+                dataFrames[j].Position = freeViewingPictures[index].transform.position;
+                dataFrames[j].PhotoFixationDuration = 6;
+                dataFrames[j].FixationPointDuration = .9f + jitter;
+                dataFrames[j].Picture = freeViewingPictures[index];
+                
                 freeViewingPictures.RemoveAt(index);
             }
             
-            list.Add(pictureList);
+            list.Add(dataFrames);
         }
         
         return list;
