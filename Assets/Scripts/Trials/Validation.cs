@@ -51,7 +51,7 @@ public class Validation : MonoBehaviour
         ExperimentManager.Instance.TrialEnded();
     }
 
-    public void StartValidation(List<GridElement> gridElementsClose, List<GridElement> gridElementsFar)
+    public void RunValidation(List<GridElement> gridElementsClose, List<GridElement> gridElementsFar)
     {
         _gridElementsClose = gridElementsClose;
         _gridElementsFar = gridElementsFar;
