@@ -15,6 +15,10 @@ public class ExperimentManager : MonoBehaviour
     
     [Header("Grids and Fixation Point")] [Space]
     [SerializeField] private GameObject fixationPoint;
+    [SerializeField] private GameObject largeGrid1;
+    [SerializeField] private GameObject largeGrid2;
+    [SerializeField] private GameObject smoothPursuit;
+    [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
     [SerializeField] private GameObject smallGrid;    // todo remove
     
@@ -53,6 +57,7 @@ public class ExperimentManager : MonoBehaviour
         
         // todo read the corresponding file or make one if !exists
     }
+    
 
     private void Start()
     {
@@ -122,7 +127,8 @@ public class ExperimentManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<RouteGenerator>().GenerateGridRoute(smallGrid);
+            //GetCurrentActiveGrid();
+            //GetComponent<RouteGenerator>().GenerateGridRoute(GetCurrentActiveGrid());
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -198,6 +204,40 @@ public class ExperimentManager : MonoBehaviour
 
         _trialIndex++;
     }
+
+    public GameObject GetCurrentActiveGrid()
+    {
+        var GridList = GetGridList();
+        GameObject activeGrid=new GameObject();
+        bool found=false;
+        foreach (var grid in GridList)
+        {
+            if (grid.activeInHierarchy&& !found)
+            {
+                activeGrid = grid;
+                found = true;
+            }
+
+            if (grid.activeInHierarchy && found)
+            {
+                Debug.LogWarning("Two Grids are active, this can cause problems, deactivate one");
+            }
+        }
+        return activeGrid;
+    }
+
+    private List<GameObject> GetGridList()
+    {
+        List<GameObject> GridList = new List<GameObject>();
+        foreach (Transform child in mainCamera.transform)
+        {
+            if (child.gameObject != fixationPoint)
+                GridList.Add(child.gameObject);
+        }
+
+        return GridList;
+    }
+
 
     private List<GameObject> RandomizeFreeViewingPictures()
     {
