@@ -174,10 +174,10 @@ public class ExperimentManager : MonoBehaviour
                 GetComponent<Validation>().StartValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
-                
+                GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
                 break;
             case 3:    // Small grid
-                
+                GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
                 break;
             case 4:    // Blink
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
