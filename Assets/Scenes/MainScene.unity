@@ -6480,6 +6480,7 @@ GameObject:
   - component: {fileID: 1820246656}
   - component: {fileID: 1820246658}
   - component: {fileID: 1820246654}
+  - component: {fileID: 1820246659}
   m_Layer: 0
   m_Name: ExperimentManager
   m_TagString: Untagged
@@ -6715,6 +6716,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db1d2567ac7e21469ac7e96c03da31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1820246659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820246649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ecd00a35fcd23b40aef6549645d2e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  black: {fileID: 2100000, guid: 2ba364cc9138217459438d58c03b90f7, type: 2}
+  skyboxes:
+  - {fileID: 2100000, guid: 8e3e2542187eb1243933e11a363965c3, type: 2}
+  - {fileID: 2100000, guid: 321bbd0a185393d4b8dd01951497c35d, type: 2}
+  - {fileID: 2100000, guid: c3e55866383eb2844a0a92591aeb2ad7, type: 2}
+  - {fileID: 2100000, guid: 58463cf8a42f9c6408153ac6f6d1c36f, type: 2}
 --- !u!1 &1832990250
 GameObject:
   m_ObjectHideFlags: 0
