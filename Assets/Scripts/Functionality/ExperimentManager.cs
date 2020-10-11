@@ -34,7 +34,7 @@ public class ExperimentManager : MonoBehaviour
 
     private List<List<GridElement>> _smoothPursuitRoutes;
     private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
-    private List<GameObject> _randomizedPictureList;
+    private List<List<GameObject>> _randomizedPictureList;
     private List<Block> _blocks;
 
     private Random _random;
@@ -171,7 +171,7 @@ public class ExperimentManager : MonoBehaviour
                 // calibration
                 break;
             case 1:    // Validation
-                GetComponent<Validation>().StartValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
+                GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
                 GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
@@ -186,7 +186,7 @@ public class ExperimentManager : MonoBehaviour
                 
                 break;
             case 6:    // Free viewing
-                
+                GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
                 
@@ -239,15 +239,22 @@ public class ExperimentManager : MonoBehaviour
     }
 
 
-    private List<GameObject> RandomizeFreeViewingPictures()
+    private List<List<GameObject>> RandomizeFreeViewingPictures()
     {
-        List<GameObject> list = new List<GameObject>();
+        List<List<GameObject>> list = new List<List<GameObject>>();
 
-        for (int i = 0; i < freeViewingPictures.Count+1; i++)
+        for (int i = 0; i < _blocks.Count; i++)
         {
-            int index = _random.Next(freeViewingPictures.Count);
-            list.Add(freeViewingPictures[index]);
-            freeViewingPictures.RemoveAt(index);
+            List<GameObject> pictureList = new List<GameObject>();
+            
+            for (int j = 0; j < 3; j++)
+            {
+                int index = _random.Next(freeViewingPictures.Count);
+                pictureList.Add(freeViewingPictures[index]);
+                freeViewingPictures.RemoveAt(index);
+            }
+            
+            list.Add(pictureList);
         }
         
         return list;
