@@ -18,6 +18,7 @@ public class RouteGenerator : MonoBehaviour
     
     private bool _isDone;
     private bool _isSmoothPursuit;
+    private bool _isGridFar;
 
     private List<GridElement> _gridRoute;
     [SerializeField] private List <List<GridElement>> uniqueSmallGridRoutes;
@@ -188,9 +189,8 @@ public class RouteGenerator : MonoBehaviour
     {
         int count = grid.transform.childCount;
         Vector3 oldPos;
-
+        
         _fixationPoint.transform.position = Vector3.forward;
-
 
         GridElement OldElement = new GridElement{
             ObjectName = _fixationPoint.gameObject.name,
@@ -417,6 +417,14 @@ public class RouteGenerator : MonoBehaviour
             
         } while (_inValid&&iter!=overFlow);
 
+        if (_isGridFar)
+        {
+            foreach (var gridElement in _gridRoute)
+            {
+                gridElement.Position += new Vector3(0,0,1);
+            }
+        }
+        
         if (iter == overFlow)
         {
             Debug.Log("overflow error");
@@ -437,9 +445,10 @@ public class RouteGenerator : MonoBehaviour
     }
 
 
-    public List<GridElement> GetGridRoute(int jumpsize=4, bool smoothPursuit = false)
+    public List<GridElement> GetGridRoute(int jumpsize=4, bool smoothPursuit = false, bool gridFar = false)
     {
         _isSmoothPursuit = smoothPursuit;
+        _isGridFar = gridFar;
         
         if (!_gridRoute.Any())
         {
