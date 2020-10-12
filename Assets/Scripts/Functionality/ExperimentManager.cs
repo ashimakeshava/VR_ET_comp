@@ -142,13 +142,13 @@ public class ExperimentManager : MonoBehaviour
                 GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
-                
+                GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
                 break;
             case 8:    // Yaw
-                
+                GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
                 break;
             case 9:    // Pitch
-                
+                GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
                 break;
             case 10:    // Micro saccades
                 GetComponent<MicroSaccades>().RunMicroSaccades();
