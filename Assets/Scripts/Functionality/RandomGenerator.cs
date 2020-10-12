@@ -7,7 +7,7 @@ using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
 
 
-public class BlockGenerator : MonoBehaviour
+public class RandomGenerator : MonoBehaviour
 {
     private Block _block;
     private Random _random;

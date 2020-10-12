@@ -57,19 +57,19 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
         
-        // todo read the corresponding file or make one if !exists
+        _blocks = new List<Block>();
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Block");    // todo handle this name as input
     }
     
 
     private void Start()
     {
         _random = new Random();
-        _blocks = new List<Block>();
 
         // todo read all of the randomization lists from the list
-        _smoothPursuitRoutes = new List<List<GridElement>>();    // todo get routes from file
+        _smoothPursuitRoutes = new List<List<GridElement>>();    // todo get routes from file -> it is now in _blocks
         
-        /*_randomizedPictureList = RandomizeFreeViewingPictures();
+        _randomizedPictureList = RandomizeFreeViewingPictures();
         _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
         
         // todo generate the blocks from file
@@ -79,7 +79,7 @@ public class ExperimentManager : MonoBehaviour
             // todo save the data
         }
         
-        welcome.gameObject.SetActive(true);*/
+        welcome.gameObject.SetActive(true);
     }
 
     private void Update()
