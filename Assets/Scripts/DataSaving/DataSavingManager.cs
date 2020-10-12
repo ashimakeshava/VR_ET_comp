@@ -65,9 +65,9 @@ public class DataSavingManager : MonoBehaviour
     
     
 
-    public List<T> LoadFileList<T>(string path)
+    public List<T> LoadFileList<T>(string FileName)
     {
-        
+        string path = GetPathForSaveFile(FileName);
         List<T> genericList=new List<T>();
 
         if (File.Exists(path))
@@ -89,13 +89,9 @@ public class DataSavingManager : MonoBehaviour
         
     }
     
-    public T LoadFile<T>(string path)
+    public T LoadFile<T>(string DataName)
     {
-        if (typeof(T).IsArray)
-        {
-            Debug.Log("no!");
-        }
-        
+        string path = GetPathForSaveFile(DataName);
         if (File.Exists(path))
         {
             string[] data = File.ReadAllLines(path);
@@ -127,7 +123,7 @@ public class DataSavingManager : MonoBehaviour
     
     public void SaveList<T>(List<T> file, string  fileName)
     {
-        var RouteData = ConvertToJson(file);
+        var stringList = ConvertToJson(file);
 
         string path = GetPathForSaveFile(fileName);
         
@@ -135,7 +131,7 @@ public class DataSavingManager : MonoBehaviour
         FileStream fileStream= new FileStream(path, FileMode.Create);
         using (var fileWriter= new StreamWriter(fileStream))
         {
-            foreach (var line in RouteData)
+            foreach (var line in stringList)
             {
                 fileWriter.WriteLine(line);
             }
@@ -144,6 +140,10 @@ public class DataSavingManager : MonoBehaviour
         
         Debug.Log("saved  " +fileName + " to : " + SavePath );
     }
+    
+
+    
+    
 
 
 

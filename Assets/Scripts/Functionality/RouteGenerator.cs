@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
+using System.Numerics;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 
 public class RouteGenerator : MonoBehaviour
@@ -16,9 +20,12 @@ public class RouteGenerator : MonoBehaviour
     private bool _isSmoothPursuit;
 
     private List<GridElement> _gridRoute;
-    private List <List<GridElement>> uniqueSmallGridRoutes;
-    private List<List<GridElement>> uniqueLargeGridRoutse; // TODo maybe in another class?
+    [SerializeField] private List <List<GridElement>> uniqueSmallGridRoutes;
+    private List<List<GridElement>> _uniqueGridRoutes; // TODo maybe in another class?
     private List<List<GridElement>> uniqueSmoothPursuitRoutes;
+
+    private List<RouteFrame> _routeFrames;
+    private RouteFrame _routeFrame;
     private bool _inValid;
     private int level1Jumps;
     private int level2Jumps;
@@ -32,11 +39,132 @@ public class RouteGenerator : MonoBehaviour
     {
         _random = new Random();
         _gridRoute = new List<GridElement>();
+        _uniqueGridRoutes = new List<List<GridElement>>();
+        
+        //uniqueSmallGridRoutes 
         //_validGridRoutes = new List<List<GridElement>>();
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
     }
 
-    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log("oh mannn");
+            GenerateUniqueRouteList(10, 3);
+
+            List<RouteFrame> RouteFrameList = new List<RouteFrame>();
+
+            foreach (var route in _uniqueGridRoutes)
+            {
+                RouteFrame routeFrame = new RouteFrame
+                {
+                    Route = route,
+                    GridType = ExperimentManager.Instance.GetCurrentActiveGrid().name
+                };
+                RouteFrameList.Add(routeFrame);
+            }
+            
+            SaveGridRoutes(RouteFrameList, "RouteList");
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            _routeFrame = new RouteFrame();
+            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrameLargeGrid 1");
+            
+
+            foreach (var elem in _routeFrame.Route)
+            {
+                Debug.Log(elem.ObjectName +  elem.Position);
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            _routeFrames = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListSmallGrid");
+
+            int i= 0;
+            foreach (var route in _routeFrames)
+            {
+                i++;
+                Debug.Log("loaded route frame " + i + " "+ route.Route[0].ObjectName+","+ route.Route[1].ObjectName+"," + route.Route[2].ObjectName);
+            }
+            
+        }
+        
+        
+        
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            List<GridElement> route= new List<GridElement>();
+            Debug.Log("Draw Route");
+            route= GetGridRoute(3);
+            Color color = new Color(0,1,1,0);
+            VisualizeRoute(route, color);
+            Debug.Log(route.Count);
+
+            RouteFrame routeFrame = new RouteFrame
+            {
+                Route = route,
+                GridType = ExperimentManager.Instance.GetCurrentActiveGrid().gameObject.name
+            };
+            
+            
+            SaveGridRoute(routeFrame,"routeFrame");
+        }
+    }
+
+    private void SaveGridRoute(RouteFrame route, string name)
+    {
+        DataSavingManager.Instance.Save(route, name+route.GridType);
+    }
+
+    private void SaveGridRoutes(List<RouteFrame> routes, string name)
+    {
+        DataSavingManager.Instance.SaveList(routes, name+routes[0].GridType);
+    }
+
+    private List<List<GridElement>> CheckForDoubles()
+    {
+        var _tmpRoute = new List<List<GridElement>>();
+        foreach (var list in _uniqueGridRoutes)
+        {
+            _tmpRoute.Add(list);
+        }
+        
+        foreach (var list in _tmpRoute)
+        {
+            for (int i = 0; i < _tmpRoute.Count; i++)
+            {
+                bool same=false;
+                for (int j = 0; j < list.Count; j++)
+                {
+                    if (list[j].Position == _tmpRoute[i][j].Position)
+                    {
+                        same = true;
+                    }
+                    else
+                    {
+                        same = false;
+                        break;
+                    }
+                }
+
+                if (same == true)
+                {
+                    _tmpRoute.RemoveAt(i);
+                }
+            }
+            
+        }
+
+        return _tmpRoute;
+    }
+
+
     private List<RaycastHit> GetHitList(float x=.2f, float y=.13f)
     {
         List<RaycastHit> hitList = new List<RaycastHit>();
@@ -48,7 +176,7 @@ public class RouteGenerator : MonoBehaviour
         
         foreach (var hit in hits)
         {
-            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid(1)" 
+            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid" 
                                                      && hit.collider.name != "LargeGrid(2)"
                                                      && hit.collider.name != "SmallGrid") //TODO check and change the names
             {
@@ -64,11 +192,19 @@ public class RouteGenerator : MonoBehaviour
         int count = grid.transform.childCount;
         Vector3 oldPos;
 
+        _fixationPoint.transform.position = Vector3.forward;
+
 
         GridElement OldElement = new GridElement{
             ObjectName = _fixationPoint.gameObject.name,
-            Position = _fixationPoint.transform.position
+            Position = _fixationPoint.transform.position,
+            FixationDuration = GenerateRandomFixationTime(),
+            MovementDuration = GenerateMovementTime()
             };
+       
+        _gridRoute.Add(OldElement);
+        
+        _fixationPoint.gameObject.SetActive(false);
         _inValid = false;
         while (count > 0)
         {
@@ -136,58 +272,104 @@ public class RouteGenerator : MonoBehaviour
                     FixationDuration = GenerateRandomFixationTime(),
                     MovementDuration = GenerateMovementTime()
                 };
-
+                
                 hitList[index].collider.gameObject.SetActive(false);
                 _gridRoute.Add(gridElement);
 
                 
-                //LogJump(OldElement, gridElement);
                 
+                LogJump(OldElement, gridElement);
                 OldElement = gridElement;
                 
                 count--;
+                
+                
             }
             else
             {
                 count=0;
-                Debug.Log("invalid");
+                //Debug.Log("invalid");
             }
         }
+       // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
 
     }
-    
-    
-    private void AddRouteToUniqueList(List<GridElement> route, List<List<GridElement>> uniqueRouteList, int familarityLevel)
-    {
-        bool same=false;
-        if (!uniqueRouteList.Any())
-        {
-            uniqueRouteList.Add(route);
-            return;
-        }
 
-        if (route.Count != uniqueRouteList.Count)
+    private void GenerateUniqueRouteList(int amountOfRoutes, int jumpsize=4)
+    {
+        int iter=0;
+        int OutOfBounce = 10000;
+        int routeListCount=0;
+        List<List<GridElement>> tmpRouteList = new List<List<GridElement>>();
+        
+        //tmpRouteList = routeList;
+        while (routeListCount<=amountOfRoutes&&iter<OutOfBounce)
         {
-            Debug.Log("the Routes have a different size, Route will not be added");
+            
+            iter++;
+            Debug.Log("<color=blue> iteration of trying to Add route"+ iter +"</color>" );
+            
+            List<GridElement> tmpRoute = new List<GridElement>();
+            
+            GetGridRoute(jumpsize);
+
+            foreach (var elem in _gridRoute)
+            {
+                tmpRoute.Add(elem);
+            }
+            _gridRoute.Clear();
+            
+            AddRouteToUniqueRouteList(tmpRoute, _gridRoute.Capacity);
+
+            tmpRouteList = _uniqueGridRoutes;
+            
+            routeListCount = tmpRouteList.Count;
             
         }
-        else
+
+        _uniqueGridRoutes = tmpRouteList;
+
+        Debug.Log("found : " + routeListCount + "in " + iter + "tries");
+
+        for (int i = 0; i < tmpRouteList.Count; i++)
         {
-            foreach (var gridRoute in uniqueRouteList)
+            Color color = new Color(0,1,1,0);
+            VisualizeRoute(tmpRouteList[i],color,Vector3.forward*i);
+        }
+        
+    }
+    private void AddRouteToUniqueRouteList(List<GridElement> route, int familarityLevel=11)
+    {
+        bool same=false;
+        if (!_uniqueGridRoutes.Any())
+        {
+            _uniqueGridRoutes.Add(route);
+            Debug.Log("added a route... "+ route[0].ObjectName+ " "+route[1].ObjectName+ " "+  route[2].ObjectName);
+        }else
+        {
+            foreach (var gridRoute in _uniqueGridRoutes)
             {
+                if (route.Count != gridRoute.Count)
+                {
+                    Debug.Log("the Routes have a different size, Route will not be added");
+                }
+                
                 int familarity = familarityLevel;
+                
                 for (int i = 0; i < gridRoute.Count; i++)
                 {
                     if (route[i].Position == gridRoute[i].Position)
                     {
                         familarity--;
+//                        Debug.Log(route[i].ObjectName +"... interesting... sounds familiar");
                     }
 
-                    if (i + 1 < gridRoute.Count)
+                    if (i + 1 < gridRoute.Count)         //something to test if the following numbers are shifted but similar
                     {
                         if (route[i].Position == gridRoute[i + 1].Position)
                         {
                             familarity--;
+                       //     Debug.Log(gridRoute[i].ObjectName +"... interesting... sounds familiar..." + "I got here" +route[i]);
                         }
                         
                     }
@@ -197,14 +379,17 @@ public class RouteGenerator : MonoBehaviour
                         return;
                     }
                 }
-                uniqueRouteList.Add(route);
+                Debug.Log("with GridRoute " + gridRoute + "degree of familarity :" + familarity);
             }
         }
+        _uniqueGridRoutes.Add(route);
     }
+    
     
     private void GenerateGridRoute(GameObject grid, int allowedJumpSize=4)
     {
         int iter=0;
+        int overFlow=10000;
         do
         {
             iter++;
@@ -212,7 +397,7 @@ public class RouteGenerator : MonoBehaviour
             level2Jumps = 0;
             level3Jumps = 0;
             level4Jumps = 0;
-            Debug.Log("<color=red> iteration  "+ iter + "</color> ");
+            Debug.Log("<color=red> iteration of Routegeneration  "+ iter + "</color> ");
             for (int i = 0; i < grid.transform.childCount;i++)
             {
                 grid.transform.GetChild(i).gameObject.SetActive(true);
@@ -229,10 +414,16 @@ public class RouteGenerator : MonoBehaviour
             else
             {
                 Debug.Log("Route: " + " level 1 Jumps: " + level1Jumps+ " level 2 Jumps: " + level2Jumps  + " level 3 Jumps: "+ level3Jumps + " level 4 Jumps: " + level4Jumps);
+                
             }
             
             
-        } while (_inValid);
+        } while (_inValid&&iter!=overFlow);
+
+        if (iter == overFlow)
+        {
+            Debug.Log("overflow error");
+        }
         
     }
     
@@ -246,11 +437,16 @@ public class RouteGenerator : MonoBehaviour
     }
 
 
-    public List<GridElement> GetGridRoute()
+    public List<GridElement> GetGridRoute(int jumpsize=4)
     {
         if (!_gridRoute.Any())
         {
-            GenerateGridRoute(ExperimentManager.Instance.GetCurrentActiveGrid());
+            Debug.Log("<color=orange>Create new one </color>");
+            GenerateGridRoute(ExperimentManager.Instance.GetCurrentActiveGrid(),jumpsize);
+        }
+        else
+        {
+            Debug.Log("<color=yellow>I give you the last </color>");
         }
 
         return _gridRoute;
@@ -259,8 +455,40 @@ public class RouteGenerator : MonoBehaviour
     {
         return (_isSmoothPursuit) ? 2 : 0;
     }
+
+    private void VisualizeRoute(List<GridElement> Route, Color color, Vector3 offset = default(Vector3))
+    {
+
+        //Debug.Log(Route.Count);
+        Color runningColors=color;
+        for (int i = 0; i< Route.Count; i++)
+        {
+            
+            GameObject sphere =GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            sphere.gameObject.name = Route[i].ObjectName + " " +i;
+            sphere.transform.localScale= Vector3.one*0.05f;
+            sphere.transform.position= (Route[i].Position)+offset;
+            sphere.GetComponent<MeshRenderer>().material.color = Color.white*0.001f+ runningColors;
+
+            if (i + 1 < Route.Count)
+            {
+                var lineRenderer = sphere.AddComponent<LineRenderer>();
+                lineRenderer.material.color = color;
+                lineRenderer.startWidth = 0.01f;
+                lineRenderer.endWidth = 0.01f;
+                lineRenderer.positionCount = 2;
+                lineRenderer.SetPosition(0,Route[i].Position+offset);
+                lineRenderer.SetPosition(1,Route[i+1].Position+offset);
+                //sphere.GetComponent<MeshRenderer>().material.color = Color.white*0.001f+ color*(0.05f*i);
+                //Debug.DrawLine(Route[i].Position,Route[i+1].Position, color*(0.010f*i),2.5f);
+            }
+
+            runningColors = runningColors* 0.90f;
+        }
+       
+    }
     
-    
+
     private void LogJump(GridElement oldPos, GridElement newPos)
     {
         if (oldPos.Position.x == newPos.Position.x)
