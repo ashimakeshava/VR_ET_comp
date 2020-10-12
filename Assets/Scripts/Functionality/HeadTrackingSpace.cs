@@ -7,7 +7,7 @@ public class HeadTrackingSpace : MonoBehaviour
 {
     public GameObject OrientationCross;
 
-    public GameObject FixationCross;
+    public GameObject FixationCrossObject;
 
     public GameObject YawSetup;
 
@@ -16,9 +16,12 @@ public class HeadTrackingSpace : MonoBehaviour
     public GameObject RollSetup;
 
     private bool CalibrationStatus;
+
+    private FixationCross fixationCross;
     // Start is called before the first frame update
     void Start()
     {
+        fixationCross = FixationCrossObject.GetComponent<FixationCross>();
         
     }
 
@@ -27,16 +30,7 @@ public class HeadTrackingSpace : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (CalibrationStatus)
-            {
-                SetExperimentStatus();
-                CalibrationStatus = false;
-            }
-            else
-            {
-                SetCalibrationStatus();
-                CalibrationStatus = true;
-            }
+            fixationCross.DisableVertical();
         }
         
         if (Input.GetKeyDown(KeyCode.W))
@@ -104,12 +98,12 @@ public class HeadTrackingSpace : MonoBehaviour
     {
         OrientationCross.transform.GetChild(0).gameObject.SetActive(true);
         OrientationCross.transform.GetChild(1).gameObject.SetActive(true);
-        FixationCross.SetActive(true);
+        //FixationCross.SetActive(true);
     }
 
     private void SetExperimentStatus()
     {
-        FixationCross.SetActive(false);
+        //FixationCross.SetActive(false);
         OrientationCross.transform.GetChild(0).gameObject.SetActive(false);
         OrientationCross.transform.GetChild(1).gameObject.SetActive(false);
     }
