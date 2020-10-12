@@ -133,13 +133,13 @@ public class ExperimentManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            for (int i = 0; i < smallGrid.transform.childCount;i++)
-            {
-                smallGrid.transform.GetChild(i).gameObject.SetActive(true);
-
-            }
-            fixationPoint.transform.position= new Vector3(0,0,1);
-            Debug.Log("___________________________________-----_____________________________");
+            // for (int i = 0; i < smallGrid.transform.childCount;i++)
+            // {
+            //     smallGrid.transform.GetChild(i).gameObject.SetActive(true);
+            //
+            // }
+            // fixationPoint.transform.position= new Vector3(0,0,1);
+            // Debug.Log("___________________________________-----_____________________________");
         }
 
         #endregion

@@ -44,14 +44,14 @@ public class RouteGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             Debug.Log("oh mannn");
-            GenerateUniqueRouteList(15, 2);
+            GenerateUniqueRouteList(5, 3);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
             List<GridElement> route;
             Debug.Log("Draw Route");
-            route= GetGridRoute(2);
+            route= GetGridRoute(3);
             Color color = new Color(0,1,1,0);
             VisualizeRoute(route, color);
         }
@@ -69,7 +69,7 @@ public class RouteGenerator : MonoBehaviour
         
         foreach (var hit in hits)
         {
-            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid(1)" 
+            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid" 
                                                      && hit.collider.name != "LargeGrid(2)"
                                                      && hit.collider.name != "SmallGrid") //TODO check and change the names
             {
@@ -94,8 +94,10 @@ public class RouteGenerator : MonoBehaviour
             FixationDuration = GenerateRandomFixationTime(),
             MovementDuration = GenerateMovementTime()
             };
-        
+       
         _gridRoute.Add(OldElement);
+        
+        _fixationPoint.gameObject.SetActive(false);
         _inValid = false;
         while (count > 0)
         {
@@ -182,14 +184,14 @@ public class RouteGenerator : MonoBehaviour
                 //Debug.Log("invalid");
             }
         }
-        Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
+       // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
 
     }
 
     private void GenerateUniqueRouteList(int amountOfRoutes, int jumpsize=4)
     {
         int iter=0;
-        int OutOfBounce = 1000;
+        int OutOfBounce = 10000;
         int routeListCount=0;
         List<List<GridElement>> tmpRouteList = new List<List<GridElement>>();
         
@@ -280,6 +282,7 @@ public class RouteGenerator : MonoBehaviour
     private void GenerateGridRoute(GameObject grid, int allowedJumpSize=4)
     {
         int iter=0;
+        int overFlow=10000;
         do
         {
             iter++;
@@ -308,7 +311,12 @@ public class RouteGenerator : MonoBehaviour
             }
             
             
-        } while (_inValid);
+        } while (_inValid&&iter!=overFlow);
+
+        if (iter == overFlow)
+        {
+            Debug.Log("overflow error");
+        }
         
     }
     
@@ -350,7 +358,7 @@ public class RouteGenerator : MonoBehaviour
         {
             
             GameObject sphere =GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            sphere.gameObject.name = Route[i].ObjectName;
+            sphere.gameObject.name = Route[i].ObjectName + " " +i;
             sphere.transform.localScale= Vector3.one*0.05f;
             sphere.transform.position= (Route[i].Position)+offset;
             sphere.GetComponent<MeshRenderer>().material.color = Color.white*0.001f+ runningColors;
