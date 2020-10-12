@@ -22,6 +22,9 @@ public class RouteGenerator : MonoBehaviour
     [SerializeField] private List <List<GridElement>> uniqueSmallGridRoutes;
     private List<List<GridElement>> _uniqueGridRoutes; // TODo maybe in another class?
     private List<List<GridElement>> uniqueSmoothPursuitRoutes;
+
+    private List<RouteFrame> _routeFrames;
+    private RouteFrame _routeFrame;
     private bool _inValid;
     private int level1Jumps;
     private int level2Jumps;
@@ -33,7 +36,8 @@ public class RouteGenerator : MonoBehaviour
     {
         _random = new Random();
         _gridRoute = new List<GridElement>();
-        _uniqueGridRoutes = new List<List<GridElement>>();;
+        _uniqueGridRoutes = new List<List<GridElement>>();
+        
         //uniqueSmallGridRoutes 
         //_validGridRoutes = new List<List<GridElement>>();
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
@@ -44,17 +48,108 @@ public class RouteGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             Debug.Log("oh mannn");
-            GenerateUniqueRouteList(5, 3);
+            GenerateUniqueRouteList(10, 3);
+
+            List<RouteFrame> RouteFrameList = new List<RouteFrame>();
+
+            foreach (var route in _uniqueGridRoutes)
+            {
+                RouteFrame routeFrame = new RouteFrame
+                {
+                    Route = route,
+                    GridType = ExperimentManager.Instance.GetCurrentActiveGrid().name
+                };
+                RouteFrameList.Add(routeFrame);
+            }
+            
+            SaveGridRoutes(RouteFrameList, "RouteList");
         }
+
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            _routeFrame = new RouteFrame();
+            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrame");
+
+            foreach (var elem in _routeFrame.Route)
+            {
+                Debug.Log(elem.ObjectName);
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            _routeFrames = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteList");
+        }
+        
+        
+        
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            List<GridElement> route;
+            List<GridElement> route= new List<GridElement>();
             Debug.Log("Draw Route");
             route= GetGridRoute(3);
             Color color = new Color(0,1,1,0);
             VisualizeRoute(route, color);
+            Debug.Log(route.Count);
+
+            RouteFrame routeFrame = new RouteFrame
+            {
+                Route = route,
+                GridType = ExperimentManager.Instance.GetCurrentActiveGrid().gameObject.name
+            };
+            
+            
+            SaveGridRoute(routeFrame,"routeFrame");
         }
+    }
+
+    private void SaveGridRoute(RouteFrame route, string name)
+    {
+        DataSavingManager.Instance.Save(route, name+route.GridType);
+    }
+
+    private void SaveGridRoutes(List<RouteFrame> routes, string name)
+    {
+        DataSavingManager.Instance.SaveList(routes, "Grid Route");
+    }
+
+    private List<List<GridElement>> CheckForDoubles()
+    {
+        var _tmpRoute = new List<List<GridElement>>();
+        foreach (var list in _uniqueGridRoutes)
+        {
+            _tmpRoute.Add(list);
+        }
+        
+        foreach (var list in _tmpRoute)
+        {
+            for (int i = 0; i < _tmpRoute.Count; i++)
+            {
+                bool same=false;
+                for (int j = 0; j < list.Count; j++)
+                {
+                    if (list[j].Position == _tmpRoute[i][j].Position)
+                    {
+                        same = true;
+                    }
+                    else
+                    {
+                        same = false;
+                        break;
+                    }
+                }
+
+                if (same == true)
+                {
+                    _tmpRoute.RemoveAt(i);
+                }
+            }
+            
+        }
+
+        return _tmpRoute;
     }
 
 
@@ -196,7 +291,7 @@ public class RouteGenerator : MonoBehaviour
         List<List<GridElement>> tmpRouteList = new List<List<GridElement>>();
         
         //tmpRouteList = routeList;
-        while (routeListCount<amountOfRoutes&&iter<=OutOfBounce)
+        while (routeListCount<=amountOfRoutes&&iter<OutOfBounce)
         {
             
             iter++;
@@ -212,15 +307,15 @@ public class RouteGenerator : MonoBehaviour
             }
             _gridRoute.Clear();
             
-            AddRouteToUniqueRouteList(tmpRoute);
+            AddRouteToUniqueRouteList(tmpRoute, _gridRoute.Capacity);
 
             tmpRouteList = _uniqueGridRoutes;
             
             routeListCount = tmpRouteList.Count;
             
         }
-        
-        
+
+        _uniqueGridRoutes = tmpRouteList;
 
         Debug.Log("found : " + routeListCount + "in " + iter + "tries");
 
@@ -231,7 +326,7 @@ public class RouteGenerator : MonoBehaviour
         }
         
     }
-    private void AddRouteToUniqueRouteList(List<GridElement> route, int familarityLevel=2)
+    private void AddRouteToUniqueRouteList(List<GridElement> route, int familarityLevel=11)
     {
         bool same=false;
         if (!_uniqueGridRoutes.Any())
