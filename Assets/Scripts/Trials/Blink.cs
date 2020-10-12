@@ -25,6 +25,9 @@ public class Blink : MonoBehaviour
         _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
+        yield return new WaitForSeconds(_delays[0]);
+        _delays.RemoveAt(0);
+        
         foreach (var delay in _delays)
         {
             _audioSource.Play();
