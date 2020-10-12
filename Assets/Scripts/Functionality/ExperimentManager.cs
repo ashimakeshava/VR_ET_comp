@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -149,7 +149,7 @@ public class ExperimentManager : MonoBehaviour
 
     private void ResetFixationPoint()
     {
-        fixationPoint.transform.position = new Vector3(0, 0, 1);
+        fixationPoint.transform.position = Vector3.forward;
         fixationPoint.gameObject.SetActive(false);
     }
 
