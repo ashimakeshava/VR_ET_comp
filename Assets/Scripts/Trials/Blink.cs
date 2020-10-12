@@ -9,16 +9,20 @@ public class Blink : MonoBehaviour
     private AudioSource _audioSource;
 
     private List<float> _delays;
+    private GameObject _grid;
+
 
     private void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
         _audioSource = GetComponent<AudioSource>();
+        _grid = ExperimentManager.Instance.GetSmallGrid();    // todo change it to only grid after serialization is done
     }
 
     IEnumerator RunBeep()
     {
-        _fixationPoint.transform.position = new Vector3(0,0,1);
+        _grid.gameObject.SetActive(true);
+        _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         foreach (var delay in _delays)
