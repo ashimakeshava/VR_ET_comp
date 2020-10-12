@@ -41,9 +41,9 @@ public class SmoothPursuit : MonoBehaviour
         ExperimentManager.Instance.TrialEnded();
     }
 
-    public void RunSmoothPursuit(List<GridElement> smallGrid)
+    public void RunSmoothPursuit(List<GridElement> route)
     {
-        _smoothPursuit = smallGrid;
+        _smoothPursuit = route;
         StartCoroutine(StartSmoothPursuit());
     }
 }
