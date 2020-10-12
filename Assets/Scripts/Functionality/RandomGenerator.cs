@@ -94,9 +94,9 @@ public class RandomGenerator : MonoBehaviour
             
             SmoothPursuit = smoothPursuit,
             
-            Roll = RandomizeHeadMovement(6, "Roll"),
-            Yaw = RandomizeHeadMovement(5, "Yaw"),
-            Pitch = RandomizeHeadMovement(5, "Roll"),
+            Roll = RandomizeHeadMovement("Roll", 6),
+            Yaw = RandomizeHeadMovement("Yaw"),
+            Pitch = RandomizeHeadMovement("Pitch"),
             
             Blink = RandomDelayGeneratorForBlink(),
             
@@ -198,7 +198,7 @@ public class RandomGenerator : MonoBehaviour
         return delays;
     }
 
-    private HeadMovement RandomizeHeadMovement(int numberOfObjects, string movementType)
+    private HeadMovement RandomizeHeadMovement(string movementType, int numberOfObjects = 5)
     {
         HeadMovement movement = new HeadMovement {MovementType = movementType};
 
