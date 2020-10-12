@@ -17,17 +17,52 @@ public class HeadTrackingSpace : MonoBehaviour
 
     private bool CalibrationStatus;
 
+    private bool ExperimentStatus;
+
     private FixationCross fixationCross;
+
+    private HeadMovement _yawMovement, _pitchMovement, _rollMovement;
+    
+
+    [SerializeField] private float CountdownAligned=5;
     // Start is called before the first frame update
     void Start()
     {
+        CalibrationStatus = true;
         fixationCross = FixationCrossObject.GetComponent<FixationCross>();
-        
+        _yawMovement = _pitchMovement = _rollMovement = new HeadMovement();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // if (CalibrationStatus)
+        // {
+        //     ResetCameraCouroutineInCalibrationStatus(2f);
+        // }
+        if (CalibrationStatus)
+        {
+            if (fixationCross.GetAlignment())
+            {
+                CountdownAligned -= Time.deltaTime;
+                Debug.Log(CountdownAligned);
+            }
+            else
+            {
+                CountdownAligned = 3f;
+                SetCalibrationStatus();
+            }
+            if (CountdownAligned <= 0f)
+            {
+                SetExperimentStatus();
+            }
+        }
+        
+        
+
+        
+        //if(receivedEyetrackingGaze)
+        
         if (Input.GetKeyDown(KeyCode.A))
         {
             fixationCross.DisableVertical();
@@ -48,14 +83,7 @@ public class HeadTrackingSpace : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (PitchSetup.activeInHierarchy)
-            {
-                PitchSetup.SetActive(false);
-            }
-            else
-            {
-                PitchSetup.SetActive(true);
-            }
+            ResetCameraPosition();
         }
         
         
@@ -72,39 +100,86 @@ public class HeadTrackingSpace : MonoBehaviour
         }
           
         
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("plop");
+    }
 
-            //Todd Wassen miracle solution for alligning the WorldSpace to the Camera
-            Valve.VR.OpenVR.System.ResetSeatedZeroPose();
-            Valve.VR.OpenVR.Compositor.SetTrackingSpace(
-                Valve.VR.ETrackingUniverseOrigin.TrackingUniverseSeated);
+    private void ResetCameraPosition()
+    {
+        //Todd Wassen miracle solution for alligning the WorldSpace to the Camera
+        Valve.VR.OpenVR.System.ResetSeatedZeroPose();
+        Valve.VR.OpenVR.Compositor.SetTrackingSpace(
+            Valve.VR.ETrackingUniverseOrigin.TrackingUniverseSeated);
 
-            float yPos = Camera.main.transform.position.y;
+        float yPos = Camera.main.transform.position.y;
 
-            YawSetup.transform.position = new Vector3(YawSetup.transform.position.x,yPos, YawSetup.transform.position.z);
-            PitchSetup.transform.position = new Vector3(PitchSetup.transform.position.x,yPos, PitchSetup.transform.position.z);
-            RollSetup.transform.position = new Vector3(RollSetup.transform.position.x,yPos, RollSetup.transform.position.z);
-            OrientationCross.transform.position =  new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
-        }
-
-
-
-       
+        YawSetup.transform.position = new Vector3(YawSetup.transform.position.x,yPos, YawSetup.transform.position.z);
+        PitchSetup.transform.position = new Vector3(PitchSetup.transform.position.x,yPos, PitchSetup.transform.position.z);
+        RollSetup.transform.position = new Vector3(RollSetup.transform.position.x,yPos, RollSetup.transform.position.z);
+        OrientationCross.transform.position =  new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
     }
     
     private void SetCalibrationStatus()
     {
-        OrientationCross.transform.GetChild(0).gameObject.SetActive(true);
-        OrientationCross.transform.GetChild(1).gameObject.SetActive(true);
+        foreach (Transform child in OrientationCross.transform)
+        {
+            child.transform.gameObject.SetActive(true);
+        }
+
+        ExperimentStatus = true;
+
+        CalibrationStatus = true;
+
+
         //FixationCross.SetActive(true);
     }
+
+    private void ResetCameraCouroutineInCalibrationStatus(float seconds)
+    {
+    }
+    IEnumerator PeriodicallyResetCameraPosition(float sec)
+    {
+        ResetCameraPosition();
+        yield return new WaitForSeconds(sec);
+    }
+    
 
     private void SetExperimentStatus()
     {
         //FixationCross.SetActive(false);
-        OrientationCross.transform.GetChild(0).gameObject.SetActive(false);
-        OrientationCross.transform.GetChild(1).gameObject.SetActive(false);
+
+        foreach (Transform child in OrientationCross.transform)
+        {
+            child.transform.gameObject.SetActive(false);
+        }
+
+        ExperimentStatus = true;
+
+        CalibrationStatus = false;
     }
+
+
+
+    private void SetYawPosition(int i)
+    {
+        YawSetup.transform.GetChild(i).transform.gameObject.SetActive(true);
+    }
+
+
+    public void RunYaw(HeadMovement yawMovement)
+    {
+        _yawMovement = yawMovement;
+        // todo start yaw
+    }
+    
+    public void RunPitch(HeadMovement pitchMovement)
+    {
+        _pitchMovement = pitchMovement;
+        // todo start pitch
+    }
+    
+    public void RunRoll(HeadMovement rollMovement)
+    {
+        _rollMovement = rollMovement;
+        // todo start roll
+    }
+    
 }
