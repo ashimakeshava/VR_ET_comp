@@ -72,10 +72,10 @@ public class ExperimentManager : MonoBehaviour
         _randomizedPictureList = RandomizeFreeViewingPictures();
         _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
         
-        
+        // todo generate the blocks from file
         for (int i = 0; i < 6; i++)
         {
-            _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock(_randomizedPictureList[i], _smoothPursuitRoutes[i]));
+            // _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock(_randomizedPictureList[i], _smoothPursuitRoutes[i]));
             // todo save the data
         }
         
@@ -89,7 +89,7 @@ public class ExperimentManager : MonoBehaviour
         {
             ResetFixationPoint();
             
-            if (_blockIndex == 6)
+            if (_blockIndex == 6)    // todo 7 in case of the trial
             {
                 thankYou.gameObject.SetActive(true);
             }
@@ -170,7 +170,7 @@ public class ExperimentManager : MonoBehaviour
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                // calibration
+                // todo call calibration
                 break;
             case 1:    // Validation
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
@@ -310,7 +310,7 @@ public class ExperimentManager : MonoBehaviour
     #endregion
 }
 
-        
+    // TODO implement the trial
     // TODO implement movement
     // TODO smoothPursuit has too few elements
     // TODO read from the file to go on with the movement 
