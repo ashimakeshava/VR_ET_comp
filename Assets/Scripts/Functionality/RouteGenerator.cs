@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +31,7 @@ public class RouteGenerator : MonoBehaviour
     private int level2Jumps;
     private int level3Jumps;
     private int level4Jumps;
-
-    private List<PupilDilationDataFrame> _pupilDilationDataFrames;
-    [ReadOnly] private readonly List<int> _pupilDilationSequence = new List<int> {0,1,2,3};
-
+    
     private void Start()
     {
         _random = new Random();
@@ -72,7 +69,7 @@ public class RouteGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             _routeFrame = new RouteFrame();
-            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrameLargeGrid 1");
+            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrameLargeGrid");
             
 
             foreach (var elem in _routeFrame.Route)
@@ -291,7 +288,7 @@ public class RouteGenerator : MonoBehaviour
                 //Debug.Log("invalid");
             }
         }
-       // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
+        // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
 
     }
 
@@ -544,37 +541,5 @@ public class RouteGenerator : MonoBehaviour
                 Debug.Log("is invalid retry...");
             }
         }
-    }
-
-    public List<T> RandomiseSequence<T>(List<T> listToRand)
-    {
-        List<T> list = new List<T>();
-        
-        foreach (var item in listToRand)
-        {
-            int index = RandomUnity.Range(0, listToRand.Count);
-            
-            list.Add(item);
-            listToRand.Remove(item);
-        }
-        
-        return list;
-    }
-
-    public List<PupilDilationDataFrame> RandomisePupilDilationDataFrame()
-    {
-        List<PupilDilationDataFrame> pupilDilationDataFrames = new List<PupilDilationDataFrame>();
-        
-        for (int i = 0; i < _pupilDilationSequence.Count; i++)
-        {
-            int index = _random.Next(_pupilDilationSequence.Count);
-            
-            pupilDilationDataFrames[i].ColorIndex = index;
-            pupilDilationDataFrames[i].ColorDuration = 3f + RandomUnity.Range(-.2f, .2f);
-
-            _pupilDilationSequence.RemoveAt(index);
-        }
-
-        return pupilDilationDataFrames;
     }
 }
