@@ -16,6 +16,7 @@ public class RandomGenerator : MonoBehaviour
     private Random _random;
     private RouteGenerator _routeGenerator;
     [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
+    [ReadOnly] private readonly List<int> _pupilDilationSequence = new List<int> {0,1,2,3};
     
     private List<RouteFrame> _routeFrames;
     private List<List<GridElement>> _smoothPursuitRoutes;
@@ -73,7 +74,7 @@ public class RandomGenerator : MonoBehaviour
             
             // Blink = 
             
-            PupilDilation = _routeGenerator.RandomisePupilDilationDataFrame(),
+            PupilDilation = RandomisePupilDilationDataFrame(),
             PupilDilationBlackFixationDuration = 7f + RandomUnity.Range(-.25f, .25f),
             
             FreeViewingPictureList = freeViewingDataFrames,
@@ -142,5 +143,23 @@ public class RandomGenerator : MonoBehaviour
         }
         
         return list;
+    }
+    
+    public List<PupilDilationDataFrame> RandomisePupilDilationDataFrame()
+    {
+        List<PupilDilationDataFrame> pupilDilationDataFrames = new List<PupilDilationDataFrame>();
+        
+        for (int i = 0; i < _pupilDilationSequence.Count; i++)
+        {
+            int index = _random.Next(_pupilDilationSequence.Count);
+            float jitter = RandomUnity.Range(-.2f, .2f);
+            
+            pupilDilationDataFrames[i].ColorIndex = index;
+            pupilDilationDataFrames[i].ColorDuration = 3f + jitter;
+
+            _pupilDilationSequence.RemoveAt(index);
+        }
+
+        return pupilDilationDataFrames;
     }
 }
