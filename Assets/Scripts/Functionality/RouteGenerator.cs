@@ -69,11 +69,12 @@ public class RouteGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             _routeFrame = new RouteFrame();
-            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrame");
+            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrameLargeGrid 1");
+            
 
             foreach (var elem in _routeFrame.Route)
             {
-                Debug.Log(elem.ObjectName);
+                Debug.Log(elem.ObjectName +  elem.Position);
             }
         }
         
