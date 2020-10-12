@@ -79,7 +79,15 @@ public class RouteGenerator : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.O))
         {
-            _routeFrames = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteList");
+            _routeFrames = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListSmallGrid");
+
+            int i= 0;
+            foreach (var route in _routeFrames)
+            {
+                i++;
+                Debug.Log("loaded route frame " + i + " "+ route.Route[0].ObjectName+","+ route.Route[1].ObjectName+"," + route.Route[2].ObjectName);
+            }
+            
         }
         
         
@@ -112,7 +120,7 @@ public class RouteGenerator : MonoBehaviour
 
     private void SaveGridRoutes(List<RouteFrame> routes, string name)
     {
-        DataSavingManager.Instance.SaveList(routes, "Grid Route");
+        DataSavingManager.Instance.SaveList(routes, name+routes[0].GridType);
     }
 
     private List<List<GridElement>> CheckForDoubles()

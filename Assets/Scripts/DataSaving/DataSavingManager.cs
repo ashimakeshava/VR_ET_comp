@@ -65,9 +65,9 @@ public class DataSavingManager : MonoBehaviour
     
     
 
-    public List<T> LoadFileList<T>(string path)
+    public List<T> LoadFileList<T>(string FileName)
     {
-        
+        string path = GetPathForSaveFile(FileName);
         List<T> genericList=new List<T>();
 
         if (File.Exists(path))
