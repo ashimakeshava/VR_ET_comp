@@ -4161,6 +4161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1019796031}
   - component: {fileID: 1019796030}
+  - component: {fileID: 1019796032}
   m_Layer: 0
   m_Name: RandomGenerator
   m_TagString: Untagged
@@ -4216,6 +4217,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1019796032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019796029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64dad966e58ba334d91f338f1d287f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1026826568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6547,7 +6560,6 @@ GameObject:
   - component: {fileID: 1820246658}
   - component: {fileID: 1820246654}
   - component: {fileID: 1820246659}
-  - component: {fileID: 1820246661}
   - component: {fileID: 1820246660}
   m_Layer: 0
   m_Name: ExperimentManager
@@ -6801,18 +6813,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SavePath: 
---- !u!114 &1820246661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820246649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64dad966e58ba334d91f338f1d287f62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1832990250
 GameObject:
   m_ObjectHideFlags: 0
