@@ -20,7 +20,9 @@ public class SmallGrid : MonoBehaviour
     IEnumerator StartSmallGrid()
     {
         _grid.gameObject.SetActive(true);
+        _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
+        
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo generate this time as well or save this time
 
         foreach (var element in _smallGrid)

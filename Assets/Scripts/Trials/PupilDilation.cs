@@ -10,15 +10,18 @@ public class PupilDilation : MonoBehaviour
     private GameObject _fixationPoint;
     private float _blackFixationDuration;
     private List<PupilDilationDataFrame> _pupilDilationDataFrames;
-    
+    private GameObject _grid;
+
     private void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
+        _grid = ExperimentManager.Instance.GetSmallGrid();    // todo change it to only grid after serialization is done
     }
 
     IEnumerator StartPupilDilation()
     {
-        _fixationPoint.transform.position = new Vector3(0,0,1);
+        _grid.gameObject.SetActive(true);
+        _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         RenderSettings.skybox = black;

@@ -21,7 +21,9 @@ public class Validation : MonoBehaviour
     IEnumerator StartFirstValidation()
     {
         _grid.gameObject.SetActive(true);
+        _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
+        
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
 
         foreach (var element in _gridElementsClose)
@@ -38,6 +40,7 @@ public class Validation : MonoBehaviour
     IEnumerator StartSecondValidation()
     {
         _fixationPoint.transform.position = new Vector3(0, 0, 2);
+        
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
         
         foreach (var element in _gridElementsFar)
