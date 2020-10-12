@@ -24,5 +24,4 @@ public class Block
    public float PupilDilationBlackFixationDuration;
 
    public List<FreeViewingDataFrame> FreeViewingPictureList;
-   public int SmoothPursuitIndex;
 }
