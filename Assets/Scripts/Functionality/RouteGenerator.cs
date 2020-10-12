@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -431,14 +431,22 @@ public class RouteGenerator : MonoBehaviour
     
     private float GenerateRandomFixationTime()        //TODO Add jitter and first position time: duration
     {
+        float duration;
         if (_isSmoothPursuit) return 1;
         else
-            return ((RandomUnity.value <= 0.5) ? 1 : 1.5f) + (RandomUnity.Range(-.2f, .2f));
+        {
+            duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
+            duration += RandomUnity.Range(-.2f, .2f);
+        }
+
+        return duration;
     }
 
 
-    public List<GridElement> GetGridRoute(int jumpsize=4)
+    public List<GridElement> GetGridRoute(int jumpsize=4, bool smoothPursuit = false)
     {
+        _isSmoothPursuit = smoothPursuit;
+        
         if (!_gridRoute.Any())
         {
             Debug.Log("<color=orange>Create new one </color>");
