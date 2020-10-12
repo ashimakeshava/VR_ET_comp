@@ -431,13 +431,10 @@ public class RouteGenerator : MonoBehaviour
     
     private float GenerateRandomFixationTime()        //TODO Add jitter and first position time: duration
     {
-        float duration;
         if (_isSmoothPursuit) return 1;
-        else
-        {
-            duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
-            duration += RandomUnity.Range(-.2f, .2f);
-        }
+        
+        float duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
+        duration += RandomUnity.Range(-.2f, .2f);
 
         return duration;
     }

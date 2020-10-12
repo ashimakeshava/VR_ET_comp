@@ -3,26 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 using RandomUnity = UnityEngine.Random;
 
 
 public class RandomGenerator : MonoBehaviour
 {
-    private Block _block;
+    [Header("Constant Trials between all Participants")] [Space]
+    [SerializeField] private List<GameObject> freeViewingPictures;
+    
     private Random _random;
     private RouteGenerator _routeGenerator;
     [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
     
+    private List<RouteFrame> _routeFrames;
+    private List<List<GridElement>> _smoothPursuitRoutes;
+    private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
+    private List<List<FreeViewingDataFrame>> _randomizedPictureList;
+    
+    private int _numberOfBlocks = 7;
+    
     private void Start()
     {
-        _routeGenerator = GetComponent<RouteGenerator>();
         _random = new Random();
+        _routeGenerator = GetComponent<RouteGenerator>();
+        
+        _routeFrames = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid");
+
+        foreach (var route in _routeFrames)
+        {
+            _smoothPursuitRoutes.Add(route.Route);
+        }
+
+        _randomizedPictureList = RandomizeFreeViewingPictures();
+        _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
+        
+        GenerateBlocks();
     }
 
-    public Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit)
+    private void GenerateBlocks(int numberOfBlocks = 7)
     {
-        _block = new Block
+        List<Block> listOfBlocks = new List<Block>();
+
+        for (int i = 0; i < numberOfBlocks; i++)
+        {
+            listOfBlocks.Add(GenerateBlock(_randomizedPictureList[i], _randomizedSmoothPursuitRoutes[i]));
+        }
+        
+        DataSavingManager.Instance.SaveList(listOfBlocks, "Blocks");
+    }
+    
+    private Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit)
+    {
+        Block block = new Block
+            
         {
             SequenceOfTrials = RandomizeTrials(),
             
@@ -30,22 +65,25 @@ public class RandomGenerator : MonoBehaviour
             LargeGridFar = _routeGenerator.GetGridRoute(),
             SmallGrid = _routeGenerator.GetGridRoute(),
             
-            // todo take the smooth pursuit list from experiment manager (from and already randomized list for that)
             SmoothPursuit = smoothPursuit,
-            FreeViewingPictureList = freeViewingDataFrames,
-            /*Blink = ;*/
+            
+            // Roll = 
+            // Yaw =
+            // Pitch = 
+            
+            // Blink = 
+            
             PupilDilation = _routeGenerator.RandomisePupilDilationDataFrame(),
             PupilDilationBlackFixationDuration = 7f + RandomUnity.Range(-.25f, .25f),
             
+            FreeViewingPictureList = freeViewingDataFrames,
             
-            
-            // todo take the free viewing from experiment manager (from and already randomized list for that)
             // todo fill out the rest
         };
         
         
         
-        return _block;
+        return block;
     }
 
     private List<int> RandomizeTrials()
@@ -61,6 +99,48 @@ public class RandomGenerator : MonoBehaviour
         
         list.Add(1);
 
+        return list;
+    }
+    
+    private List<List<FreeViewingDataFrame>> RandomizeFreeViewingPictures()
+    {
+        List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
+
+        for (int i = 0; i < _numberOfBlocks; i++)
+        {
+            List<FreeViewingDataFrame> dataFrames = new List<FreeViewingDataFrame>();
+            
+            for (int j = 0; j < 3; j++)
+            {
+                int index = _random.Next(freeViewingPictures.Count);
+                float jitter = RandomUnity.Range(-.2f, .2f);
+
+                dataFrames[j].ObjectName = freeViewingPictures[index].name;
+                dataFrames[j].Position = freeViewingPictures[index].transform.position;
+                dataFrames[j].PhotoFixationDuration = 6;
+                dataFrames[j].FixationPointDuration = .9f + jitter;
+                dataFrames[j].Picture = freeViewingPictures[index];
+                
+                freeViewingPictures.RemoveAt(index);
+            }
+            
+            list.Add(dataFrames);
+        }
+        
+        return list;
+    }
+    
+    private List<List<GridElement>> RandomizeSmoothPursuitSequence()
+    {
+        List<List<GridElement>> list = new List<List<GridElement>>();
+
+        for (int i = 0; i < _smoothPursuitRoutes.Count; i++)
+        {
+            int index = _random.Next(_smoothPursuitRoutes.Count);
+            list.Add(_smoothPursuitRoutes[index]);
+            _smoothPursuitRoutes.RemoveAt(index);
+        }
+        
         return list;
     }
 }

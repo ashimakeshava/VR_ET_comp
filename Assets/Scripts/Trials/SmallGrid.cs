@@ -8,7 +8,7 @@ public class SmallGrid : MonoBehaviour
     private GameObject _fixationPoint;
     private GameObject _grid;
     
-    private List<GridElement> _smallGrid;
+    private List<GridElement> _smallGridElements;
     
 
     void Start()
@@ -25,7 +25,7 @@ public class SmallGrid : MonoBehaviour
         
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo generate this time as well or save this time
 
-        foreach (var element in _smallGrid)
+        foreach (var element in _smallGridElements)
         {
             _fixationPoint.transform.position = element.Position;
 
@@ -37,7 +37,7 @@ public class SmallGrid : MonoBehaviour
 
     public void RunSmallGrid(List<GridElement> smallGrid)
     {
-        _smallGrid = smallGrid;
+        _smallGridElements = smallGrid;
         StartCoroutine(StartSmallGrid());
     }
 }

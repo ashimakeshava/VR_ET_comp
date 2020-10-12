@@ -5,8 +5,6 @@ using UnityEngine;
 using System;
 using System.Threading;
 using UnityEngine.UI;
-using Random = System.Random;
-using RandomUnity = UnityEngine.Random;
 
 
 public class ExperimentManager : MonoBehaviour
@@ -15,31 +13,21 @@ public class ExperimentManager : MonoBehaviour
 
     public static ExperimentManager Instance { get ; private set; } 
     
-    [Header("Grids and Fixation Point")] [Space]
+    [Space] [Header("Grids and Fixation Point")] 
     [SerializeField] private GameObject fixationPoint;
-    [SerializeField] private GameObject largeGrid1;
-    [SerializeField] private GameObject largeGrid2;
-    [SerializeField] private GameObject smoothPursuit;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
     [SerializeField] private GameObject smallGrid;    // todo remove
     
-    [Header("Constant Trials between all Participants")] [Space]
-    [SerializeField] private List<GameObject> freeViewingPictures;
-    [SerializeField] private List<Text> trialInstructions;
-    
-    [Header("Texts")] [Space]
+    [Space] [Header("Instructions")] 
     [SerializeField] private Text welcome;    // todo write the welcome message and give instruction for calibration
     [SerializeField] private Text blockEnd;    // todo write the block ended message
     [SerializeField] private Text afterBlockThree;    // todo write the force break message
     [SerializeField] private Text thankYou;    // todo write the experiment ended message
-
-    private List<List<GridElement>> _smoothPursuitRoutes;
-    private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
-    private List<List<FreeViewingDataFrame>> _randomizedPictureList;
+    [SerializeField] private List<Text> trialInstructions;    // todo edit message
+    
     private List<Block> _blocks;
 
-    private Random _random;
     private bool _continue;
     private bool _trialIsRunning;
     private int _blockIndex;
@@ -59,26 +47,12 @@ public class ExperimentManager : MonoBehaviour
         
         _blocks = new List<Block>();
         _blocks = DataSavingManager.Instance.LoadFileList<Block>("Block");    // todo handle this name as input
+        // todo load sheet
     }
     
 
     private void Start()
     {
-        _random = new Random();
-
-        // todo read all of the randomization lists from the list
-        _smoothPursuitRoutes = new List<List<GridElement>>();    // todo get routes from file -> it is now in _blocks
-        
-        _randomizedPictureList = RandomizeFreeViewingPictures();
-        _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
-        
-        // todo generate the blocks from file
-        for (int i = 0; i < 6; i++)
-        {
-            // _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock(_randomizedPictureList[i], _smoothPursuitRoutes[i]));
-            // todo save the data
-        }
-        
         welcome.gameObject.SetActive(true);
     }
 
@@ -117,34 +91,11 @@ public class ExperimentManager : MonoBehaviour
                 if (_continue) ExecuteTrials();
             }
             
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 _continue = true;
             }
         }
-
-        
-
-        #region DebugingPurpose
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //GetCurrentActiveGrid();
-            //GetComponent<RouteGenerator>().GenerateGridRoute(GetCurrentActiveGrid());
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            // for (int i = 0; i < smallGrid.transform.childCount;i++)
-            // {
-            //     smallGrid.transform.GetChild(i).gameObject.SetActive(true);
-            //
-            // }
-            // fixationPoint.transform.position= new Vector3(0,0,1);
-            // Debug.Log("___________________________________-----_____________________________");
-        }
-
-        #endregion
     }
 
     private void ResetFixationPoint()
@@ -157,7 +108,7 @@ public class ExperimentManager : MonoBehaviour
     private void TrialInstructionActivation(bool activate)
     {
         welcome.gameObject.SetActive(false);
-//        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
+        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
     
     
@@ -239,49 +190,7 @@ public class ExperimentManager : MonoBehaviour
 
         return GridList;
     }
-
-
-    private List<List<FreeViewingDataFrame>> RandomizeFreeViewingPictures()
-    {
-        List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
-
-        for (int i = 0; i < _blocks.Count; i++)
-        {
-            List<FreeViewingDataFrame> dataFrames = new List<FreeViewingDataFrame>();
-            
-            for (int j = 0; j < 3; j++)
-            {
-                int index = _random.Next(freeViewingPictures.Count);
-                float jitter = RandomUnity.Range(-.2f, .2f);
-
-                dataFrames[j].ObjectName = freeViewingPictures[index].name;
-                dataFrames[j].Position = freeViewingPictures[index].transform.position;
-                dataFrames[j].PhotoFixationDuration = 6;
-                dataFrames[j].FixationPointDuration = .9f + jitter;
-                dataFrames[j].Picture = freeViewingPictures[index];
-                
-                freeViewingPictures.RemoveAt(index);
-            }
-            
-            list.Add(dataFrames);
-        }
-        
-        return list;
-    }
     
-    private List<List<GridElement>> RandomizeSmoothPursuitSequence()
-    {
-        List<List<GridElement>> list = new List<List<GridElement>>();
-
-        for (int i = 0; i < _smoothPursuitRoutes.Count+1; i++)
-        {
-            int index = _random.Next(_smoothPursuitRoutes.Count);
-            list.Add(_smoothPursuitRoutes[index]);
-            _smoothPursuitRoutes.RemoveAt(index);
-        }
-        
-        return list;
-    }
 
     #endregion
     
