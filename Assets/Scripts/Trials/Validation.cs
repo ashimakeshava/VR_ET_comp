@@ -24,7 +24,7 @@ public class Validation : MonoBehaviour
         _fixationPoint.transform.position = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
-        yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
+        yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo save this time
 
         foreach (var element in _gridElementsClose)
         {
