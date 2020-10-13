@@ -24,15 +24,19 @@ public class HeadTrackingSpace : MonoBehaviour
     [SerializeField] private GameObject FixationPoint;
 
     private HeadMovement _yawMovement, _pitchMovement, _rollMovement;
-    
 
-    [SerializeField] private float CountdownAligned=5;
+    
+    [SerializeField] private float CountdownUntilAligned=5f;
+
+    private float Counter;
     // Start is called before the first frame update
     void Start()
     {
         CalibrationStatus = true;
         fixationCross = FixationCrossObject.GetComponent<FixationCross>();
         _yawMovement = _pitchMovement = _rollMovement = new HeadMovement();
+
+        Counter = CountdownUntilAligned;
     }
 
     // Update is called once per frame
@@ -46,23 +50,22 @@ public class HeadTrackingSpace : MonoBehaviour
         {
             if (fixationCross.GetAlignment())
             {
-                CountdownAligned -= Time.deltaTime;
-                Debug.Log(CountdownAligned);
+                Counter-= Time.deltaTime;
+                Debug.Log(Counter);
             }
             else
             {
-                CountdownAligned = 3f;
+                Counter= 3f;
                 SetCalibrationStatus();
             }
-            if (CountdownAligned <= 0f)
+            if (Counter <= 0f)
             {
                 SetExperimentStatus();
             }
         }
-        
-        
 
-        
+
+
         //if(receivedEyetrackingGaze)
         
         if (Input.GetKeyDown(KeyCode.A))
@@ -161,17 +164,19 @@ public class HeadTrackingSpace : MonoBehaviour
        // PitchSetup.transform.position = new Vector3(PitchSetup.transform.position.x,yPos, PitchSetup.transform.position.z);
        //RollSetup.transform.position = new Vector3(RollSetup.transform.position.x,yPos, RollSetup.transform.position.z);
         //OrientationCross.transform.position =  new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
-        FixationPoint.transform.position = new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
+        FixationPoint.transform.position = new Vector3(OrientationCross.transform.position.x,OrientationCross.transform.position.y, OrientationCross.transform.position.z);
     }
     
     private void SetCalibrationStatus()
     {
+        OrientationCross.SetActive(true);
+        FixationPoint.SetActive(false);
         foreach (Transform child in OrientationCross.transform)
         {
             child.transform.gameObject.SetActive(true);
         }
 
-        ExperimentStatus = true;
+        ExperimentStatus = false;
 
         CalibrationStatus = true;
 
@@ -191,12 +196,16 @@ public class HeadTrackingSpace : MonoBehaviour
 
     private void SetExperimentStatus()
     {
-        //FixationCross.SetActive(false);
+        OrientationCross.SetActive(false);
+
+        FixationPoint.SetActive(true);
 
         foreach (Transform child in OrientationCross.transform)
         {
             child.transform.gameObject.SetActive(false);
         }
+
+        Counter = CountdownUntilAligned;
 
         ExperimentStatus = true;
 

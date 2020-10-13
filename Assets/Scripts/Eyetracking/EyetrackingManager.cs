@@ -47,6 +47,14 @@ public class EyetrackingManager : MonoBehaviour
         //  I do not like this: we still needs tags to find that out.
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            StartCalibration();
+        }
+    }
+
     private void  OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _hmdTransform = Camera.main.transform;
@@ -61,7 +69,7 @@ public class EyetrackingManager : MonoBehaviour
 
         _eyetrackingValidation = GetComponentInChildren<EyetrackingValidation>();
 
-        _eyetrackingValidation.NotifyEyeValidationObservers += SetEyeValidationStatus;
+//        _eyetrackingValidation.NotifyEyeValidationObservers += SetEyeValidationStatus;
     }
 
     // Update is called once per frame

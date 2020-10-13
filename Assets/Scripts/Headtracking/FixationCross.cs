@@ -26,7 +26,7 @@ public class FixationCross : MonoBehaviour
     [SerializeField] private GameObject TargetCenter;
     
     
-    
+    [SerializeField] private GameObject GlobalSphere;
     [SerializeField] private Material[] matArray;
     private Material error;
     private Material sucess;
@@ -39,7 +39,7 @@ public class FixationCross : MonoBehaviour
     private bool Oriented;
     private bool isAligned;
     
-    private bool catched=true;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -89,34 +89,31 @@ public class FixationCross : MonoBehaviour
             RaycastHit[] hits = Physics.BoxCastAll(CrossElements[i].transform.position,
                 CrossElements[i].transform.lossyScale / 1.8f,
                 this.CrossElements[i].transform.forward,
-                CrossElements[i].transform.rotation);
+                CrossElements[i].transform.rotation, 100f,1);
 
-            Debug.Log(hits.Length +" " +CrossElements[i]);
+            //Debug.Log(hits.Length +" " +CrossElements[i]);
 
             foreach (var hit in hits)
             {
                 Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
             }
             
-
+            bool catched=false;
+            
             if (hits.Length == 0)
             {
                 CrossElements[i].GetComponent<Renderer>().material.color = Color.grey *  0.6f;
-                catched = false;
+                continue;
             }
-
-            catched = false;
+            
             foreach (var hit in hits)
             {
-                Debug.Log("hits.Length" + hit.transform.gameObject.name+ "+ "+ CrossElements[i]);
-                if (catched)
-                {
-                    Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.green);
-                }
+                
+                //Debug.Log("hits.Length" + hit.transform.gameObject.name+ "+ "+ CrossElements[i]);
+                
                 if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)
                 {
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
-                    isAligned = true;
                     catched = true;
                 }
                 else
@@ -127,7 +124,11 @@ public class FixationCross : MonoBehaviour
                     }
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
                     Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
-                        isAligned = false;
+                }
+
+                if (catched)
+                {
+                    isAligned = true;
                 }
                
             }
@@ -135,10 +136,6 @@ public class FixationCross : MonoBehaviour
 
         }
         
-        if (isAligned)
-        {
-            Debug.Log("Cross is aligned");
-        }
     }
     
 
