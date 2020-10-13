@@ -17,28 +17,96 @@ public class RandomGenerator : MonoBehaviour
     
     private Random _random;
 
-    [ReadOnly] private readonly List<int> _trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
-    [ReadOnly] private readonly List<int> _pupilDilationSequence = new List<int> {0,1,2,3};
-    [ReadOnly] private readonly List<int> _yawAndPitchMovements = new List<int> {0,1,2,3,4};
-    [ReadOnly] private readonly List<int> _rollMovements = new List<int> {0,1,2,3,4,5};
+    private List<int> _yawMovements;
+    private List<int> _rollMovements;
+    private List<int> _pitchMovements;
     
-    private List<RouteFrame> _routeFramesLargeGridClose, _routeFramesLargeGridFar, _routeFramesSmallGrid, _routeFramesSmoothPursuit;
-    private List<List<GridElement>> _largeGridCloseRoutes, _largeGridFarRoutes, 
-        _smallGridRoutes, _smoothPursuitRoutes, _randomizedSmoothPursuitRoutes;
     private List<List<FreeViewingDataFrame>> _randomizedPictureList;
+
+    private List<RouteFrame> _routeFramesLargeGridClose, 
+        _routeFramesLargeGridFar, 
+        _routeFramesSmallGrid, 
+        _routeFramesSmoothPursuit;
+    
+    private List<List<GridElement>> _largeGridCloseRoutes, 
+        _largeGridFarRoutes, 
+        _smallGridRoutes, 
+        _smoothPursuitRoutes;
+
+    private List<List<GridElement>> _randomizedSmoothPursuitHTC,
+        _randomizedLargeGridCloseHTC,
+        _randomizedLargeGridFarHTC,
+        _randomizedSmallGridHTC;
+    
+    private List<List<GridElement>> _randomizedSmoothPursuitVarjo,
+        _randomizedLargeGridCloseVarjo,
+        _randomizedLargeGridFarVarjo,
+        _randomizedSmallGridVarjo;
+    
     
     private int _numberOfBlocks = 7;
+    int counter = 1;
     
     private void Start()
     {
         _random = new Random();
-        _largeGridCloseRoutes = _largeGridFarRoutes = _smallGridRoutes = _smoothPursuitRoutes = 
-            _randomizedSmoothPursuitRoutes = new List<List<GridElement>>();
         
-        _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid 2j");
-        _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid 2 2j");
-        _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListSmallGrid");
-        _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid Smooth 2j");
+        _largeGridCloseRoutes = new List<List<GridElement>>();
+        _largeGridFarRoutes = new List<List<GridElement>>();
+        _smallGridRoutes = new List<List<GridElement>>();
+        _smoothPursuitRoutes = new List<List<GridElement>>();
+        _randomizedSmoothPursuitHTC = new List<List<GridElement>>();
+        _randomizedLargeGridCloseHTC = new List<List<GridElement>>();
+        _randomizedLargeGridFarHTC = new List<List<GridElement>>();
+        _randomizedSmallGridHTC = new List<List<GridElement>>();
+        _randomizedSmoothPursuitVarjo = new List<List<GridElement>>();
+        _randomizedLargeGridCloseVarjo = new List<List<GridElement>>();
+        _randomizedLargeGridFarVarjo = new List<List<GridElement>>();
+        _randomizedSmallGridVarjo = new List<List<GridElement>>();
+        
+        _rollMovements = new List<int> {
+            0,1,2,3,4,
+            0,1,2,3,4,
+            0,1,2,3,4};
+        
+        _pitchMovements = new List<int> {
+            0,1,2,3,4,
+            0,1,2,3,4,
+            0,1,2,3,4};
+
+        _yawMovements = new List<int>
+        {
+            0, 1, 2, 3, 4,
+            0, 1, 2, 3, 4,
+            0, 1, 2, 3, 4
+        };
+        
+        _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 1");
+        _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 2");
+        _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 3");
+        _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 4");
+
+        /*List<List<RouteFrame>> routeFrames = new List<List<RouteFrame>>    // todo for pooling 
+        {
+            _routeFramesLargeGridClose,
+            _routeFramesLargeGridFar,
+            _routeFramesSmallGrid,
+            _routeFramesSmoothPursuit
+        };
+
+        foreach (var route in routeFrames)
+        {
+            List<RouteFrame> list = new List<RouteFrame>();
+
+            for (int i = 0; i < 12; i++)
+            {
+                int index = _random.Next(route.Count);
+                list.Add(route[index]);
+            }
+            
+            DataSavingManager.Instance.SaveList(list, "Grid " + counter);
+            counter++;
+        }*/
 
         foreach (var route in _routeFramesLargeGridClose)
         {
@@ -55,29 +123,56 @@ public class RandomGenerator : MonoBehaviour
             _smallGridRoutes.Add(route.Route);
         }
         
-        for (int i = 0; i < 7; i++)
+        foreach (var route in _routeFramesSmoothPursuit)
         {
-            int index = _random.Next(_routeFramesSmoothPursuit.Count);
-            _smoothPursuitRoutes.Add(_routeFramesSmoothPursuit[index].Route);
+            _smoothPursuitRoutes.Add(route.Route);
         }
 
-        _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
+        _randomizedSmoothPursuitHTC = RandomizeSmoothPursuit();
+        _randomizedSmoothPursuitVarjo = RandomizeSmoothPursuit();
+        
+        _randomizedSmallGridHTC = RandomizeSmallGrid();
+        _randomizedSmallGridVarjo = RandomizeSmallGrid();
+
+        _randomizedLargeGridCloseHTC = RandomizeLargeGridClose();
+        _randomizedLargeGridCloseVarjo = RandomizeLargeGridClose();
+
+        _randomizedLargeGridFarHTC = RandomizeLargeGridFar();
+        _randomizedLargeGridFarVarjo = RandomizeLargeGridFar();
+        
         _randomizedPictureList = RandomizeFreeViewingPictures();
         
+        // generate blocks for varjo
+        GenerateBlocks(true);
+        
+        // generate blocks for HTC
         GenerateBlocks();
     }
 
-    private void GenerateBlocks(int numberOfBlocks = 7)
+    private void GenerateBlocks(bool varjo = false, int numberOfBlocks = 6)
     {
+        _numberOfBlocks = numberOfBlocks;
+        
         List<Block> listOfBlocks = new List<Block>();
-
+        string deviceName = "";
+        
         for (int i = 0; i < numberOfBlocks; i++)
         {
-            listOfBlocks.Add(GenerateBlock(_randomizedPictureList[i], _randomizedSmoothPursuitRoutes[i], _largeGridCloseRoutes[i],
-                _largeGridFarRoutes[i], _smallGridRoutes[i]));
+            if (varjo)
+            {
+                deviceName = "Varjo";
+                listOfBlocks.Add(GenerateBlock(_randomizedPictureList[i], _randomizedSmoothPursuitVarjo[i], _randomizedLargeGridCloseVarjo[i],
+                    _randomizedLargeGridFarVarjo[i], _randomizedSmallGridVarjo[i]));
+            }
+            else
+            {
+                deviceName = "HTC";
+                listOfBlocks.Add(GenerateBlock(_randomizedPictureList[i], _randomizedSmoothPursuitHTC[i], _randomizedLargeGridCloseHTC[i],
+                    _randomizedLargeGridFarHTC[i], _randomizedSmallGridHTC[i]));
+            }
         }
         
-        DataSavingManager.Instance.SaveList(listOfBlocks, "Blocks");
+        DataSavingManager.Instance.SaveList(listOfBlocks, "Blocks " + deviceName);
     }
     
     private Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit, 
@@ -85,7 +180,6 @@ public class RandomGenerator : MonoBehaviour
     {
         float jitter = RandomUnity.Range(-.25f, .25f);
         Block block = new Block
-            
         {
             SequenceOfTrials = RandomizeTrials(),
             
@@ -95,7 +189,7 @@ public class RandomGenerator : MonoBehaviour
             
             SmoothPursuit = smoothPursuit,
             
-            Roll = RandomizeHeadMovement("Roll", 6),
+            Roll = RandomizeHeadMovement("Roll"),
             Yaw = RandomizeHeadMovement("Yaw"),
             Pitch = RandomizeHeadMovement("Pitch"),
             
@@ -112,13 +206,14 @@ public class RandomGenerator : MonoBehaviour
 
     private List<int> RandomizeTrials()
     {
+        List<int> trialsToShuffle = new List<int> {2,3,4,5,6,7,8,9,10};
         List<int> list = new List<int> {0, 1};
 
-        for (int i = 0; i < _trialsToShuffle.Count; i++)
+        for (int i = 0; i < 9; i++)
         {
-            int index = _random.Next(_trialsToShuffle.Count);
-            list.Add(_trialsToShuffle[index]);
-            _trialsToShuffle.RemoveAt(index);
+            int index = _random.Next(trialsToShuffle.Count);
+            list.Add(trialsToShuffle[index]);
+            trialsToShuffle.RemoveAt(index);
         }
         
         list.Add(1);
@@ -136,15 +231,18 @@ public class RandomGenerator : MonoBehaviour
             
             for (int j = 0; j < 3; j++)
             {
+                FreeViewingDataFrame freeViewingDataFrame = new FreeViewingDataFrame();
+                
                 int index = _random.Next(freeViewingPictures.Count);
                 float jitter = RandomUnity.Range(-.2f, .2f);
 
-                dataFrames[j].ObjectName = freeViewingPictures[index].name;
-                dataFrames[j].Position = freeViewingPictures[index].transform.position;
-                dataFrames[j].PhotoFixationDuration = 6;
-                dataFrames[j].FixationPointDuration = .9f + jitter;
-                dataFrames[j].Picture = freeViewingPictures[index];
+                freeViewingDataFrame.ObjectName = freeViewingPictures[index].name;
+                freeViewingDataFrame.Position = freeViewingPictures[index].transform.position;
+                freeViewingDataFrame.PhotoFixationDuration = 6;
+                freeViewingDataFrame.FixationPointDuration = .9f + jitter;
+                freeViewingDataFrame.Picture = freeViewingPictures[index];
                 
+                dataFrames.Add(freeViewingDataFrame);
                 freeViewingPictures.RemoveAt(index);
             }
             
@@ -154,13 +252,66 @@ public class RandomGenerator : MonoBehaviour
         return list;
     }
     
-    private List<List<GridElement>> RandomizeSmoothPursuitSequence()
+    private List<List<GridElement>> RandomizeLargeGridClose()
     {
         List<List<GridElement>> list = new List<List<GridElement>>();
 
-        for (int i = 0; i < _smoothPursuitRoutes.Count; i++)
+        for (int i = 0; i < 6; i++)
+        {
+            int index = _random.Next(_largeGridCloseRoutes.Count);
+            list.Add(_largeGridCloseRoutes[index]);
+            _largeGridCloseRoutes.RemoveAt(index);
+        }
+        
+        return list;
+    }
+    
+    private List<List<GridElement>> RandomizeLargeGridFar()
+    {
+        List<List<GridElement>> list = new List<List<GridElement>>();
+
+        for (int i = 0; i < 6; i++)
+        {
+            int index = _random.Next(_largeGridFarRoutes.Count);
+            list.Add(_largeGridFarRoutes[index]);
+            _largeGridFarRoutes.RemoveAt(index);
+        }
+        
+        return list;
+    }
+    
+    
+    private List<List<GridElement>> RandomizeSmallGrid()
+    {
+        List<List<GridElement>> list = new List<List<GridElement>>();
+
+        for (int i = 0; i < 6; i++)
+        {
+            int index = _random.Next(_smallGridRoutes.Count);
+            list.Add(_smallGridRoutes[index]);
+            _smallGridRoutes.RemoveAt(index);
+        }
+        
+        return list;
+    }
+    
+    private List<List<GridElement>> RandomizeSmoothPursuit()
+    {
+        List<List<GridElement>> list = new List<List<GridElement>>();
+
+        for (int i = 0; i < 6; i++)
         {
             int index = _random.Next(_smoothPursuitRoutes.Count);
+
+            foreach (var element in _smoothPursuitRoutes[index])
+            {
+                float jitter = RandomUnity.Range(-.2f, .2f);
+                element.FixationDuration += jitter;
+                
+                jitter = RandomUnity.Range(-.2f, .2f);
+                element.MovementDuration += jitter;
+            }
+            
             list.Add(_smoothPursuitRoutes[index]);
             _smoothPursuitRoutes.RemoveAt(index);
         }
@@ -170,17 +321,21 @@ public class RandomGenerator : MonoBehaviour
 
     private List<PupilDilationDataFrame> RandomisePupilDilationDataFrame()
     {
+        List<int> pupilDilationSequence = new List<int> {0,1,2,3};
         List<PupilDilationDataFrame> pupilDilationDataFrames = new List<PupilDilationDataFrame>();
         
-        for (int i = 0; i < _pupilDilationSequence.Count; i++)
+        for (int i = 0; i < 4; i++)
         {
-            int index = _random.Next(_pupilDilationSequence.Count);
+            PupilDilationDataFrame pupilDilationDataFrame = new PupilDilationDataFrame();
+            
+            int index = _random.Next(pupilDilationSequence.Count);
             float jitter = RandomUnity.Range(-.2f, .2f);
             
-            pupilDilationDataFrames[i].ColorIndex = index;
-            pupilDilationDataFrames[i].ColorDuration = 3f + jitter;
+            pupilDilationDataFrame.ColorIndex = index;
+            pupilDilationDataFrame.ColorDuration = 3f + jitter;
 
-            _pupilDilationSequence.RemoveAt(index);
+            pupilDilationDataFrames.Add(pupilDilationDataFrame);
+            pupilDilationSequence.RemoveAt(index);
         }
 
         return pupilDilationDataFrames;
@@ -199,25 +354,26 @@ public class RandomGenerator : MonoBehaviour
         return delays;
     }
 
-    private HeadMovement RandomizeHeadMovement(string movementType, int numberOfObjects = 5)
+    private HeadMovement RandomizeHeadMovement(string movementType)
     {
+        List<int> positions = new List<int> {
+            0,1,2,3,4,
+            0,1,2,3,4,
+            0,1,2,3,4};
+        
         HeadMovement movement = new HeadMovement {MovementType = movementType};
-
-        for (int i = 0; i < numberOfObjects; i++)
+        List<int> ints = new List<int>();
+        
+        for (int i = 0; i < 15; i++)
         {
-            if (movementType == "Roll")
-            {
-                int index = _random.Next(_rollMovements.Count);
-                movement.MovementPosition.Add(index);
-            }
-            else
-            {
-                int index = _random.Next(_yawAndPitchMovements.Count);
-                movement.MovementPosition.Add(index);
-            }
-        }
+            int index = _random.Next(positions.Count);
 
-        // todo do we add fixation time?
+            ints.Add(positions[index]);
+            positions.RemoveAt(index);
+        }
+        
+        movement.MovementPosition = ints;
+
         return movement;
     }
 }
