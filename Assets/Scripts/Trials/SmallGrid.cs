@@ -14,7 +14,7 @@ public class SmallGrid : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetSmallGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
     }
 
     IEnumerator StartSmallGrid()

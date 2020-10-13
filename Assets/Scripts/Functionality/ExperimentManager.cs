@@ -17,7 +17,6 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
-    [SerializeField] private GameObject smallGrid;    // todo remove
     
     [Space] [Header("Instructions")] 
     [SerializeField] private Text welcome;    // todo write the welcome message and give instruction for calibration
@@ -137,7 +136,10 @@ public class ExperimentManager : MonoBehaviour
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                EyetrackingManager.Instance.StartCalibration();
+                // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
+                
+                Debug.Log("Eye-calibration");
+                TrialEnded();
                 break;
             case 1:    // Validation
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
@@ -222,20 +224,15 @@ public class ExperimentManager : MonoBehaviour
         return fixationPoint;
     }
     
-    public GameObject GetLargeGrid()
+    public GameObject GetGrid()
     {
         return largeGrid;
     }
     
-    public GameObject GetSmallGrid()
-    {
-        return smallGrid;
-    }
-
     #endregion
 }
 
-    // TODO implement the trial
+    // TODO implement the trials
     // TODO implement movement
     // TODO smoothPursuit has too few elements
     // TODO read from the file to go on with the movement 

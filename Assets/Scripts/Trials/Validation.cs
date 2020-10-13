@@ -15,7 +15,7 @@ public class Validation : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetLargeGrid();
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator StartFirstValidation()

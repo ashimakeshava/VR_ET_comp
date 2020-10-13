@@ -19,7 +19,7 @@ public class SmoothPursuit : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetLargeGrid();    // todo change to only collider since at the runtime we won't have large and small grid
+        _grid = ExperimentManager.Instance.GetGrid();    // todo change to only collider since at the runtime we won't have large and small grid
     }
 
     IEnumerator StartSmoothPursuit()
