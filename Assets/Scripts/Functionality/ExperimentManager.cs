@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
 using System.Threading;
 using UnityEngine.UI;
-using Random = System.Random;
+
 
 public class ExperimentManager : MonoBehaviour
 {
@@ -13,31 +13,21 @@ public class ExperimentManager : MonoBehaviour
 
     public static ExperimentManager Instance { get ; private set; } 
     
-    [Header("Grids and Fixation Point")] [Space]
+    [Space] [Header("Grids and Fixation Point")] 
     [SerializeField] private GameObject fixationPoint;
-    [SerializeField] private GameObject largeGrid1;
-    [SerializeField] private GameObject largeGrid2;
-    [SerializeField] private GameObject smoothPursuit;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
     [SerializeField] private GameObject smallGrid;    // todo remove
     
-    [Header("Constant Trials between all Participants")] [Space]
-    [SerializeField] private List<GameObject> freeViewingPictures;
-    [SerializeField] private List<Text> trialInstructions;
-    
-    [Header("Texts")] [Space]
+    [Space] [Header("Instructions")] 
     [SerializeField] private Text welcome;    // todo write the welcome message and give instruction for calibration
     [SerializeField] private Text blockEnd;    // todo write the block ended message
     [SerializeField] private Text afterBlockThree;    // todo write the force break message
     [SerializeField] private Text thankYou;    // todo write the experiment ended message
-
-    private List<List<GridElement>> _smoothPursuitRoutes;
-    private List<List<GridElement>> _randomizedSmoothPursuitRoutes;
-    private List<GameObject> _randomizedPictureList;
+    [SerializeField] private List<Text> trialInstructions;    // todo edit message
+    
     private List<Block> _blocks;
 
-    private Random _random;
     private bool _continue;
     private bool _trialIsRunning;
     private int _blockIndex;
@@ -55,29 +45,15 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
         
-        // todo read the corresponding file or make one if !exists
+        _blocks = new List<Block>();
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Block");    // todo handle this name as input
+        // todo load sheet
     }
     
 
     private void Start()
     {
-        _random = new Random();
-        _blocks = new List<Block>();
-
-        // todo read all of the randomization lists from the list
-        _smoothPursuitRoutes = new List<List<GridElement>>();    // todo get routes from file
-        
-        /*_randomizedPictureList = RandomizeFreeViewingPictures();
-        _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
-        
-        
-        for (int i = 0; i < 6; i++)
-        {
-            _blocks.Add(GetComponent<BlockGenerator>().GenerateBlock(_randomizedPictureList[i], _smoothPursuitRoutes[i]));
-            // todo save the data
-        }
-        
-        welcome.gameObject.SetActive(true);*/
+        welcome.gameObject.SetActive(true);
     }
 
     private void Update()
@@ -87,7 +63,7 @@ public class ExperimentManager : MonoBehaviour
         {
             ResetFixationPoint();
             
-            if (_blockIndex == 6)
+            if (_blockIndex == 6)    // todo 7 in case of the trial
             {
                 thankYou.gameObject.SetActive(true);
             }
@@ -115,39 +91,16 @@ public class ExperimentManager : MonoBehaviour
                 if (_continue) ExecuteTrials();
             }
             
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 _continue = true;
             }
         }
-
-        
-
-        #region DebugingPurpose
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //GetCurrentActiveGrid();
-            //GetComponent<RouteGenerator>().GenerateGridRoute(GetCurrentActiveGrid());
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            // for (int i = 0; i < smallGrid.transform.childCount;i++)
-            // {
-            //     smallGrid.transform.GetChild(i).gameObject.SetActive(true);
-            //
-            // }
-            // fixationPoint.transform.position= new Vector3(0,0,1);
-            // Debug.Log("___________________________________-----_____________________________");
-        }
-
-        #endregion
     }
 
     private void ResetFixationPoint()
     {
-        fixationPoint.transform.position = new Vector3(0, 0, 1);
+        fixationPoint.transform.position = Vector3.forward;
         fixationPoint.gameObject.SetActive(false);
     }
 
@@ -155,7 +108,7 @@ public class ExperimentManager : MonoBehaviour
     private void TrialInstructionActivation(bool activate)
     {
         welcome.gameObject.SetActive(false);
-//        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
+        trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
     
     
@@ -168,34 +121,34 @@ public class ExperimentManager : MonoBehaviour
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                // calibration
+                // todo call calibration
                 break;
             case 1:    // Validation
-                GetComponent<Validation>().StartValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
+                GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
-                
+                GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
                 break;
             case 3:    // Small grid
-                
+                GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
                 break;
             case 4:    // Blink
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
                 break;
             case 5:    // Pupil dilation
-                
+                GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
                 break;
             case 6:    // Free viewing
-                
+                GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
-                
+                GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
                 break;
             case 8:    // Yaw
-                
+                GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
                 break;
             case 9:    // Pitch
-                
+                GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
                 break;
             case 10:    // Micro saccades
                 GetComponent<MicroSaccades>().RunMicroSaccades();
@@ -237,35 +190,7 @@ public class ExperimentManager : MonoBehaviour
 
         return GridList;
     }
-
-
-    private List<GameObject> RandomizeFreeViewingPictures()
-    {
-        List<GameObject> list = new List<GameObject>();
-
-        for (int i = 0; i < freeViewingPictures.Count+1; i++)
-        {
-            int index = _random.Next(freeViewingPictures.Count);
-            list.Add(freeViewingPictures[index]);
-            freeViewingPictures.RemoveAt(index);
-        }
-        
-        return list;
-    }
     
-    private List<List<GridElement>> RandomizeSmoothPursuitSequence()
-    {
-        List<List<GridElement>> list = new List<List<GridElement>>();
-
-        for (int i = 0; i < _smoothPursuitRoutes.Count+1; i++)
-        {
-            int index = _random.Next(_smoothPursuitRoutes.Count);
-            list.Add(_smoothPursuitRoutes[index]);
-            _smoothPursuitRoutes.RemoveAt(index);
-        }
-        
-        return list;
-    }
 
     #endregion
     
@@ -294,7 +219,7 @@ public class ExperimentManager : MonoBehaviour
     #endregion
 }
 
-        
+    // TODO implement the trial
     // TODO implement movement
     // TODO smoothPursuit has too few elements
     // TODO read from the file to go on with the movement 

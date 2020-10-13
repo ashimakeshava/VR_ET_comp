@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -17,6 +18,7 @@ public class RouteGenerator : MonoBehaviour
     
     private bool _isDone;
     private bool _isSmoothPursuit;
+    private bool _isGridFar;
 
     private List<GridElement> _gridRoute;
     [SerializeField] private List <List<GridElement>> uniqueSmallGridRoutes;
@@ -30,8 +32,7 @@ public class RouteGenerator : MonoBehaviour
     private int level2Jumps;
     private int level3Jumps;
     private int level4Jumps;
-
-    private bool visualizeRoute;
+    
     private void Start()
     {
         _random = new Random();
@@ -69,11 +70,12 @@ public class RouteGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             _routeFrame = new RouteFrame();
-            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrame");
+            _routeFrame = DataSavingManager.Instance.LoadFile<RouteFrame>("routeFrameLargeGrid");
+            
 
             foreach (var elem in _routeFrame.Route)
             {
-                Debug.Log(elem.ObjectName);
+                Debug.Log(elem.ObjectName +  elem.Position);
             }
         }
         
@@ -89,15 +91,12 @@ public class RouteGenerator : MonoBehaviour
             }
             
         }
-        
-        
-        
 
         if (Input.GetKeyDown(KeyCode.A))
         {
             List<GridElement> route= new List<GridElement>();
             Debug.Log("Draw Route");
-            route= GetGridRoute(3);
+            route= GetGridRoute(false, false, 3);
             Color color = new Color(0,1,1,0);
             VisualizeRoute(route, color);
             Debug.Log(route.Count);
@@ -187,9 +186,8 @@ public class RouteGenerator : MonoBehaviour
     {
         int count = grid.transform.childCount;
         Vector3 oldPos;
-
+        
         _fixationPoint.transform.position = Vector3.forward;
-
 
         GridElement OldElement = new GridElement{
             ObjectName = _fixationPoint.gameObject.name,
@@ -287,11 +285,10 @@ public class RouteGenerator : MonoBehaviour
                 //Debug.Log("invalid");
             }
         }
-       // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
-
+        // Debug.Log("Route starts with: " +_gridRoute[1].ObjectName+ " "+ _gridRoute[2].ObjectName+" "+ _gridRoute[3].ObjectName);
     }
 
-    private void GenerateUniqueRouteList(int amountOfRoutes, int jumpsize=4)
+    private void GenerateUniqueRouteList(int amountOfRoutes, int jumpsize=4, bool smoothPursuit = false, bool gridFar= false)
     {
         int iter=0;
         int OutOfBounce = 10000;
@@ -307,7 +304,7 @@ public class RouteGenerator : MonoBehaviour
             
             List<GridElement> tmpRoute = new List<GridElement>();
             
-            GetGridRoute(jumpsize);
+            GetGridRoute(smoothPursuit, gridFar, jumpsize);
 
             foreach (var elem in _gridRoute)
             {
@@ -416,6 +413,14 @@ public class RouteGenerator : MonoBehaviour
             
         } while (_inValid&&iter!=overFlow);
 
+        if (_isGridFar)
+        {
+            foreach (var gridElement in _gridRoute)
+            {
+                gridElement.Position += new Vector3(0,0,1);
+            }
+        }
+        
         if (iter == overFlow)
         {
             Debug.Log("overflow error");
@@ -428,13 +433,23 @@ public class RouteGenerator : MonoBehaviour
     private float GenerateRandomFixationTime()        //TODO Add jitter and first position time: duration
     {
         if (_isSmoothPursuit) return 1;
-        else
-            return (RandomUnity.value <= 0.5) ? 1 : 1.5f;
+        
+        float duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
+        duration += RandomUnity.Range(-.2f, .2f);
+
+        return duration;
     }
 
-
-    public List<GridElement> GetGridRoute(int jumpsize=4)
+    /*public List<GridElement> GetGridRoute(int jumpsize = 4)
     {
+        return GetGridRoute(false, false, jumpsize)
+    }*/
+    
+    public List<GridElement> GetGridRoute(bool smoothPursuit = false, bool gridFar = false, int jumpsize=4)
+    {
+        _isSmoothPursuit = smoothPursuit;
+        _isGridFar = gridFar;
+        
         if (!_gridRoute.Any())
         {
             Debug.Log("<color=orange>Create new one </color>");
@@ -447,6 +462,7 @@ public class RouteGenerator : MonoBehaviour
 
         return _gridRoute;
     }
+    
     private float GenerateMovementTime()
     {
         return (_isSmoothPursuit) ? 2 : 0;

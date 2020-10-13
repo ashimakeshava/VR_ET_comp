@@ -6,8 +6,7 @@ using UnityEngine;
 [Serializable]
 public class HeadMovement
 {
-    public string ObjectName;
-    public Quaternion Rotation;
-    public Vector3 Position;
-    public float FixationDuration;
+    public string MovementType;
+    public List<int> MovementPosition;
+    public float FixationDuration;    // todo do we add fixation time?
 }

@@ -14,14 +14,14 @@ public class Block
    public List<GridElement> SmallGrid;
    public List<GridElement> SmoothPursuit;
    
-   public List<HeadMovement> Roll;
-   public List<HeadMovement> Yaw;
-   public List<HeadMovement> Pitch;
+   public HeadMovement Roll;
+   public HeadMovement Yaw;
+   public HeadMovement Pitch;
    
    public List<float> Blink;
    
-   public List<Luminance> PupilDilation;
-   
-   public GameObject FreeViewingPicture;
-   public int SmoothPursuitIndex;
+   public List<PupilDilationDataFrame> PupilDilation;
+   public float PupilDilationBlackFixationDuration;
+
+   public List<FreeViewingDataFrame> FreeViewingPictureList;
 }
