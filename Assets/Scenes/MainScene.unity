@@ -2069,7 +2069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &964019728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3568,7 +3568,6 @@ MonoBehaviour:
   fixationPoint: {fileID: 1551134023}
   mainCamera: {fileID: 963194225}
   largeGrid: {fileID: 2890066795422448538}
-  smallGrid: {fileID: 0}
   welcome: {fileID: 298434861}
   blockEnd: {fileID: 312281568}
   afterBlockThree: {fileID: 766795458}
