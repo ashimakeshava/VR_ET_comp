@@ -35,10 +35,10 @@ public class RandomGenerator : MonoBehaviour
         _largeGridCloseRoutes = _largeGridFarRoutes = _smallGridRoutes = _smoothPursuitRoutes = 
             _randomizedSmoothPursuitRoutes = new List<List<GridElement>>();
         
-        _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid1");
-        _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid2");
+        _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid 2j");
+        _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid 2 2j");
         _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListSmallGrid");
-        _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListSmoothPursuit");
+        _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("RouteListLargeGrid Smooth 2j");
 
         foreach (var route in _routeFramesLargeGridClose)
         {
@@ -54,10 +54,11 @@ public class RandomGenerator : MonoBehaviour
         {
             _smallGridRoutes.Add(route.Route);
         }
-
-        foreach (var route in _routeFramesSmoothPursuit)
+        
+        for (int i = 0; i < 7; i++)
         {
-            _smoothPursuitRoutes.Add(route.Route);
+            int index = _random.Next(_routeFramesSmoothPursuit.Count);
+            _smoothPursuitRoutes.Add(_routeFramesSmoothPursuit[index].Route);
         }
 
         _randomizedSmoothPursuitRoutes = RandomizeSmoothPursuitSequence();
