@@ -439,6 +439,12 @@ public class RouteGenerator : MonoBehaviour
 
         return duration;
     }
+    
+    private float GenerateMovementTime()
+    {
+        float jitter = RandomUnity.Range(-.2f, .2f);
+        return (_isSmoothPursuit) ? 2+jitter : 0;
+    }
 
     /*public List<GridElement> GetGridRoute(int jumpsize = 4)
     {
@@ -463,10 +469,7 @@ public class RouteGenerator : MonoBehaviour
         return _gridRoute;
     }
     
-    private float GenerateMovementTime()
-    {
-        return (_isSmoothPursuit) ? 2 : 0;
-    }
+    
 
     private void VisualizeRoute(List<GridElement> Route, Color color, Vector3 offset = default(Vector3))
     {

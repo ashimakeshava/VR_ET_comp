@@ -17,7 +17,6 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
-    [SerializeField] private GameObject smallGrid;    // todo remove
     
     [Space] [Header("Instructions")] 
     [SerializeField] private Text welcome;    // todo write the welcome message and give instruction for calibration
@@ -30,9 +29,28 @@ public class ExperimentManager : MonoBehaviour
 
     private bool _continue;
     private bool _trialIsRunning;
+    private bool _welcomeState;
+    
     private int _blockIndex;
     private int _trialIndex;
 
+    enum Trials
+    {
+        Calibration,
+        Validation,
+        SmoothPursuit,
+        SmallGrid,
+        Blink,
+        PupilDilation,
+        Roll,
+        Yaw,
+        Pitch,
+        FreeViewing,
+        MicroSaccades
+    }
+
+    private Trials _trials;
+    
     #endregion
 
 
@@ -45,31 +63,48 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
         
-        _blocks = new List<Block>();
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Block");    // todo handle this name as input
-        // todo load sheet
+        // todo ;oad sheet?
     }
     
 
     private void Start()
     {
+        _welcomeState = true;
         welcome.gameObject.SetActive(true);
+        
+        _blocks = new List<Block>();
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
     }
 
     private void Update()
     {
-        // todo click or push trigger to continue with the experiment
-        if (!_trialIsRunning)
+        if (_welcomeState)
         {
             ResetFixationPoint();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                welcome.gameObject.SetActive(false);
+                _welcomeState = false;
+            }
+        }
+        else if (!_trialIsRunning)
+        {
+            ResetFixationPoint();
+            Debug.Log("here 1");
             
             if (_blockIndex == 6)    // todo 7 in case of the trial
             {
+                Debug.Log("here 2");
+
                 thankYou.gameObject.SetActive(true);
             }
             else if (_trialIndex == 12)
             {
+                Debug.Log("here 3");
+
                 // todo save data
+                
                 if (_blockIndex == 3) afterBlockThree.gameObject.SetActive(true);
                 else blockEnd.gameObject.SetActive(true);
 
@@ -78,6 +113,10 @@ public class ExperimentManager : MonoBehaviour
 
                 if (_continue)
                 {
+                    Debug.Log("here 4");
+
+                    // todo start recording
+                    
                     _continue = false;
                     afterBlockThree.gameObject.SetActive(false);
                     blockEnd.gameObject.SetActive(false);
@@ -87,12 +126,14 @@ public class ExperimentManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("should come here");
                 TrialInstructionActivation(true);
                 if (_continue) ExecuteTrials();
             }
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                Debug.Log("hmmmmmmmmm");
                 _continue = true;
             }
         }
@@ -107,50 +148,67 @@ public class ExperimentManager : MonoBehaviour
 
     private void TrialInstructionActivation(bool activate)
     {
-        welcome.gameObject.SetActive(false);
         trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
     
     
-    void ExecuteTrials()    // todo implement 
+    void ExecuteTrials()
     {
         _trialIsRunning = true;
         _continue = false;
         TrialInstructionActivation(false);
         
+        Debug.Log("yaaaay");
+        Debug.Log("_blocks[_blockIndex].SequenceOfTrials[_trialIndex]" + _blocks[_blockIndex].SequenceOfTrials[_trialIndex]);
+
+        
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                // todo call calibration
+                // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
+
+                _trials = Trials.Calibration;
+                Debug.Log("Eye-calibration");
+                TrialEnded();
                 break;
             case 1:    // Validation
+                _trials = Trials.Validation;
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
+                _trials = Trials.SmoothPursuit;
                 GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
                 break;
             case 3:    // Small grid
+                _trials = Trials.SmallGrid;
                 GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
                 break;
             case 4:    // Blink
+                _trials = Trials.Blink;
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
                 break;
             case 5:    // Pupil dilation
+                _trials = Trials.PupilDilation;
                 GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
                 break;
             case 6:    // Free viewing
+                _trials = Trials.FreeViewing;
                 GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
+                _trials = Trials.Roll;
                 GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
                 break;
             case 8:    // Yaw
+                _trials = Trials.Yaw;
                 GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
                 break;
             case 9:    // Pitch
+                _trials = Trials.Pitch;
                 GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
                 break;
             case 10:    // Micro saccades
+                _trials = Trials.MicroSaccades;
                 GetComponent<MicroSaccades>().RunMicroSaccades();
                 break;
         }
@@ -206,20 +264,15 @@ public class ExperimentManager : MonoBehaviour
         return fixationPoint;
     }
     
-    public GameObject GetLargeGrid()
+    public GameObject GetGrid()
     {
         return largeGrid;
     }
     
-    public GameObject GetSmallGrid()
-    {
-        return smallGrid;
-    }
-
     #endregion
 }
 
-    // TODO implement the trial
+    // TODO implement the trials
     // TODO implement movement
     // TODO smoothPursuit has too few elements
     // TODO read from the file to go on with the movement 

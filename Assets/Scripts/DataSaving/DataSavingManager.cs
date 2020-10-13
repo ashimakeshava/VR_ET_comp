@@ -82,11 +82,8 @@ public class DataSavingManager : MonoBehaviour
         }
         else
         {
-            throw new Exception("file not found");
+            throw new Exception("file not found " + path);
         }
-        
-        
-        
     }
     
     public T LoadFile<T>(string DataName)
@@ -141,17 +138,9 @@ public class DataSavingManager : MonoBehaviour
         Debug.Log("saved  " +fileName + " to : " + SavePath );
     }
     
-
-    
-    
-
-
-
     private string GetPathForSaveFile(string fileName, string format=".txt")
     {
         string name = fileName + format;
-        return Path.Combine(SavePath, name);
+        return Path.Combine(Application.persistentDataPath, name);
     }
-    
-    
 }

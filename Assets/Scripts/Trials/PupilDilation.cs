@@ -15,7 +15,7 @@ public class PupilDilation : MonoBehaviour
     private void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetSmallGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
     }
 
     IEnumerator StartPupilDilation()
