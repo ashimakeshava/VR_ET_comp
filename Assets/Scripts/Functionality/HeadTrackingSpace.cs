@@ -21,6 +21,8 @@ public class HeadTrackingSpace : MonoBehaviour
 
     private FixationCross fixationCross;
 
+    [SerializeField] private GameObject FixationPoint;
+
     private HeadMovement _yawMovement, _pitchMovement, _rollMovement;
     
 
@@ -89,15 +91,59 @@ public class HeadTrackingSpace : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (RollSetup.activeInHierarchy)
+            fixationCross.DisableVertical();
+            PitchSetup.SetActive(false);
+            RollSetup.SetActive(true);
+            YawSetup.SetActive(false);
+            foreach (Transform pos in RollSetup.transform)
             {
-                RollSetup.SetActive(false);
+                pos.gameObject.SetActive(false);
             }
-            else
-            {
-                RollSetup.SetActive(true);
-            }
+
+            int random = Random.Range(0, 5);
+            SetRollPositionActive(random);
+            
+            fixationCross.SetTargetObject(RollSetup.transform.GetChild(random).gameObject);
         }
+        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            fixationCross.DisableVertical();
+            PitchSetup.SetActive(true);
+            RollSetup.SetActive(false);
+            YawSetup.SetActive(false);
+            foreach (Transform pos in PitchSetup.transform)
+            {
+                pos.gameObject.SetActive(false);
+            }
+
+            int random = Random.Range(0, 5);
+
+            SetPitchPositionActive(random);
+                
+            
+            fixationCross.SetTargetObject(PitchSetup.transform.GetChild(random).gameObject);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            fixationCross.DisableHorizontal();
+            PitchSetup.SetActive(false);
+            RollSetup.SetActive(false);
+            YawSetup.SetActive(true);
+            foreach (Transform pos in YawSetup.transform)
+            {
+                pos.gameObject.SetActive(false);
+            }
+
+            int random = Random.Range(0, 5);
+
+            SetYawPositionActive(random);
+                
+            
+            fixationCross.SetTargetObject(YawSetup.transform.GetChild(random).gameObject);
+        }
+        
           
         
     }
@@ -111,10 +157,11 @@ public class HeadTrackingSpace : MonoBehaviour
 
         float yPos = Camera.main.transform.position.y;
 
-        YawSetup.transform.position = new Vector3(YawSetup.transform.position.x,yPos, YawSetup.transform.position.z);
-        PitchSetup.transform.position = new Vector3(PitchSetup.transform.position.x,yPos, PitchSetup.transform.position.z);
-        RollSetup.transform.position = new Vector3(RollSetup.transform.position.x,yPos, RollSetup.transform.position.z);
-        OrientationCross.transform.position =  new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
+        //YawSetup.transform.position = new Vector3(YawSetup.transform.position.x,yPos, YawSetup.transform.position.z);
+       // PitchSetup.transform.position = new Vector3(PitchSetup.transform.position.x,yPos, PitchSetup.transform.position.z);
+       //RollSetup.transform.position = new Vector3(RollSetup.transform.position.x,yPos, RollSetup.transform.position.z);
+        //OrientationCross.transform.position =  new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
+        FixationPoint.transform.position = new Vector3(OrientationCross.transform.position.x,yPos, OrientationCross.transform.position.z);
     }
     
     private void SetCalibrationStatus()
@@ -158,9 +205,19 @@ public class HeadTrackingSpace : MonoBehaviour
 
 
 
-    private void SetYawPosition(int i)
+    private void SetYawPositionActive(int i)
     {
         YawSetup.transform.GetChild(i).transform.gameObject.SetActive(true);
+    }
+
+    private void SetPitchPositionActive(int i)
+    {
+        PitchSetup.transform.GetChild(i).transform.gameObject.SetActive(true);
+    }
+    
+    private void SetRollPositionActive(int i)
+    {
+        RollSetup.transform.GetChild(i).transform.gameObject.SetActive(true);
     }
 
 
