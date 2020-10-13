@@ -45,31 +45,37 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
         
-        _blocks = new List<Block>();
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Block");    // todo handle this name as input
-        // todo load sheet
+        // todo ;oad sheet?
     }
     
 
     private void Start()
     {
         welcome.gameObject.SetActive(true);
+        
+        _blocks = new List<Block>();
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
     }
 
     private void Update()
     {
-        // todo click or push trigger to continue with the experiment
         if (!_trialIsRunning)
         {
             ResetFixationPoint();
-            
+            Debug.Log("here 1");
+
             if (_blockIndex == 6)    // todo 7 in case of the trial
             {
+                Debug.Log("here 2");
+
                 thankYou.gameObject.SetActive(true);
             }
             else if (_trialIndex == 12)
             {
+                Debug.Log("here 3");
+
                 // todo save data
+                
                 if (_blockIndex == 3) afterBlockThree.gameObject.SetActive(true);
                 else blockEnd.gameObject.SetActive(true);
 
@@ -78,6 +84,10 @@ public class ExperimentManager : MonoBehaviour
 
                 if (_continue)
                 {
+                    Debug.Log("here 4");
+
+                    // todo start recording
+                    
                     _continue = false;
                     afterBlockThree.gameObject.SetActive(false);
                     blockEnd.gameObject.SetActive(false);
@@ -87,12 +97,14 @@ public class ExperimentManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("should come here");
                 TrialInstructionActivation(true);
                 if (_continue) ExecuteTrials();
             }
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                Debug.Log("hmmmmmmmmm");
                 _continue = true;
             }
         }
@@ -107,21 +119,25 @@ public class ExperimentManager : MonoBehaviour
 
     private void TrialInstructionActivation(bool activate)
     {
-        welcome.gameObject.SetActive(false);
         trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
+        // welcome.gameObject.SetActive(false);
     }
     
     
-    void ExecuteTrials()    // todo implement 
+    void ExecuteTrials()
     {
         _trialIsRunning = true;
         _continue = false;
         TrialInstructionActivation(false);
         
+        Debug.Log("yaaaay");
+        Debug.Log("_blocks[_blockIndex].SequenceOfTrials[_trialIndex]" + _blocks[_blockIndex].SequenceOfTrials[_trialIndex]);
+
+        
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                // todo call calibration
+                EyetrackingManager.Instance.StartCalibration();
                 break;
             case 1:    // Validation
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
