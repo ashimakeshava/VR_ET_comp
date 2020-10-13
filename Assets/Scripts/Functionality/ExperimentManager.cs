@@ -29,9 +29,28 @@ public class ExperimentManager : MonoBehaviour
 
     private bool _continue;
     private bool _trialIsRunning;
+    private bool _welcomeState;
+    
     private int _blockIndex;
     private int _trialIndex;
 
+    enum Trials
+    {
+        Calibration,
+        Validation,
+        SmoothPursuit,
+        SmallGrid,
+        Blink,
+        PupilDilation,
+        Roll,
+        Yaw,
+        Pitch,
+        FreeViewing,
+        MicroSaccades
+    }
+
+    private Trials _trials;
+    
     #endregion
 
 
@@ -50,6 +69,7 @@ public class ExperimentManager : MonoBehaviour
 
     private void Start()
     {
+        _welcomeState = true;
         welcome.gameObject.SetActive(true);
         
         _blocks = new List<Block>();
@@ -58,11 +78,21 @@ public class ExperimentManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_trialIsRunning)
+        if (_welcomeState)
+        {
+            ResetFixationPoint();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                welcome.gameObject.SetActive(false);
+                _welcomeState = false;
+            }
+        }
+        else if (!_trialIsRunning)
         {
             ResetFixationPoint();
             Debug.Log("here 1");
-
+            
             if (_blockIndex == 6)    // todo 7 in case of the trial
             {
                 Debug.Log("here 2");
@@ -119,7 +149,6 @@ public class ExperimentManager : MonoBehaviour
     private void TrialInstructionActivation(bool activate)
     {
         trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
-        // welcome.gameObject.SetActive(false);
     }
     
     
@@ -137,38 +166,49 @@ public class ExperimentManager : MonoBehaviour
         {
             case 0:    // calibration
                 // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
-                
+
+                _trials = Trials.Calibration;
                 Debug.Log("Eye-calibration");
                 TrialEnded();
                 break;
             case 1:    // Validation
+                _trials = Trials.Validation;
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 break;
             case 2:    // Smooth pursuit
+                _trials = Trials.SmoothPursuit;
                 GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
                 break;
             case 3:    // Small grid
+                _trials = Trials.SmallGrid;
                 GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
                 break;
             case 4:    // Blink
+                _trials = Trials.Blink;
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
                 break;
             case 5:    // Pupil dilation
+                _trials = Trials.PupilDilation;
                 GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
                 break;
             case 6:    // Free viewing
+                _trials = Trials.FreeViewing;
                 GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
                 break;
             case 7:    // Roll
+                _trials = Trials.Roll;
                 GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
                 break;
             case 8:    // Yaw
+                _trials = Trials.Yaw;
                 GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
                 break;
             case 9:    // Pitch
+                _trials = Trials.Pitch;
                 GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
                 break;
             case 10:    // Micro saccades
+                _trials = Trials.MicroSaccades;
                 GetComponent<MicroSaccades>().RunMicroSaccades();
                 break;
         }
