@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class FixationCross : MonoBehaviour
 {
-    [SerializeField] private GameObject Upper;
-    [SerializeField] private GameObject Lower;
-    [SerializeField] private GameObject Left;
-    [SerializeField] private GameObject Right;
+    [SerializeField] private GameObject Upper0;
+    [SerializeField] private GameObject Lower0;
+    [SerializeField] private GameObject Left0;
+    [SerializeField] private GameObject Right0;
     [SerializeField] private GameObject Center;
-    
-    [SerializeField] private GameObject TargetUpper;
-    [SerializeField] private GameObject TargetLower;
-    [SerializeField] private GameObject TargetLeft;
-    [SerializeField] private GameObject TargetRight;
+    [SerializeField] private GameObject Upper1;
+    [SerializeField] private GameObject Lower1;
+    [SerializeField] private GameObject Left1;
+    [SerializeField] private GameObject Right1;
+
+
+    [SerializeField] private GameObject TargetUpper0;
+    [SerializeField] private GameObject TargetUpper1;
+    [SerializeField] private GameObject TargetLower0;
+    [SerializeField] private GameObject TargetLower1;
+    [SerializeField] private GameObject TargetLeft0;
+    [SerializeField] private GameObject TargetLeft1;
+    [SerializeField] private GameObject TargetRight0;
+    [SerializeField] private GameObject TargetRight1;
     [SerializeField] private GameObject TargetCenter;
     
     
-    
+    [SerializeField] private GameObject GlobalSphere;
     [SerializeField] private Material[] matArray;
     private Material error;
     private Material sucess;
@@ -29,6 +38,8 @@ public class FixationCross : MonoBehaviour
     private GameObject TargetObject;
     private bool Oriented;
     private bool isAligned;
+    
+    
     
     // Start is called before the first frame update
     void Start()
@@ -42,54 +53,91 @@ public class FixationCross : MonoBehaviour
         
         TargetCrossElements= new List<GameObject>();
         
-        CrossElements.Add(Upper);
-        CrossElements.Add(Lower);    
-        CrossElements.Add(Left);    
-        CrossElements.Add(Right);    
+        CrossElements.Add(Upper0);
+        CrossElements.Add(Upper1);
+        CrossElements.Add(Lower0);
+        CrossElements.Add(Lower1);
+        CrossElements.Add(Left0);
+        CrossElements.Add(Left1);    
+        CrossElements.Add(Right0);
+        CrossElements.Add(Right1);  
         CrossElements.Add(Center);
         
-        TargetCrossElements.Add(TargetUpper);
-        TargetCrossElements.Add(TargetLower);    
-        TargetCrossElements.Add(TargetLeft);    
-        TargetCrossElements.Add(TargetRight);    
+        TargetCrossElements.Add(TargetUpper0);
+        TargetCrossElements.Add(TargetUpper1);
+        TargetCrossElements.Add(TargetLower0);
+        TargetCrossElements.Add(TargetLower1);    
+        TargetCrossElements.Add(TargetLeft0);
+        TargetCrossElements.Add(TargetLeft1);
+        TargetCrossElements.Add(TargetRight0);
+        TargetCrossElements.Add(TargetRight1);
         TargetCrossElements.Add(TargetCenter);
+
+
         
-    
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //Debug.Log(CrossElements.Count);
         for (int i = 0; i < CrossElements.Count; i++)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(CrossElements[i].transform.position, Vector3.forward, out hit, 50.0f))
+            Debug.DrawRay(CrossElements[i].transform.position,CrossElements[i].transform.forward);
+            
+            
+            RaycastHit[] hits = Physics.BoxCastAll(CrossElements[i].transform.position,
+                CrossElements[i].transform.lossyScale / 1.8f,
+                this.CrossElements[i].transform.forward,
+                CrossElements[i].transform.rotation, 100f,1);
+
+            //Debug.Log(hits.Length +" " +CrossElements[i]);
+
+            foreach (var hit in hits)
             {
-                if (hit.collider.gameObject==TargetCrossElements[i])
+                Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
+            }
+            
+            bool catched=false;
+            
+            if (hits.Length == 0)
+            {
+                CrossElements[i].GetComponent<Renderer>().material.color = Color.grey *  0.6f;
+                continue;
+            }
+            
+            foreach (var hit in hits)
+            {
+                
+                //Debug.Log("hits.Length" + hit.transform.gameObject.name+ "+ "+ CrossElements[i]);
+                
+                if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)
                 {
-                    CrossElements[i].GetComponent<Renderer>().material.color = Color.green*0.6f ;
-                    isAligned = true;
+                    CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
+                    catched = true;
                 }
                 else
                 {
-                    CrossElements[i].GetComponent<Renderer>().material.color = Color.red*0.6f;
-                    isAligned = false;
+                    if (catched)
+                    {
+                        continue;
+                    }
+                    CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
+                    Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
                 }
-            }
-            else
-            {
-                CrossElements[i].GetComponent<Renderer>().material.color = Color.grey *  0.6f;
-            }
-        }
 
-        if (isAligned)
-        {
-            Debug.Log("Cross is aligned");
+                if (catched)
+                {
+                    isAligned = true;
+                }
+               
+            }
+            
+
         }
-        
         
     }
+    
 
 
     private void ResetCross()
@@ -102,15 +150,37 @@ public class FixationCross : MonoBehaviour
     
     public void DisableVertical()
     {
-        Left.gameObject.SetActive(false);
-        Right.gameObject.SetActive(false);
+        ResetCross();
+        Left0.gameObject.SetActive(true);
+        Left1.gameObject.SetActive(true);
+        
+        Right0.gameObject.SetActive(true);
+        Right1.gameObject.SetActive(true);
+
+
+        Upper0.gameObject.SetActive(false);
+        Upper1.gameObject.SetActive(false);
+        
+        Lower0.gameObject.SetActive(false);
+        Lower1.gameObject.SetActive(false);
     }
     
     
     public void DisableHorizontal()
     {
-        Upper.gameObject.SetActive(false);
-        Lower.gameObject.SetActive(false);
+        ResetCross();
+        Left0.gameObject.SetActive(false);
+        Left1.gameObject.SetActive(false);
+        
+        Right0.gameObject.SetActive(false);
+        Right1.gameObject.SetActive(false);
+
+
+        Upper0.gameObject.SetActive(true);
+        Upper1.gameObject.SetActive(true);
+        
+        Lower0.gameObject.SetActive(true);
+        Lower1.gameObject.SetActive(true);
     }
 
 
