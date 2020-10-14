@@ -19,6 +19,13 @@ public class HeadTrackingSpace : MonoBehaviour
 
     private bool ExperimentStatus;
 
+    private bool _isYaw;
+    private bool _isPitch;
+    private bool _isRoll;
+
+    private bool _isReadyToGo;
+    private bool isInResetStatus;
+
     private FixationCross fixationCross;
 
     [SerializeField] private GameObject FixationPoint;
@@ -29,29 +36,37 @@ public class HeadTrackingSpace : MonoBehaviour
     [SerializeField] private float CountdownUntilAligned=5f;
 
     private float Counter;
+
+    private bool isPeriodicallyResetting;
     // Start is called before the first frame update
     void Start()
     {
-        CalibrationStatus = true;
+        // CalibrationStatus = true;
         fixationCross = FixationCrossObject.GetComponent<FixationCross>();
-        _yawMovement = _pitchMovement = _rollMovement = new HeadMovement();
+        _yawMovement = new HeadMovement();
+        _pitchMovement = new HeadMovement();
+        _rollMovement = new HeadMovement();
 
         Counter = CountdownUntilAligned;
+        isPeriodicallyResetting = false;
+        isInResetStatus = false;
+        
+        RunPitch(_pitchMovement);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if (CalibrationStatus)
-        // {
-        //     ResetCameraCouroutineInCalibrationStatus(2f);
-        // }
         if (CalibrationStatus)
         {
+            if (!isPeriodicallyResetting)
+            {
+                StartCoroutine(PeriodicallyResetCameraPosition(2f));
+            }
+            
             if (fixationCross.GetAlignment())
             {
                 Counter-= Time.deltaTime;
-//                Debug.Log(Counter);
             }
             else
             {
@@ -60,95 +75,136 @@ public class HeadTrackingSpace : MonoBehaviour
             }
             if (Counter <= 0f)
             {
+                
                 SetExperimentStatus();
             }
         }
 
-
-
-        //if(receivedEyetrackingGaze)
-        
-        if (Input.GetKeyDown(KeyCode.A))
+        if (ExperimentStatus)
         {
-            fixationCross.DisableVertical();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            if (YawSetup.activeInHierarchy)
+            if (_isYaw)
             {
-                YawSetup.SetActive(false);
-            }
-            else
-            {
-                YawSetup.SetActive(true);
-            }
-        }
-        
-        
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ResetCameraPosition();
-        }
-        
-        
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            fixationCross.DisableVertical();
-            PitchSetup.SetActive(false);
-            RollSetup.SetActive(true);
-            YawSetup.SetActive(false);
-            foreach (Transform pos in RollSetup.transform)
-            {
-                pos.gameObject.SetActive(false);
-            }
-
-            int random = Random.Range(0, 5);
-            SetRollPositionActive(random);
-            
-            fixationCross.SetTargetObject(RollSetup.transform.GetChild(random).gameObject);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            fixationCross.DisableVertical();
-            PitchSetup.SetActive(true);
-            RollSetup.SetActive(false);
-            YawSetup.SetActive(false);
-            foreach (Transform pos in PitchSetup.transform)
-            {
-                pos.gameObject.SetActive(false);
-            }
-
-            int random = Random.Range(0, 5);
-
-            SetPitchPositionActive(random);
+                if (_isReadyToGo)
+                {
+                    int index = Random.Range(0, 5);
+                    StartYaw(index);
+                    _isReadyToGo = false;
+                }
                 
-            
-            fixationCross.SetTargetObject(PitchSetup.transform.GetChild(random).gameObject);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            fixationCross.DisableHorizontal();
-            PitchSetup.SetActive(false);
-            RollSetup.SetActive(false);
-            YawSetup.SetActive(true);
-            foreach (Transform pos in YawSetup.transform)
-            {
-                pos.gameObject.SetActive(false);
+                if (Input.GetKey(KeyCode.Space)&&fixationCross.GetAlignment())
+                {
+                    Debug.Log("finished");
+                    SetResetStatus();
+                    StartCoroutine(MakeReady(3));
+                }
             }
 
-            int random = Random.Range(0, 5);
-
-            SetYawPositionActive(random);
+            if (_isPitch)
+            {
+                if (_isReadyToGo)
+                {
+                    int index = Random.Range(0, 5);
+                    StartPitch(index);
+                    _isReadyToGo = false;
+                }
                 
-            
-            fixationCross.SetTargetObject(YawSetup.transform.GetChild(random).gameObject);
+                if (Input.GetKey(KeyCode.Space)&&fixationCross.GetAlignment())
+                {
+                    Debug.Log("finished");
+                    SetResetStatus();
+                    StartCoroutine(MakeReady(3));
+                }
+                
+                //ExperimentStatus = _isYaw = _isRoll = _isPitch = false;
+            }
+
+            if (_isRoll)
+            {
+                if (_isReadyToGo)
+                {
+                    int index = Random.Range(0, 5);
+                    StartRoll(index);
+                    _isReadyToGo = false;
+                }
+                
+                if (Input.GetKey(KeyCode.Space)&&fixationCross.GetAlignment())
+                {
+                    Debug.Log("finished");
+                    SetStandybyStatus();
+                    StartCoroutine(MakeReady(3));
+                }
+            }
+        }
+    }
+    
+    
+
+    private void SetStandybyStatus()
+    {
+       FixationPoint.SetActive(false);
+       FixationCrossObject.SetActive(false);
+       OrientationCross.SetActive(false);
+    }
+
+    private void StartPitch(int index)
+    {
+        
+        FixationPoint.SetActive(true);
+        FixationCrossObject.SetActive(true);
+        
+        fixationCross.DisableVertical();
+        PitchSetup.SetActive(true);
+        RollSetup.SetActive(false);
+        YawSetup.SetActive(false);
+        
+        foreach (Transform pos in PitchSetup.transform)
+        {
+            pos.gameObject.SetActive(false);
         }
         
-          
         
+
+        
+        SetPitchPositionActive(index);
+        fixationCross.SetTargetObject(PitchSetup.transform.GetChild(index).gameObject);
+    }
+
+    private void StartYaw(int index)
+    {
+        FixationPoint.SetActive(true);
+        FixationCrossObject.SetActive(true);
+
+        fixationCross.DisableHorizontal();
+        PitchSetup.SetActive(false);
+        RollSetup.SetActive(false);
+        YawSetup.SetActive(true);
+        
+        foreach (Transform pos in YawSetup.transform)
+        {
+            pos.gameObject.SetActive(false);
+        }
+        SetYawPositionActive(index);
+        fixationCross.SetTargetObject(YawSetup.transform.GetChild(index).gameObject);
+    }
+
+    private void StartRoll(int index)
+    {
+        FixationPoint.SetActive(true);
+        FixationCrossObject.SetActive(true);
+
+        fixationCross.DisableVertical();
+        PitchSetup.SetActive(false);
+        RollSetup.SetActive(true);
+        YawSetup.SetActive(false);
+        foreach (Transform pos in RollSetup.transform)
+        {
+            pos.gameObject.SetActive(false);
+        }
+
+        
+        SetRollPositionActive(index);
+
+        fixationCross.SetTargetObject(RollSetup.transform.GetChild(index).gameObject);
     }
 
     private void ResetCameraPosition()
@@ -170,6 +226,7 @@ public class HeadTrackingSpace : MonoBehaviour
     private void SetCalibrationStatus()
     {
         OrientationCross.SetActive(true);
+        FixationCrossObject.SetActive(true);
         FixationPoint.SetActive(false);
         foreach (Transform child in OrientationCross.transform)
         {
@@ -180,22 +237,47 @@ public class HeadTrackingSpace : MonoBehaviour
 
         CalibrationStatus = true;
 
+        _isReadyToGo = false;
+
 
         //FixationCross.SetActive(true);
     }
-
-    private void ResetCameraCouroutineInCalibrationStatus(float seconds)
+    
+    
+    IEnumerator MakeReady(float sec)
     {
+        if (!isInResetStatus)
+        {
+            isInResetStatus = true;
+            yield return new WaitForSeconds(sec);
+            _isReadyToGo = true;
+            isInResetStatus = false;
+        }
+
+        
     }
+    
+    
+    
     IEnumerator PeriodicallyResetCameraPosition(float sec)
     {
-        ResetCameraPosition();
-        yield return new WaitForSeconds(sec);
+        isPeriodicallyResetting=true;
+        
+        while (!fixationCross.GetAlignment())
+        {
+            Debug.Log("periodic allignment");
+            yield return new WaitForSeconds(sec);
+            ResetCameraPosition();
+        }
+
+        isPeriodicallyResetting = false;
+
     }
     
 
     private void SetExperimentStatus()
     {
+        _isReadyToGo = true;
         OrientationCross.SetActive(false);
 
         FixationPoint.SetActive(true);
@@ -233,18 +315,37 @@ public class HeadTrackingSpace : MonoBehaviour
     public void RunYaw(HeadMovement yawMovement)
     {
         _yawMovement = yawMovement;
+        _isYaw = true;
+        _isRoll = false;
+        _isPitch = false;
+
+        CalibrationStatus = true;
+
+
         // todo start yaw
     }
     
     public void RunPitch(HeadMovement pitchMovement)
     {
         _pitchMovement = pitchMovement;
+        _isYaw = false;
+        _isRoll = false;
+        _isPitch = true;
+        
+        CalibrationStatus = true;
+
         // todo start pitch
     }
     
     public void RunRoll(HeadMovement rollMovement)
     {
         _rollMovement = rollMovement;
+        _isYaw = false;
+        _isRoll = true;
+        _isPitch = false;
+        
+        CalibrationStatus = true;
+
         // todo start roll
     }
     

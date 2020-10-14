@@ -136,7 +136,7 @@ public class FixationCross : MonoBehaviour
         if (correctAligned == CrossElements.Count|| (isReduced&& correctAligned == (CrossElements.Count-4)))
         {
             isAligned = true;
-            Debug.Log(isAligned);
+//            Debug.Log(isAligned);
         }
         else
         {
