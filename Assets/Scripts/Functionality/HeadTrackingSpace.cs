@@ -86,7 +86,7 @@ public class HeadTrackingSpace : MonoBehaviour
             {
                 if (_isReadyToGo)
                 {
-                    int index = Random.Range(0, 5);
+                    int index = Random.Range(0, 5);        //TODO assign from MovementFrame
                     StartYaw(index);
                     _isReadyToGo = false;
                 }
