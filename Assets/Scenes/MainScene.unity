@@ -1657,10 +1657,10 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2968,16 +2968,18 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Calibration
+  m_Text: 'Calibration
+
+'
 --- !u!222 &1412742001
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3331,7 +3333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551134023}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_Children: []
   m_Father: {fileID: 963194228}
@@ -3568,6 +3570,7 @@ MonoBehaviour:
   fixationPoint: {fileID: 1551134023}
   mainCamera: {fileID: 963194225}
   largeGrid: {fileID: 2890066795422448538}
+  mainSkyBox: {fileID: 2100000, guid: 321bbd0a185393d4b8dd01951497c35d, type: 2}
   welcome: {fileID: 298434861}
   blockEnd: {fileID: 312281568}
   afterBlockThree: {fileID: 766795458}
@@ -3766,6 +3769,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db1d2567ac7e21469ac7e96c03da31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pictures:
+  - {fileID: 1413172177}
+  - {fileID: 1101709023}
+  - {fileID: 1378959800}
+  - {fileID: 253355626}
+  - {fileID: 641750098}
+  - {fileID: 995510156}
+  - {fileID: 53220557}
+  - {fileID: 1100258589}
+  - {fileID: 620549847}
+  - {fileID: 1832990250}
+  - {fileID: 1296446373}
+  - {fileID: 1631083624}
+  - {fileID: 553601264}
+  - {fileID: 402827076}
+  - {fileID: 744178895}
+  - {fileID: 1490635316}
+  - {fileID: 4743819}
+  - {fileID: 507122044}
+  - {fileID: 241833521}
+  - {fileID: 1136787476}
+  - {fileID: 1060621485}
 --- !u!114 &1820246659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3814,7 +3839,8 @@ MonoBehaviour:
   YawSetup: {fileID: 0}
   PitchSetup: {fileID: 0}
   RollSetup: {fileID: 0}
-  CountdownAligned: 5
+  FixationPoint: {fileID: 0}
+  CountdownUntilAligned: 5
 --- !u!114 &1820246662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3827,28 +3853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e2b606946348c47b41f2efe28897c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freeViewingPictures:
-  - {fileID: 1413172177}
-  - {fileID: 1101709023}
-  - {fileID: 1378959800}
-  - {fileID: 253355626}
-  - {fileID: 641750098}
-  - {fileID: 995510156}
-  - {fileID: 53220557}
-  - {fileID: 1100258589}
-  - {fileID: 620549847}
-  - {fileID: 1832990250}
-  - {fileID: 1296446373}
-  - {fileID: 1631083624}
-  - {fileID: 553601264}
-  - {fileID: 402827076}
-  - {fileID: 744178895}
-  - {fileID: 1490635316}
-  - {fileID: 4743819}
-  - {fileID: 507122044}
-  - {fileID: 241833521}
-  - {fileID: 1136787476}
-  - {fileID: 1060621485}
 --- !u!1 &1832990250
 GameObject:
   m_ObjectHideFlags: 0
