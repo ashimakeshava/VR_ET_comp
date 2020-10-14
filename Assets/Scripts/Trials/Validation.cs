@@ -34,6 +34,9 @@ public class Validation : MonoBehaviour
         }
         
         _grid.gameObject.transform.localPosition = new Vector3(0, 0, 2);
+        
+        yield return new WaitForSeconds(2f);
+            
         StartCoroutine(StartSecondValidation());
     }
     

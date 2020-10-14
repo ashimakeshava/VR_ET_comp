@@ -33,7 +33,8 @@ public class PupilDilation : MonoBehaviour
             RenderSettings.skybox = skyBoxes[dataFrame.ColorIndex];
             yield return new WaitForSeconds(dataFrame.ColorDuration);
         }
-        
+
+        RenderSettings.skybox = ExperimentManager.Instance.GetMainSkybox();
         ExperimentManager.Instance.TrialEnded();
     }
     
@@ -44,3 +45,5 @@ public class PupilDilation : MonoBehaviour
         StartCoroutine(StartPupilDilation());
     }
 }
+
+// todo change the skybox back to default

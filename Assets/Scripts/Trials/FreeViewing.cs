@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FreeViewing : MonoBehaviour
 {
+    [SerializeField] private List<GameObject> _pictures;
+    
     private GameObject _fixationPoint;
     private List<FreeViewingDataFrame> _freeViewingDataFrames;
 
@@ -24,12 +26,14 @@ public class FreeViewing : MonoBehaviour
             yield return new WaitForSeconds(frame.FixationPointDuration);
             
             _fixationPoint.gameObject.SetActive(false);
-            frame.Picture.SetActive(true);
+            _pictures[frame.IndexofTheObject].SetActive(true);
 
             yield return new WaitForSeconds(frame.PhotoFixationDuration);
             
-            frame.Picture.SetActive(false);
+            _pictures[frame.IndexofTheObject].SetActive(false);
         }
+        
+        ExperimentManager.Instance.TrialEnded();
     }
 
     public void RunFreeViewing(List<FreeViewingDataFrame> dataFrames)
