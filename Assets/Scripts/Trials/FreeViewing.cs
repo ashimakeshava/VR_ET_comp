@@ -18,7 +18,7 @@ public class FreeViewing : MonoBehaviour
     {
         foreach (var frame in _freeViewingDataFrames)
         {
-            _fixationPoint.transform.position = Vector3.forward;
+            _fixationPoint.transform.localPosition = Vector3.forward;
             _fixationPoint.gameObject.SetActive(true);
         
             yield return new WaitForSeconds(frame.FixationPointDuration);

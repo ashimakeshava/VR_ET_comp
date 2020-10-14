@@ -21,7 +21,7 @@ public class PupilDilation : MonoBehaviour
     IEnumerator StartPupilDilation()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.position = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         RenderSettings.skybox = black;

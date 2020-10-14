@@ -22,7 +22,7 @@ public class Blink : MonoBehaviour
     IEnumerator RunBeep()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.position = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         yield return new WaitForSeconds(_delays[0]);

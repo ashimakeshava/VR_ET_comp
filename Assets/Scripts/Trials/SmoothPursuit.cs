@@ -25,7 +25,7 @@ public class SmoothPursuit : MonoBehaviour
     IEnumerator StartSmoothPursuit()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.position = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo generate this time as well or save this time
@@ -33,7 +33,7 @@ public class SmoothPursuit : MonoBehaviour
         for (int i = 0; i <= _smoothPursuit.Count; i++)
         {
             _t += Time.deltaTime / _timeToReachGoal;
-            _fixationPoint.transform.position = Vector3.Lerp(_smoothPursuit[i].Position, _smoothPursuit[i + 1].Position, _t);
+            _fixationPoint.transform.localPosition = Vector3.Lerp(_smoothPursuit[i].Position, _smoothPursuit[i + 1].Position, _t);
             
             yield return new WaitForSeconds(_smoothPursuit[i].FixationDuration);
         }
