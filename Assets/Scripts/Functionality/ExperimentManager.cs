@@ -18,6 +18,8 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject largeGrid;
     
+    [SerializeField] private Material mainSkyBox;
+    
     [Space] [Header("Instructions")] 
     [SerializeField] private Text welcome;    // todo write the welcome message and give instruction for calibration
     [SerializeField] private Text blockEnd;    // todo write the block ended message
@@ -63,7 +65,7 @@ public class ExperimentManager : MonoBehaviour
             Instance = this;
         }
         
-        // todo ;oad sheet?
+        // todo load sheet?
     }
     
 
@@ -91,18 +93,13 @@ public class ExperimentManager : MonoBehaviour
         else if (!_trialIsRunning)
         {
             ResetFixationPoint();
-            Debug.Log("here 1");
             
             if (_blockIndex == 6)    // todo 7 in case of the trial
             {
-                Debug.Log("here 2");
-
                 thankYou.gameObject.SetActive(true);
             }
             else if (_trialIndex == 12)
             {
-                Debug.Log("here 3");
-
                 // todo save data
                 
                 if (_blockIndex == 3) afterBlockThree.gameObject.SetActive(true);
@@ -113,8 +110,6 @@ public class ExperimentManager : MonoBehaviour
 
                 if (_continue)
                 {
-                    Debug.Log("here 4");
-
                     // todo start recording
                     
                     _continue = false;
@@ -126,14 +121,12 @@ public class ExperimentManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("should come here");
                 TrialInstructionActivation(true);
                 if (_continue) ExecuteTrials();
             }
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("hmmmmmmmmm");
                 _continue = true;
             }
         }
@@ -157,19 +150,16 @@ public class ExperimentManager : MonoBehaviour
         _trialIsRunning = true;
         _continue = false;
         TrialInstructionActivation(false);
-        
-        Debug.Log("yaaaay");
-        Debug.Log("_blocks[_blockIndex].SequenceOfTrials[_trialIndex]" + _blocks[_blockIndex].SequenceOfTrials[_trialIndex]);
 
-        
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
                 // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
 
                 _trials = Trials.Calibration;
-                Debug.Log("Eye-calibration");
-                TrialEnded();
+                Debug.Log("Eye-calibration");    // todo remove
+                TrialEnded();    // todo remove
+                
                 break;
             case 1:    // Validation
                 _trials = Trials.Validation;
@@ -197,15 +187,27 @@ public class ExperimentManager : MonoBehaviour
                 break;
             case 7:    // Roll
                 _trials = Trials.Roll;
-                GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
+                // GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
+                
+                Debug.Log("Roll");    // todo remove
+                TrialEnded();    // todo remove
+                
                 break;
             case 8:    // Yaw
                 _trials = Trials.Yaw;
-                GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
+                // GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
+                
+                Debug.Log("Yaw");    // todo remove
+                TrialEnded();    // todo remove
+                
                 break;
             case 9:    // Pitch
                 _trials = Trials.Pitch;
-                GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
+                // GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
+                
+                Debug.Log("Pitch");    // todo remove
+                TrialEnded();    // todo remove
+                
                 break;
             case 10:    // Micro saccades
                 _trials = Trials.MicroSaccades;
@@ -267,6 +269,11 @@ public class ExperimentManager : MonoBehaviour
     public GameObject GetGrid()
     {
         return largeGrid;
+    }
+
+    public Material GetMainSkybox()
+    {
+        return mainSkyBox;
     }
     
     #endregion

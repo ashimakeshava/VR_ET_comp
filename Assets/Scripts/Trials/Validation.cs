@@ -21,36 +21,39 @@ public class Validation : MonoBehaviour
     IEnumerator StartFirstValidation()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.position = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo save this time
 
         foreach (var element in _gridElementsClose)
         {
-            _fixationPoint.transform.position = element.Position;
+            _fixationPoint.transform.localPosition = element.Position;
 
            yield return new WaitForSeconds(element.FixationDuration);
         }
         
-        _grid.gameObject.transform.position = new Vector3(0, 0, 2);
+        _grid.gameObject.transform.localPosition = new Vector3(0, 0, 2);
+        
+        yield return new WaitForSeconds(2f);
+            
         StartCoroutine(StartSecondValidation());
     }
     
     IEnumerator StartSecondValidation()
     {
-        _fixationPoint.transform.position = new Vector3(0, 0, 2);
+        _fixationPoint.transform.localPosition = new Vector3(0, 0, 2);
         
         yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
         
         foreach (var element in _gridElementsFar)
         {
-            _fixationPoint.transform.position = element.Position;
+            _fixationPoint.transform.localPosition = element.Position;
 
             yield return new WaitForSeconds(element.FixationDuration);
         }
 
-        _grid.gameObject.transform.position = new Vector3(0, 0, 1);
+        _grid.gameObject.transform.localPosition = new Vector3(0, 0, 1);
         ExperimentManager.Instance.TrialEnded();
     }
 

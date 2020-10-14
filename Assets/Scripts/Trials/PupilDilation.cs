@@ -21,7 +21,7 @@ public class PupilDilation : MonoBehaviour
     IEnumerator StartPupilDilation()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.position = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
         RenderSettings.skybox = black;
@@ -33,7 +33,8 @@ public class PupilDilation : MonoBehaviour
             RenderSettings.skybox = skyBoxes[dataFrame.ColorIndex];
             yield return new WaitForSeconds(dataFrame.ColorDuration);
         }
-        
+
+        RenderSettings.skybox = ExperimentManager.Instance.GetMainSkybox();
         ExperimentManager.Instance.TrialEnded();
     }
     
@@ -44,3 +45,5 @@ public class PupilDilation : MonoBehaviour
         StartCoroutine(StartPupilDilation());
     }
 }
+
+// todo change the skybox back to default
