@@ -51,7 +51,7 @@ public class HeadTrackingSpace : MonoBehaviour
             if (fixationCross.GetAlignment())
             {
                 Counter-= Time.deltaTime;
-                Debug.Log(Counter);
+//                Debug.Log(Counter);
             }
             else
             {

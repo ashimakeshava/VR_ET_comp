@@ -38,7 +38,9 @@ public class FixationCross : MonoBehaviour
     private GameObject TargetObject;
     private bool Oriented;
     private bool isAligned;
-    
+    private bool isHorizontal;
+    private bool isVertical;
+    private bool isReduced;
     
     
     // Start is called before the first frame update
@@ -80,12 +82,10 @@ public class FixationCross : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int correctAligned = 0;
         //Debug.Log(CrossElements.Count);
         for (int i = 0; i < CrossElements.Count; i++)
         {
-            Debug.DrawRay(CrossElements[i].transform.position,CrossElements[i].transform.forward);
-            
-            
             RaycastHit[] hits = Physics.BoxCastAll(CrossElements[i].transform.position,
                 CrossElements[i].transform.lossyScale / 1.8f,
                 this.CrossElements[i].transform.forward,
@@ -108,10 +108,9 @@ public class FixationCross : MonoBehaviour
             
             foreach (var hit in hits)
             {
-                
                 //Debug.Log("hits.Length" + hit.transform.gameObject.name+ "+ "+ CrossElements[i]);
                 
-                if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)
+                if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)    //interesting point
                 {
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
                     catched = true;
@@ -125,17 +124,25 @@ public class FixationCross : MonoBehaviour
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
                     Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
                 }
+            }
 
-                if (catched)
-                {
-                    isAligned = true;
-                }
-               
+            if (catched == true)
+            {
+                correctAligned += 1;
             }
             
-
         }
-        
+
+        if (correctAligned == CrossElements.Count|| (isReduced&& correctAligned == (CrossElements.Count-4)))
+        {
+            isAligned = true;
+            Debug.Log(isAligned);
+        }
+        else
+        {
+            isAligned = false;
+        }
+
     }
     
 
@@ -146,6 +153,8 @@ public class FixationCross : MonoBehaviour
         {
             cross.gameObject.SetActive(true);
         }
+
+        isReduced = false;
     }
     
     public void DisableVertical()
@@ -163,6 +172,8 @@ public class FixationCross : MonoBehaviour
         
         Lower0.gameObject.SetActive(false);
         Lower1.gameObject.SetActive(false);
+
+        isReduced = true;
     }
     
     
@@ -181,6 +192,8 @@ public class FixationCross : MonoBehaviour
         
         Lower0.gameObject.SetActive(true);
         Lower1.gameObject.SetActive(true);
+
+        isReduced = true;
     }
 
 
