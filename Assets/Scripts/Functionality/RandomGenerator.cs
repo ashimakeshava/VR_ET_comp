@@ -12,15 +12,8 @@ using RandomUnity = UnityEngine.Random;
 
 public class RandomGenerator : MonoBehaviour
 {
-    [Header("Constant Trials between all Participants")] [Space]
-    [SerializeField] private List<GameObject> freeViewingPictures;
-    
     private Random _random;
 
-    private List<int> _yawMovements;
-    private List<int> _rollMovements;
-    private List<int> _pitchMovements;
-    
     private List<List<FreeViewingDataFrame>> _randomizedPictureList;
 
     private List<RouteFrame> _routeFramesLargeGridClose, 
@@ -63,24 +56,7 @@ public class RandomGenerator : MonoBehaviour
         _randomizedLargeGridCloseVarjo = new List<List<GridElement>>();
         _randomizedLargeGridFarVarjo = new List<List<GridElement>>();
         _randomizedSmallGridVarjo = new List<List<GridElement>>();
-        
-        _rollMovements = new List<int> {
-            0,1,2,3,4,
-            0,1,2,3,4,
-            0,1,2,3,4};
-        
-        _pitchMovements = new List<int> {
-            0,1,2,3,4,
-            0,1,2,3,4,
-            0,1,2,3,4};
 
-        _yawMovements = new List<int>
-        {
-            0, 1, 2, 3, 4,
-            0, 1, 2, 3, 4,
-            0, 1, 2, 3, 4
-        };
-        
         _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 1");
         _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 2");
         _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 3");
@@ -223,6 +199,13 @@ public class RandomGenerator : MonoBehaviour
     
     private List<List<FreeViewingDataFrame>> RandomizeFreeViewingPictures()
     {
+        List<int> freeViewingIndices = new List<int>
+        {
+            0,1,2,3,4,5,6,7,
+            8,9,10,11,12,13,14,
+            15,16,17,18,19,20,21
+        };
+
         List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
 
         for (int i = 0; i < _numberOfBlocks; i++)
@@ -233,17 +216,15 @@ public class RandomGenerator : MonoBehaviour
             {
                 FreeViewingDataFrame freeViewingDataFrame = new FreeViewingDataFrame();
                 
-                int index = _random.Next(freeViewingPictures.Count);
+                int index = _random.Next(freeViewingIndices.Count);
                 float jitter = RandomUnity.Range(-.2f, .2f);
 
-                freeViewingDataFrame.ObjectName = freeViewingPictures[index].name;
-                freeViewingDataFrame.Position = freeViewingPictures[index].transform.position;
+                freeViewingDataFrame.IndexofTheObject = freeViewingIndices[index];
                 freeViewingDataFrame.PhotoFixationDuration = 6;
                 freeViewingDataFrame.FixationPointDuration = .9f + jitter;
-                freeViewingDataFrame.Picture = freeViewingPictures[index];
                 
                 dataFrames.Add(freeViewingDataFrame);
-                freeViewingPictures.RemoveAt(index);
+                freeViewingIndices.RemoveAt(index);
             }
             
             list.Add(dataFrames);
