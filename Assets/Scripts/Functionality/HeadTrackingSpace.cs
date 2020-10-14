@@ -94,7 +94,7 @@ public class HeadTrackingSpace : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space)&&fixationCross.GetAlignment())
                 {
                     Debug.Log("finished");
-                    SetResetStatus();
+                    SetStandybyStatus();
                     StartCoroutine(MakeReady(3));
                 }
             }
@@ -111,7 +111,7 @@ public class HeadTrackingSpace : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space)&&fixationCross.GetAlignment())
                 {
                     Debug.Log("finished");
-                    SetResetStatus();
+                    SetStandybyStatus();
                     StartCoroutine(MakeReady(3));
                 }
                 
