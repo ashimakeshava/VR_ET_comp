@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -219,8 +219,8 @@ public class RandomGenerator : MonoBehaviour
                 int index = _random.Next(freeViewingIndices.Count);
                 float jitter = RandomUnity.Range(-.2f, .2f);
 
-                freeViewingDataFrame.IndexofTheStimuli = freeViewingIndices[index];
-                freeViewingDataFrame.StimuliDuration = 6;
+                freeViewingDataFrame.IndexofTheObject = freeViewingIndices[index];
+                freeViewingDataFrame.PhotoFixationDuration = 6;
                 freeViewingDataFrame.FixationPointDuration = .9f + jitter;
                 
                 dataFrames.Add(freeViewingDataFrame);
@@ -287,7 +287,7 @@ public class RandomGenerator : MonoBehaviour
             foreach (var element in _smoothPursuitRoutes[index])
             {
                 float jitter = RandomUnity.Range(-.2f, .2f);
-                element.StimuliDuration += jitter;
+                element.FixationDuration += jitter;
                 
                 jitter = RandomUnity.Range(-.2f, .2f);
                 element.MovementDuration += jitter;
@@ -312,8 +312,8 @@ public class RandomGenerator : MonoBehaviour
             int index = _random.Next(pupilDilationSequence.Count);
             float jitter = RandomUnity.Range(-.2f, .2f);
             
-            pupilDilationDataFrame.StimuliIndex = index;
-            pupilDilationDataFrame.StimuliDuration = 3f + jitter;
+            pupilDilationDataFrame.ColorIndex = index;
+            pupilDilationDataFrame.ColorDuration = 3f + jitter;
 
             pupilDilationDataFrames.Add(pupilDilationDataFrame);
             pupilDilationSequence.RemoveAt(index);

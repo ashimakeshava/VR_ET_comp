@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Tobii.StreamEngine;
 using UnityEngine;
@@ -42,7 +42,7 @@ public class SmoothPursuit : MonoBehaviour
                 timeDiff = Time.time - startTime;
             }
 
-            yield return new WaitForSeconds(_smoothPursuit[i].StimuliDuration);
+            yield return new WaitForSeconds(_smoothPursuit[i].FixationDuration);
         }
 
         ExperimentManager.Instance.TrialEnded();

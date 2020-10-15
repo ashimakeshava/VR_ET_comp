@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RandomUnity = UnityEngine.Random;
@@ -30,7 +30,7 @@ public class Validation : MonoBehaviour
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-           yield return new WaitForSeconds(element.StimuliDuration);
+           yield return new WaitForSeconds(element.FixationDuration);
         }
         
         _grid.gameObject.transform.localPosition = new Vector3(0, 0, 2);
@@ -50,7 +50,7 @@ public class Validation : MonoBehaviour
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-            yield return new WaitForSeconds(element.StimuliDuration);
+            yield return new WaitForSeconds(element.FixationDuration);
         }
 
         _grid.gameObject.transform.localPosition = new Vector3(0, 0, 1);

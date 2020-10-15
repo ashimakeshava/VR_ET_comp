@@ -9,7 +9,7 @@ using UnityEngine;
 {
     public string ObjectName;
     public Vector3 Position;
-    public float StimuliDuration;
+    public float FixationDuration;
     public float MovementDuration;
     public string PreviousObject;
     public int JumpSize;

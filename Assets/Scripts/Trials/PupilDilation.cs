@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,8 +30,8 @@ public class PupilDilation : MonoBehaviour
 
         foreach (var dataFrame in _pupilDilationDataFrames)
         {
-            RenderSettings.skybox = skyBoxes[dataFrame.StimuliIndex];
-            yield return new WaitForSeconds(dataFrame.StimuliDuration);
+            RenderSettings.skybox = skyBoxes[dataFrame.ColorIndex];
+            yield return new WaitForSeconds(dataFrame.ColorDuration);
         }
 
         RenderSettings.skybox = ExperimentManager.Instance.GetMainSkybox();

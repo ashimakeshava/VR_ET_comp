@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -190,7 +190,7 @@ public class RouteGenerator : MonoBehaviour
         GridElement OldElement = new GridElement{
             ObjectName = _fixationPoint.gameObject.name,
             Position = _fixationPoint.transform.position,
-            StimuliDuration = GenerateRandomFixationTime(),
+            FixationDuration = GenerateRandomFixationTime(),
             MovementDuration = GenerateMovementTime()
             };
        
@@ -261,7 +261,7 @@ public class RouteGenerator : MonoBehaviour
                     Position = newPosition,
                     JumpSize =jumpsize,
                     PreviousObject = OldElement.ObjectName,
-                    StimuliDuration = GenerateRandomFixationTime(),
+                    FixationDuration = GenerateRandomFixationTime(),
                     MovementDuration = GenerateMovementTime()
                 };
                 
