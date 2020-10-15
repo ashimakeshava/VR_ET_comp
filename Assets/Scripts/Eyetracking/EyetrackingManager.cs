@@ -31,7 +31,7 @@ public class EyetrackingManager : MonoBehaviour
     private void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _sampleRate = 1f / SetSampleRate; 
+        
         //singleton pattern a la Unity
         if (Instance == null)
         {
@@ -58,40 +58,20 @@ public class EyetrackingManager : MonoBehaviour
     private void  OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _hmdTransform = Camera.main.transform;
-        //Debug.Log("hello new World");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _sampleRate = 1f / SetSampleRate; 
         _eyeTrackingRecorder = GetComponent<EyetrackingDataRecorder>();
-
-        _eyetrackingValidation = GetComponentInChildren<EyetrackingValidation>();
-
-//        _eyetrackingValidation.NotifyEyeValidationObservers += SetEyeValidationStatus;
     }
 
     // Update is called once per frame
-
-    public void StartValidation()
-    {
-        Debug.Log("validating...");
-        _eyetrackingValidation.StartValidation(eyeValidationDelay);
-    }
-
-    public void AbortValidation()
-    {
-        _eyetrackingValidation.AbortValidation();
-        NotifyEyeValidationCompletnessObservers?.Invoke(false);
-    }
-
-    public void StartValidation(float delay)
-    {
-        _eyetrackingValidation.StartValidation(delay);
-    }
     
-    
+
+
+
     public void StartCalibration()
     {
         
