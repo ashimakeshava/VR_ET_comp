@@ -78,6 +78,14 @@ public class HeadTrackingSpace : MonoBehaviour
         {
             if (_isYaw)
             {
+                if (!_yawMovement.MovementPosition.Any())
+                {
+                    SetStandByStatus();
+                    _isReadyToGo = false;
+                    _experimentStatus = false;
+                    ExperimentManager.Instance.TrialEnded();
+                }
+                
                 if (_isReadyToGo)
                 {
                     int index = _random.Next(_yawMovement.MovementPosition.Count);
@@ -90,27 +98,23 @@ public class HeadTrackingSpace : MonoBehaviour
                     _isReadyToGo = false;
                 }
                 
-                if (Input.GetKey(KeyCode.Space) && _fixationCross.GetAlignment())
+                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
                 {
-                    Debug.Log("finished");
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
-                
-                if (_trialEnded)
-                {
-                    if (!_yawMovement.MovementPosition.Any())
-                    {
-                        SetStandByStatus();
-                        ExperimentManager.Instance.TrialEnded();
-                    }
-                }
-                
-                // _experimentStatus = _isYaw = _isRoll = _isPitch = false;
             }
 
             if (_isPitch)
             {
+                if (!_pitchMovement.MovementPosition.Any())
+                {
+                    SetStandByStatus();
+                    _isReadyToGo = false;
+                    _experimentStatus = false;
+                    ExperimentManager.Instance.TrialEnded();
+                }
+                
                 if (_isReadyToGo)
                 {
                     int index = _random.Next(_pitchMovement.MovementPosition.Count);
@@ -123,55 +127,39 @@ public class HeadTrackingSpace : MonoBehaviour
                     _isReadyToGo = false;
                 }
                 
-                if (Input.GetKey(KeyCode.Space) && _fixationCross.GetAlignment())
+                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
                 {
-                    Debug.Log("finished");
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
-
-                if (_trialEnded)
-                {
-                    if (!_pitchMovement.MovementPosition.Any())
-                    {
-                        SetStandByStatus();
-                        ExperimentManager.Instance.TrialEnded();
-                    }
-                }
-                
-                // _experimentStatus = _isYaw = _isRoll = _isPitch = false;
             }
 
             if (_isRoll)
             {
+                if (!_rollMovement.MovementPosition.Any())
+                {
+                    SetStandByStatus();
+                    _isReadyToGo = false;
+                    _experimentStatus = false;
+                    ExperimentManager.Instance.TrialEnded();
+                }
+
                 if (_isReadyToGo)
                 {
                     int index = _random.Next(_rollMovement.MovementPosition.Count);
-                    
+
                     StartCoroutine(StartRoll(_rollMovement.MovementPosition[index], _rollMovement.DelayBeforeStimuli[index]));
                     
                     _rollMovement.MovementPosition.RemoveAt(index);
                     _isReadyToGo = false;
                 }
                 
-                if (Input.GetKey(KeyCode.Space) && _fixationCross.GetAlignment())
+                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
                 {
-                    Debug.Log("finished");
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
             }
-            
-            if (_trialEnded)
-            {
-                if (!_rollMovement.MovementPosition.Any())
-                {
-                    SetStandByStatus();
-                    ExperimentManager.Instance.TrialEnded();
-                }
-            }
-            
-            // _experimentStatus = _isYaw = _isRoll = _isPitch = false;
         }
     }
 

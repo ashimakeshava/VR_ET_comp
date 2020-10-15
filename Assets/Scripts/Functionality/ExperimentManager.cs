@@ -68,7 +68,6 @@ public class ExperimentManager : MonoBehaviour
         // todo load sheet?
     }
     
-
     private void Start()
     {
         _welcomeState = true;
@@ -143,8 +142,7 @@ public class ExperimentManager : MonoBehaviour
     {
         trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
-    
-    
+
     void ExecuteTrials()
     {
         _trialIsRunning = true;
@@ -208,10 +206,10 @@ public class ExperimentManager : MonoBehaviour
 
     public GameObject GetCurrentActiveGrid()
     {
-        var GridList = GetGridList();
+        var gridList = GetGridList();
         GameObject activeGrid=new GameObject();
         bool found = false;
-        foreach (var grid in GridList)
+        foreach (var grid in gridList)
         {
             if (grid.activeInHierarchy&& !found)
             {
@@ -229,14 +227,14 @@ public class ExperimentManager : MonoBehaviour
 
     private List<GameObject> GetGridList()
     {
-        List<GameObject> GridList = new List<GameObject>();
+        List<GameObject> gridList = new List<GameObject>();
         foreach (Transform child in mainCamera.transform)
         {
             if (child.gameObject != fixationPoint)
-                GridList.Add(child.gameObject);
+                gridList.Add(child.gameObject);
         }
 
-        return GridList;
+        return gridList;
     }
     
     #endregion
