@@ -342,6 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 464960119}
   - component: {fileID: 464960118}
+  - component: {fileID: 464960120}
   m_Layer: 0
   m_Name: EyetrackingManager
   m_TagString: Untagged
@@ -377,6 +378,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &464960120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464960117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c9cde299a1fc34a890f7fc10518787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &596882609 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8099857399040480884, guid: 5a76227dbc42aae4a8d68a29d3d29ade,

@@ -49,11 +49,23 @@ public class EyetrackingManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+           StartRecording();
+        }
+        
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            StopRecording();
+        }
+        
+        if(Input.GetKeyDown(KeyCode.K))
         {
             StartCalibration();
         }
     }
+    
+    
 
     private void  OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -98,7 +110,7 @@ public class EyetrackingManager : MonoBehaviour
     public void StopRecording()
     {
         _eyeTrackingRecorder.StopRecording();
-        StoreEyeTrackingData();
+        //StoreEyeTrackingData();
     }
     
     
@@ -158,9 +170,9 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
-    public void SaveEyetrackingData()
+    public void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data)
     {
-        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (_eyeTrackingDataFrames, "hey");
+        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, "hey");
     }
     
     public float GetAverageSceneFPS()
