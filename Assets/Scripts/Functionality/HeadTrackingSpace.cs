@@ -80,11 +80,11 @@ public class HeadTrackingSpace : MonoBehaviour
             {
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_yawMovement.StimuliIndex.Count);
+                    int index = _random.Next(_yawMovement.MovementPosition.Count);
 
-                    StartCoroutine(StartYaw(_yawMovement.StimuliIndex[index], _yawMovement.DelayBeforeStimuli[index]));
+                    StartCoroutine(StartYaw(_yawMovement.MovementPosition[index], _yawMovement.DelayBeforeStimuli[index]));
                     
-                    _yawMovement.StimuliIndex.RemoveAt(index);
+                    _yawMovement.MovementPosition.RemoveAt(index);
                     _yawMovement.DelayBeforeStimuli.RemoveAt(index);
                     
                     _isReadyToGo = false;
@@ -99,7 +99,7 @@ public class HeadTrackingSpace : MonoBehaviour
                 
                 if (_trialEnded)
                 {
-                    if (!_yawMovement.StimuliIndex.Any())
+                    if (!_yawMovement.MovementPosition.Any())
                     {
                         SetStandByStatus();
                         ExperimentManager.Instance.TrialEnded();
@@ -113,11 +113,11 @@ public class HeadTrackingSpace : MonoBehaviour
             {
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_pitchMovement.StimuliIndex.Count);
+                    int index = _random.Next(_pitchMovement.MovementPosition.Count);
                     
-                    StartCoroutine(StartPitch(_pitchMovement.StimuliIndex[index], _pitchMovement.DelayBeforeStimuli[index]));
+                    StartCoroutine(StartPitch(_pitchMovement.MovementPosition[index], _pitchMovement.DelayBeforeStimuli[index]));
                     
-                    _pitchMovement.StimuliIndex.RemoveAt(index);
+                    _pitchMovement.MovementPosition.RemoveAt(index);
                     _pitchMovement.DelayBeforeStimuli.RemoveAt(index);
 
                     _isReadyToGo = false;
@@ -132,7 +132,7 @@ public class HeadTrackingSpace : MonoBehaviour
 
                 if (_trialEnded)
                 {
-                    if (!_pitchMovement.StimuliIndex.Any())
+                    if (!_pitchMovement.MovementPosition.Any())
                     {
                         SetStandByStatus();
                         ExperimentManager.Instance.TrialEnded();
@@ -146,11 +146,11 @@ public class HeadTrackingSpace : MonoBehaviour
             {
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_rollMovement.StimuliIndex.Count);
+                    int index = _random.Next(_rollMovement.MovementPosition.Count);
                     
-                    StartCoroutine(StartRoll(_rollMovement.StimuliIndex[index], _rollMovement.DelayBeforeStimuli[index]));
+                    StartCoroutine(StartRoll(_rollMovement.MovementPosition[index], _rollMovement.DelayBeforeStimuli[index]));
                     
-                    _rollMovement.StimuliIndex.RemoveAt(index);
+                    _rollMovement.MovementPosition.RemoveAt(index);
                     _isReadyToGo = false;
                 }
                 
@@ -164,7 +164,7 @@ public class HeadTrackingSpace : MonoBehaviour
             
             if (_trialEnded)
             {
-                if (!_rollMovement.StimuliIndex.Any())
+                if (!_rollMovement.MovementPosition.Any())
                 {
                     SetStandByStatus();
                     ExperimentManager.Instance.TrialEnded();

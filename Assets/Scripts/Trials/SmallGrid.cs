@@ -29,7 +29,7 @@ public class SmallGrid : MonoBehaviour
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-            yield return new WaitForSeconds(element.StimuliDuration);
+            yield return new WaitForSeconds(element.MovementDuration);
         }
         
         ExperimentManager.Instance.TrialEnded();

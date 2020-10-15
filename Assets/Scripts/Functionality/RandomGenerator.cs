@@ -356,7 +356,7 @@ public class RandomGenerator : MonoBehaviour
             positions.RemoveAt(index);
         }
         
-        movement.StimuliIndex = position;
+        movement.MovementPosition = position;
         movement.DelayBeforeStimuli = delay;
 
         return movement;
