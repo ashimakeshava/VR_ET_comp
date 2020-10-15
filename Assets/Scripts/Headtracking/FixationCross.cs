@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +14,6 @@ public class FixationCross : MonoBehaviour
     [SerializeField] private GameObject Left1;
     [SerializeField] private GameObject Right1;
 
-
     [SerializeField] private GameObject TargetUpper0;
     [SerializeField] private GameObject TargetUpper1;
     [SerializeField] private GameObject TargetLower0;
@@ -24,8 +23,7 @@ public class FixationCross : MonoBehaviour
     [SerializeField] private GameObject TargetRight0;
     [SerializeField] private GameObject TargetRight1;
     [SerializeField] private GameObject TargetCenter;
-    
-    
+
     [SerializeField] private GameObject GlobalSphere;
 
     private Material error;
@@ -42,15 +40,10 @@ public class FixationCross : MonoBehaviour
     private bool isVertical;
     private bool isReduced;
     
+    private int correctAligned = 0;
     
-    // Start is called before the first frame update
     void Start()
     {
-      // matArray = Center.GetComponent<Renderer>().materials;
-      // neutral = matArray[0];
-       // error = matArray[1];
-        //sucess = matArray[2];
-        
         CrossElements= new List<GameObject>();
         
         TargetCrossElements= new List<GameObject>();
@@ -74,29 +67,22 @@ public class FixationCross : MonoBehaviour
         TargetCrossElements.Add(TargetRight0);
         TargetCrossElements.Add(TargetRight1);
         TargetCrossElements.Add(TargetCenter);
-
-
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
-        int correctAligned = 0;
-        //Debug.Log(CrossElements.Count);
+        correctAligned = 0;
+        
         for (int i = 0; i < CrossElements.Count; i++)
         {
             RaycastHit[] hits = Physics.BoxCastAll(CrossElements[i].transform.position,
                 CrossElements[i].transform.lossyScale / 1.8f,
                 this.CrossElements[i].transform.forward,
                 CrossElements[i].transform.rotation, 100f,1);
-
-            //Debug.Log(hits.Length +" " +CrossElements[i]);
-
+            
             foreach (var hit in hits)
             {
-               // Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
-               // Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
+               Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
             }
             
             bool catched=false;
@@ -109,7 +95,8 @@ public class FixationCross : MonoBehaviour
             
             foreach (var hit in hits)
             {
-                //Debug.Log("hits.Length" + hit.transform.gameObject.name+ "+ "+ CrossElements[i]);
+                // Todo check if ignore global fixation point layer breaks eye tracking raycast
+                // Todo on the large grid (the most important part of the experiment)
                 
                 if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)    //interesting point
                 {
@@ -123,31 +110,25 @@ public class FixationCross : MonoBehaviour
                         continue;
                     }
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
-                    //Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
                 }
             }
 
-            if (catched == true)
+            if (catched)
             {
                 correctAligned += 1;
             }
-            
         }
-
-        if (correctAligned == CrossElements.Count|| (isReduced&& correctAligned == (CrossElements.Count-4)))
+        
+        if (correctAligned == CrossElements.Count || (correctAligned == CrossElements.Count - 4 && isReduced))
         {
             isAligned = true;
-//            Debug.Log(isAligned);
         }
         else
         {
             isAligned = false;
         }
-
     }
     
-
-
     private void ResetCross()
     {
         foreach (var cross in CrossElements)
@@ -167,7 +148,6 @@ public class FixationCross : MonoBehaviour
         Right0.gameObject.SetActive(true);
         Right1.gameObject.SetActive(true);
 
-
         Upper0.gameObject.SetActive(false);
         Upper1.gameObject.SetActive(false);
         
@@ -177,7 +157,6 @@ public class FixationCross : MonoBehaviour
         isReduced = true;
     }
     
-    
     public void DisableHorizontal()
     {
         ResetCross();
@@ -186,8 +165,7 @@ public class FixationCross : MonoBehaviour
         
         Right0.gameObject.SetActive(false);
         Right1.gameObject.SetActive(false);
-
-
+        
         Upper0.gameObject.SetActive(true);
         Upper1.gameObject.SetActive(true);
         
@@ -196,8 +174,7 @@ public class FixationCross : MonoBehaviour
 
         isReduced = true;
     }
-
-
+    
     public void SetTargetObject(GameObject target)
     {
         TargetObject = target;
