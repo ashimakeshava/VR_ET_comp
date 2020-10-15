@@ -158,6 +158,11 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
+    public void SaveEyetrackingData()
+    {
+        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (_eyeTrackingDataFrames, "hey");
+    }
+    
     public float GetAverageSceneFPS()
     {
         return _eyeTrackingRecorder.GetAverageFrameRate();
