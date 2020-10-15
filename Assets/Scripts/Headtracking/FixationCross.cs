@@ -95,7 +95,8 @@ public class FixationCross : MonoBehaviour
 
             foreach (var hit in hits)
             {
-                Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
+               // Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
+               // Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
             }
             
             bool catched=false;
@@ -122,7 +123,7 @@ public class FixationCross : MonoBehaviour
                         continue;
                     }
                     CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
-                    Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
+                    //Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position,Color.red);
                 }
             }
 

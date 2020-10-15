@@ -31,7 +31,7 @@ public class EyetrackingManager : MonoBehaviour
     private void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _sampleRate = 1f / SetSampleRate; 
+        
         //singleton pattern a la Unity
         if (Instance == null)
         {
@@ -49,49 +49,41 @@ public class EyetrackingManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+           StartRecording();
+        }
+        
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            StopRecording();
+        }
+        
+        if(Input.GetKeyDown(KeyCode.K))
         {
             StartCalibration();
         }
     }
+    
+    
 
     private void  OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _hmdTransform = Camera.main.transform;
-        //Debug.Log("hello new World");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _sampleRate = 1f / SetSampleRate; 
         _eyeTrackingRecorder = GetComponent<EyetrackingDataRecorder>();
-
-        _eyetrackingValidation = GetComponentInChildren<EyetrackingValidation>();
-
-//        _eyetrackingValidation.NotifyEyeValidationObservers += SetEyeValidationStatus;
     }
 
     // Update is called once per frame
-
-    public void StartValidation()
-    {
-        Debug.Log("validating...");
-        _eyetrackingValidation.StartValidation(eyeValidationDelay);
-    }
-
-    public void AbortValidation()
-    {
-        _eyetrackingValidation.AbortValidation();
-        NotifyEyeValidationCompletnessObservers?.Invoke(false);
-    }
-
-    public void StartValidation(float delay)
-    {
-        _eyetrackingValidation.StartValidation(delay);
-    }
     
-    
+
+
+
     public void StartCalibration()
     {
         
@@ -118,7 +110,7 @@ public class EyetrackingManager : MonoBehaviour
     public void StopRecording()
     {
         _eyeTrackingRecorder.StopRecording();
-        StoreEyeTrackingData();
+        //StoreEyeTrackingData();
     }
     
     
@@ -178,6 +170,11 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
+    public void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data)
+    {
+        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, "hey");
+    }
+    
     public float GetAverageSceneFPS()
     {
         return _eyeTrackingRecorder.GetAverageFrameRate();

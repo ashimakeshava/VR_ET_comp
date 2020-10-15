@@ -18,6 +18,10 @@ public class EyetrackingDataRecorder : MonoBehaviour
     private EyetrackingManager _eyetrackingManager;
     private Transform _hmdTransform;
     private bool recordingEnded;
+
+    public GameObject directionLeft;
+    public GameObject directionRight;
+    public GameObject directionCombined;
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -70,25 +74,115 @@ public class EyetrackingDataRecorder : MonoBehaviour
         
         while (!recordingEnded)
         {
-            EyeTrackingDataFrame dataFrame = new EyeTrackingDataFrame();
+            var dataFrame = new VR_ET_com_EyetrackingDataFrame();
+            
             var eyeTrackingDataWorld = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
             var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
-
+            
+            
+            //SRanipal_GazeRaySample_v2 sample = SRanipal_Eye_v2.GetGazeRay()
             if (eyeTrackingDataWorld.GazeRay.IsValid)
             {
-                Vector3 gazeRayOrigin = eyeTrackingDataWorld.GazeRay.Origin;
+//                Debug.Log("valid eyetracking data");
                 Vector3 gazeRayDirection = eyeTrackingDataWorld.GazeRay.Direction;
-                dataFrame.TobiiTimeStamp = eyeTrackingDataWorld.Timestamp;
-                dataFrame.EyePosWorldCombined = gazeRayOrigin;
-                dataFrame.EyeDirWorldCombined = gazeRayDirection;
+               // dataFrame.TobiiTimeStamp = eyeTrackingDataWorld.Timestamp;
 
-                dataFrame.LeftEyeIsBlinkingWorld = eyeTrackingDataWorld.IsLeftEyeBlinking;
-                dataFrame.RightEyeIsBlinkingWorld = eyeTrackingDataWorld.IsRightEyeBlinking;
+                Ray rayLeft;
 
-                dataFrame.hitObjects = GetHitObjectsFromGaze(gazeRayOrigin, gazeRayDirection);
+                Ray rayRight;
+
+                Ray rayCombined;
+
+                SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out rayLeft);
+
+                SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out rayRight);
+                
+                SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayCombined);
+                    
+                //bool isOpen = SRanipal_Eye_v2.GetEyeOpenness()
+                Ray ray;
+                
+                
+                
+                // if (SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out ray))
+                // {
+                //     
+                //     Vector3 origin= eyeTrackingDataLocal.GazeRay.Origin;
+                //     Vector3 direction =eyeTrackingDataLocal.GazeRay.Direction;
+                //     //Vector3 origin = ray.origin;
+                //     //Vector3 direction = ray.direction;
+                //     directionLeft.transform.localRotation= Quaternion.Euler(gazeRayDirection);
+                //
+                //     RaycastHit hit;
+                //     if (Physics.Raycast(directionLeft.transform.position, transform.TransformDirection(direction),
+                //         out hit))
+                //     {
+                //         Debug.Log(hit.collider.gameObject.name + directionLeft.name);
+                //     }
+                //
+                //
+                // }
+                
+                if (SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out ray))
+                {
+                    //Vector3 origin= eyeTrackingDataWorld.GazeRay.Direction;
+                    //Vector3 direction =eyeTrackingDataWorld.GazeRay.Origin;
+                   // directionRight.transform.rotation= Quaternion.FromToRotation(origin,direction);
+                    RaycastHit hit;
+                   // if (Physics.Raycast(directionRight.transform.position, transform.TransformDirection(direction),
+                 //       out hit))
+                   // {
+                   //     Debug.Log(hit.collider.gameObject.name + directionRight.name);
+                   //}
+
+                   
+                }
+                
+                if (SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out ray))
+                {
+                        Vector3 origin = ray.origin;
+                        Vector3 direction = ray.direction;
+                       
+                    
+                    RaycastHit hit;
+                    if (Physics.Raycast(origin, direction,
+                        out hit))
+                    {
+                        Debug.Log(hit.collider.gameObject.name + directionCombined.name);
+                        
+                        
+                        directionCombined.transform.localRotation= Quaternion.FromToRotation(directionCombined.transform.forward, hit.point);
+                    }
+                    
+                    
+                    
+                }
+
+                
+                
+                
+                Vector3 posLeftEye = rayLeft.origin;
+                Vector3 dirLeftEye = rayLeft.direction;
+                
+                Vector3 posRightEye = rayRight.origin;
+                Vector3 dirRightEye = rayRight.direction;
+                
+                Vector3 posCombinedEyes =rayCombined.origin;
+                Vector3 dirCombinedEyes = rayCombined.direction;
+                
+                //Debug.Log(posLeftEye+ dirLeftEye);
+                
+                //Debug.Log(posRightEye+ dirRightEye);
+                
+                
+               // Debug.DrawRay(rayLeft.origin, rayLeft.direction, Color.red,5f);
+                
+                //Debug.DrawLine(rayLeft.origin, rayLeft.direction, Color.green,5f);
+                
+               // Debug.DrawRay(rayRight.origin, rayRight.direction,Color.blue,5f);
             }
 
-            if (eyeTrackingDataLocal.GazeRay.IsValid)
+            /*if (eyeTrackingDataLocal.GazeRay.IsValid)
             {
                 dataFrame.EyePosLocalCombined = eyeTrackingDataLocal.GazeRay.Origin;
                 dataFrame.EyeDirLocalCombined = eyeTrackingDataLocal.GazeRay.Direction;
@@ -105,7 +199,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
             
             _frameRates.Add(dataFrame.FPS);
             _recordedEyeTrackingData.Add(dataFrame);
-            frameCounter++;
+            frameCounter++;*/
             
             yield return new WaitForSeconds(_sampleRate);
         }

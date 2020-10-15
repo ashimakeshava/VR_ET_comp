@@ -265,7 +265,7 @@ public class HeadTrackingSpace : MonoBehaviour
         
         while (!fixationCross.GetAlignment())
         {
-            Debug.Log("periodic allignment");
+//s            Debug.Log("periodic allignment");
             yield return new WaitForSeconds(sec);
             ResetCameraPosition();
         }
