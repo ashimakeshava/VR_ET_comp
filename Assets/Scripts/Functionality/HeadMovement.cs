@@ -7,5 +7,6 @@ using UnityEngine;
 public class HeadMovement
 {
     public string MovementType;
-    public List<int> MovementPosition;
+    public List<int> StimuliIndex;
+    public List<float> DelayBeforeStimuli;
 }

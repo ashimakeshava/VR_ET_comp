@@ -16,7 +16,7 @@ public class SmoothPursuit : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetGrid();    // todo change to only collider since at the runtime we won't have large and small grid
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator StartSmoothPursuit()
@@ -26,7 +26,7 @@ public class SmoothPursuit : MonoBehaviour
         _fixationPoint.gameObject.SetActive(true);
         float startTime = Time.time;
 
-        yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo generate this time as well or save this time
+        // yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo remove after testing
 
         for (int i = 1; i < _smoothPursuit.Count; i++)
         {
@@ -42,7 +42,7 @@ public class SmoothPursuit : MonoBehaviour
                 timeDiff = Time.time - startTime;
             }
 
-            yield return new WaitForSeconds(_smoothPursuit[i].FixationDuration);
+            yield return new WaitForSeconds(_smoothPursuit[i].StimuliDuration);
         }
 
         ExperimentManager.Instance.TrialEnded();

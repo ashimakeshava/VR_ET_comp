@@ -219,8 +219,8 @@ public class RandomGenerator : MonoBehaviour
                 int index = _random.Next(freeViewingIndices.Count);
                 float jitter = RandomUnity.Range(-.2f, .2f);
 
-                freeViewingDataFrame.IndexofTheObject = freeViewingIndices[index];
-                freeViewingDataFrame.PhotoFixationDuration = 6;
+                freeViewingDataFrame.IndexofTheStimuli = freeViewingIndices[index];
+                freeViewingDataFrame.StimuliDuration = 6;
                 freeViewingDataFrame.FixationPointDuration = .9f + jitter;
                 
                 dataFrames.Add(freeViewingDataFrame);
@@ -287,7 +287,7 @@ public class RandomGenerator : MonoBehaviour
             foreach (var element in _smoothPursuitRoutes[index])
             {
                 float jitter = RandomUnity.Range(-.2f, .2f);
-                element.FixationDuration += jitter;
+                element.StimuliDuration += jitter;
                 
                 jitter = RandomUnity.Range(-.2f, .2f);
                 element.MovementDuration += jitter;
@@ -312,8 +312,8 @@ public class RandomGenerator : MonoBehaviour
             int index = _random.Next(pupilDilationSequence.Count);
             float jitter = RandomUnity.Range(-.2f, .2f);
             
-            pupilDilationDataFrame.ColorIndex = index;
-            pupilDilationDataFrame.ColorDuration = 3f + jitter;
+            pupilDilationDataFrame.StimuliIndex = index;
+            pupilDilationDataFrame.StimuliDuration = 3f + jitter;
 
             pupilDilationDataFrames.Add(pupilDilationDataFrame);
             pupilDilationSequence.RemoveAt(index);
@@ -343,17 +343,21 @@ public class RandomGenerator : MonoBehaviour
             0,1,2,3,4};
         
         HeadMovement movement = new HeadMovement {MovementType = movementType};
-        List<int> ints = new List<int>();
+        List<int> position = new List<int>();
+        List<float> delay = new List<float>();
         
         for (int i = 0; i < 15; i++)
         {
             int index = _random.Next(positions.Count);
+            float duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
 
-            ints.Add(positions[index]);
+            position.Add(positions[index]);
+            delay.Add(duration);
             positions.RemoveAt(index);
         }
         
-        movement.MovementPosition = ints;
+        movement.StimuliIndex = position;
+        movement.DelayBeforeStimuli = delay;
 
         return movement;
     }

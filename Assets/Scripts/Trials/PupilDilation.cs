@@ -15,7 +15,7 @@ public class PupilDilation : MonoBehaviour
     private void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator StartPupilDilation()
@@ -30,8 +30,8 @@ public class PupilDilation : MonoBehaviour
 
         foreach (var dataFrame in _pupilDilationDataFrames)
         {
-            RenderSettings.skybox = skyBoxes[dataFrame.ColorIndex];
-            yield return new WaitForSeconds(dataFrame.ColorDuration);
+            RenderSettings.skybox = skyBoxes[dataFrame.StimuliIndex];
+            yield return new WaitForSeconds(dataFrame.StimuliDuration);
         }
 
         RenderSettings.skybox = ExperimentManager.Instance.GetMainSkybox();
@@ -45,5 +45,3 @@ public class PupilDilation : MonoBehaviour
         StartCoroutine(StartPupilDilation());
     }
 }
-
-// todo change the skybox back to default

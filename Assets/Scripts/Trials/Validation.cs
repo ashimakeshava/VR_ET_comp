@@ -24,13 +24,13 @@ public class Validation : MonoBehaviour
         _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
-        yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo save this time
+        // yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo remove after testing
 
         foreach (var element in _gridElementsClose)
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-           yield return new WaitForSeconds(element.FixationDuration);
+           yield return new WaitForSeconds(element.StimuliDuration);
         }
         
         _grid.gameObject.transform.localPosition = new Vector3(0, 0, 2);
@@ -44,13 +44,13 @@ public class Validation : MonoBehaviour
     {
         _fixationPoint.transform.localPosition = new Vector3(0, 0, 2);
         
-        yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
+        // yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo remove after saving
         
         foreach (var element in _gridElementsFar)
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-            yield return new WaitForSeconds(element.FixationDuration);
+            yield return new WaitForSeconds(element.StimuliDuration);
         }
 
         _grid.gameObject.transform.localPosition = new Vector3(0, 0, 1);

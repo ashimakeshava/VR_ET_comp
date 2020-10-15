@@ -26,11 +26,11 @@ public class FreeViewing : MonoBehaviour
             yield return new WaitForSeconds(frame.FixationPointDuration);
             
             _fixationPoint.gameObject.SetActive(false);
-            _pictures[frame.IndexofTheObject].SetActive(true);
+            _pictures[frame.IndexofTheStimuli].SetActive(true);
 
-            yield return new WaitForSeconds(frame.PhotoFixationDuration);
+            yield return new WaitForSeconds(frame.StimuliDuration);
             
-            _pictures[frame.IndexofTheObject].SetActive(false);
+            _pictures[frame.IndexofTheStimuli].SetActive(false);
         }
         
         ExperimentManager.Instance.TrialEnded();

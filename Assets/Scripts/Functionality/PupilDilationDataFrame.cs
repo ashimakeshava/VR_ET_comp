@@ -7,6 +7,6 @@ using UnityEngine;
 
 [Serializable]public class PupilDilationDataFrame
 {
-    public int ColorIndex;
-    public float ColorDuration;
+    public int StimuliIndex;
+    public float StimuliDuration;
 }
