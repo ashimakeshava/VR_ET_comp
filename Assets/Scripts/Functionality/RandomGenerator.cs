@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -343,17 +343,21 @@ public class RandomGenerator : MonoBehaviour
             0,1,2,3,4};
         
         HeadMovement movement = new HeadMovement {MovementType = movementType};
-        List<int> ints = new List<int>();
+        List<int> position = new List<int>();
+        List<float> delay = new List<float>();
         
         for (int i = 0; i < 15; i++)
         {
             int index = _random.Next(positions.Count);
+            float duration = (RandomUnity.value <= 0.5) ? 1 : 1.5f;
 
-            ints.Add(positions[index]);
+            position.Add(positions[index]);
+            delay.Add(duration);
             positions.RemoveAt(index);
         }
         
-        movement.MovementPosition = ints;
+        movement.MovementPosition = position;
+        movement.DelayBeforeStimuli = delay;
 
         return movement;
     }

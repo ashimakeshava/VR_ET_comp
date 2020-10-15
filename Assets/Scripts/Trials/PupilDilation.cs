@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ public class PupilDilation : MonoBehaviour
     private void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator StartPupilDilation()
@@ -45,5 +45,3 @@ public class PupilDilation : MonoBehaviour
         StartCoroutine(StartPupilDilation());
     }
 }
-
-// todo change the skybox back to default

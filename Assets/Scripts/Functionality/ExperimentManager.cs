@@ -94,7 +94,7 @@ public class ExperimentManager : MonoBehaviour
         {
             ResetFixationPoint();
             
-            if (_blockIndex == 6)    // todo 7 in case of the trial
+            if (_blockIndex == 6)    // todo 7 in case of the training
             {
                 thankYou.gameObject.SetActive(true);
             }
@@ -187,27 +187,15 @@ public class ExperimentManager : MonoBehaviour
                 break;
             case 7:    // Roll
                 _trials = Trials.Roll;
-                // GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
-                
-                Debug.Log("Roll");    // todo remove
-                TrialEnded();    // todo remove
-                
+                GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
                 break;
             case 8:    // Yaw
                 _trials = Trials.Yaw;
-                // GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
-                
-                Debug.Log("Yaw");    // todo remove
-                TrialEnded();    // todo remove
-                
+                GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
                 break;
             case 9:    // Pitch
                 _trials = Trials.Pitch;
-                // GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
-                
-                Debug.Log("Pitch");    // todo remove
-                TrialEnded();    // todo remove
-                
+                GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
                 break;
             case 10:    // Micro saccades
                 _trials = Trials.MicroSaccades;
@@ -222,7 +210,7 @@ public class ExperimentManager : MonoBehaviour
     {
         var GridList = GetGridList();
         GameObject activeGrid=new GameObject();
-        bool found=false;
+        bool found = false;
         foreach (var grid in GridList)
         {
             if (grid.activeInHierarchy&& !found)
@@ -251,7 +239,6 @@ public class ExperimentManager : MonoBehaviour
         return GridList;
     }
     
-
     #endregion
     
     #region Getter and Setters
@@ -278,8 +265,3 @@ public class ExperimentManager : MonoBehaviour
     
     #endregion
 }
-
-    // TODO implement the trials
-    // TODO implement movement
-    // TODO smoothPursuit has too few elements
-    // TODO read from the file to go on with the movement 

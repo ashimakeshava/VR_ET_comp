@@ -14,7 +14,7 @@ public class SmallGrid : MonoBehaviour
     void Start()
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
-        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator StartSmallGrid()
@@ -23,13 +23,13 @@ public class SmallGrid : MonoBehaviour
         _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
-        yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo generate this time as well or save this time
+        // yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo remove after testing
 
         foreach (var element in _smallGridElements)
         {
             _fixationPoint.transform.localPosition = element.Position;
 
-            yield return new WaitForSeconds(element.FixationDuration);
+            yield return new WaitForSeconds(element.MovementDuration);
         }
         
         ExperimentManager.Instance.TrialEnded();

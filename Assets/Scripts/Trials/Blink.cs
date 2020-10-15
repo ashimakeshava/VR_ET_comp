@@ -16,7 +16,7 @@ public class Blink : MonoBehaviour
     {
         _fixationPoint = ExperimentManager.Instance.GetFixationPoint();
         _audioSource = GetComponent<AudioSource>();
-        _grid = ExperimentManager.Instance.GetGrid();    // todo change it to only grid after serialization is done
+        _grid = ExperimentManager.Instance.GetGrid();
     }
 
     IEnumerator RunBeep()

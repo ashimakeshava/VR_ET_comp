@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,9 +171,7 @@ public class RouteGenerator : MonoBehaviour
         
         foreach (var hit in hits)
         {
-            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid" 
-                                                     && hit.collider.name != "LargeGrid(2)"
-                                                     && hit.collider.name != "SmallGrid") //TODO check and change the names
+            if (hit.collider.name != "FixationPoint" && hit.collider.name != "LargeGrid")
             {
                 hitList.Add(hit);
             }
@@ -256,7 +254,7 @@ public class RouteGenerator : MonoBehaviour
             {
                 int index = _random.Next(hitList.Count);
                 Vector3 newPosition = hitList[index].collider.transform.position;
-                _fixationPoint.transform.position = newPosition; //TODO this is only a Generator Script , movement happens in trail script
+                _fixationPoint.transform.position = newPosition; //TODO this is only a Generator Script , movement happens in trial script
                 GridElement gridElement = new GridElement
                 {
                     ObjectName = hitList[index].collider.name,
@@ -430,7 +428,7 @@ public class RouteGenerator : MonoBehaviour
     
     
     
-    private float GenerateRandomFixationTime()        //TODO Add jitter and first position time: duration
+    private float GenerateRandomFixationTime()
     {
         if (_isSmoothPursuit) return 1;
         

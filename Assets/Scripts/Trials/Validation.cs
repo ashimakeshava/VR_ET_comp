@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RandomUnity = UnityEngine.Random;
@@ -24,7 +24,7 @@ public class Validation : MonoBehaviour
         _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
         
-        yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo save this time
+        // yield return new WaitForSeconds(_gridElementsClose[0].FixationDuration);    // todo remove after testing
 
         foreach (var element in _gridElementsClose)
         {
@@ -44,7 +44,7 @@ public class Validation : MonoBehaviour
     {
         _fixationPoint.transform.localPosition = new Vector3(0, 0, 2);
         
-        yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo save this time
+        // yield return new WaitForSeconds((RandomUnity.value <= 0.5) ? 1 : 1.5f);    // todo remove after saving
         
         foreach (var element in _gridElementsFar)
         {

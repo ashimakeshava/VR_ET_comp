@@ -27,7 +27,7 @@ public class FixationCross : MonoBehaviour
     
     
     [SerializeField] private GameObject GlobalSphere;
-    [SerializeField] private Material[] matArray;
+
     private Material error;
     private Material sucess;
     private Material neutral;
