@@ -32,6 +32,8 @@ public class ExperimentManager : MonoBehaviour
     private bool _continue;
     private bool _trialIsRunning;
     private bool _welcomeState;
+    private bool _endOfBlockState;
+    private bool _endOfExperiment;
     
     private int _blockIndex;
     private int _trialIndex;
@@ -93,35 +95,48 @@ public class ExperimentManager : MonoBehaviour
         {
             ResetFixationPoint();
             
-            if (_blockIndex == 6)    // todo 7 in case of the training
-            {
-                thankYou.gameObject.SetActive(true);
-            }
-            else if (_trialIndex == 12)
+            if (_trialIndex < 12)
             {
                 // todo save data
-                
-                if (_blockIndex == 3) afterBlockThree.gameObject.SetActive(true);
+
+                TrialInstructionActivation(true);
+                if (_continue) ExecuteTrials();
+            } 
+            else if (_endOfBlockState)
+            {
+                if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
+                else if (_blockIndex > 4)
+                {
+                    thankYou.gameObject.SetActive(true);
+                    _endOfExperiment = true;
+                    
+                    // todo save data
+                }
                 else blockEnd.gameObject.SetActive(true);
 
-                _blockIndex++;
-
-                if (_continue)
+                if (!_endOfExperiment)
                 {
-                    // todo start recording
-                    _trialIndex = 0;
+                    if (_continue)
+                    {
+                        // todo start recording
                     
-                    _continue = false;
-                    afterBlockThree.gameObject.SetActive(false);
-                    blockEnd.gameObject.SetActive(false);
-                    TrialInstructionActivation(true);
-                    if (_continue) ExecuteTrials();
+                        _endOfBlockState = false;
+                    
+                        _blockIndex++;
+                        _trialIndex = 0;
+                        _continue = false;
+                    
+                        afterBlockThree.gameObject.SetActive(false);
+                        blockEnd.gameObject.SetActive(false);
+                        TrialInstructionActivation(true);
+                        if (_continue) ExecuteTrials();
+                    }
                 }
             }
             else
             {
-                TrialInstructionActivation(true);
-                if (_continue) ExecuteTrials();
+                _endOfBlockState = true;
+                _continue = false;
             }
             
             if (Input.GetKeyDown(KeyCode.Space))
@@ -162,42 +177,52 @@ public class ExperimentManager : MonoBehaviour
             case 1:    // Validation
                 _trials = Trials.Validation;
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
+                
                 break;
             case 2:    // Smooth pursuit
                 _trials = Trials.SmoothPursuit;
                 GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
+                
                 break;
             case 3:    // Small grid
                 _trials = Trials.SmallGrid;
                 GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
+                
                 break;
             case 4:    // Blink
                 _trials = Trials.Blink;
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
+                
                 break;
             case 5:    // Pupil dilation
                 _trials = Trials.PupilDilation;
                 GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
+                
                 break;
             case 6:    // Free viewing
                 _trials = Trials.FreeViewing;
                 GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
+                
                 break;
             case 7:    // Roll
                 _trials = Trials.Roll;
                 GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
+                
                 break;
             case 8:    // Yaw
                 _trials = Trials.Yaw;
                 GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
+                
                 break;
             case 9:    // Pitch
                 _trials = Trials.Pitch;
                 GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
+                
                 break;
             case 10:    // Micro saccades
                 _trials = Trials.MicroSaccades;
                 GetComponent<MicroSaccades>().RunMicroSaccades();
+                
                 break;
         }
 
