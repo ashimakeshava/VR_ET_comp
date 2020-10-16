@@ -100,7 +100,11 @@ public class FixationCross : MonoBehaviour
                 
                 if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)    //interesting point
                 {
-                    CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
+                    Renderer rend = CrossElements[i].GetComponent<Renderer>();
+                    rend.material.shader = Shader.Find("HDRP/Unlit"); 
+                    rend.material.SetColor("_BaseColor", Color.green);
+                    //CrossElements[i].GetComponent<Renderer>().material.SetColor("HDRP/UnLit", Color.green);
+                    //CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
                     catched = true;
                 }
                 else
