@@ -105,11 +105,11 @@ public class ExperimentManager : MonoBehaviour
                 else blockEnd.gameObject.SetActive(true);
 
                 _blockIndex++;
-                _trialIndex = 0;
 
                 if (_continue)
                 {
                     // todo start recording
+                    _trialIndex = 0;
                     
                     _continue = false;
                     afterBlockThree.gameObject.SetActive(false);
