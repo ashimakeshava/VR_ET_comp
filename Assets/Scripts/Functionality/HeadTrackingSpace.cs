@@ -78,24 +78,23 @@ public class HeadTrackingSpace : MonoBehaviour
         {
             if (_isYaw)
             {
-                if (!_yawMovement.MovementPosition.Any())
-                {
-                    SetStandByStatus();
-                    _isReadyToGo = false;
-                    _experimentStatus = false;
-                    ExperimentManager.Instance.TrialEnded();
-                }
-                
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_yawMovement.MovementPosition.Count);
+                    if (!_yawMovement.MovementPosition.Any())
+                    {
+                        StartCoroutine(EndOfTrial(3));
+                    }
+                    else
+                    {
+                        int index = _random.Next(_yawMovement.MovementPosition.Count);
 
-                    StartCoroutine(StartYaw(_yawMovement.MovementPosition[index], _yawMovement.DelayBeforeStimuli[index]));
+                        StartCoroutine(StartYaw(_yawMovement.MovementPosition[index], _yawMovement.DelayBeforeStimuli[index]));
                     
-                    _yawMovement.MovementPosition.RemoveAt(index);
-                    _yawMovement.DelayBeforeStimuli.RemoveAt(index);
+                        _yawMovement.MovementPosition.RemoveAt(index);
+                        _yawMovement.DelayBeforeStimuli.RemoveAt(index);
                     
-                    _isReadyToGo = false;
+                        _isReadyToGo = false;
+                    }
                 }
                 
                 if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
@@ -107,24 +106,23 @@ public class HeadTrackingSpace : MonoBehaviour
 
             if (_isPitch)
             {
-                if (!_pitchMovement.MovementPosition.Any())
-                {
-                    SetStandByStatus();
-                    _isReadyToGo = false;
-                    _experimentStatus = false;
-                    ExperimentManager.Instance.TrialEnded();
-                }
-                
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_pitchMovement.MovementPosition.Count);
+                    if (!_pitchMovement.MovementPosition.Any())
+                    {
+                        StartCoroutine(EndOfTrial(3));
+                    }
+                    else
+                    {
+                        int index = _random.Next(_pitchMovement.MovementPosition.Count);
                     
-                    StartCoroutine(StartPitch(_pitchMovement.MovementPosition[index], _pitchMovement.DelayBeforeStimuli[index]));
+                        StartCoroutine(StartPitch(_pitchMovement.MovementPosition[index], _pitchMovement.DelayBeforeStimuli[index]));
                     
-                    _pitchMovement.MovementPosition.RemoveAt(index);
-                    _pitchMovement.DelayBeforeStimuli.RemoveAt(index);
+                        _pitchMovement.MovementPosition.RemoveAt(index);
+                        _pitchMovement.DelayBeforeStimuli.RemoveAt(index);
 
-                    _isReadyToGo = false;
+                        _isReadyToGo = false;
+                    }
                 }
                 
                 if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
@@ -136,22 +134,21 @@ public class HeadTrackingSpace : MonoBehaviour
 
             if (_isRoll)
             {
-                if (!_rollMovement.MovementPosition.Any())
-                {
-                    SetStandByStatus();
-                    _isReadyToGo = false;
-                    _experimentStatus = false;
-                    ExperimentManager.Instance.TrialEnded();
-                }
-
                 if (_isReadyToGo)
                 {
-                    int index = _random.Next(_rollMovement.MovementPosition.Count);
+                    if (!_rollMovement.MovementPosition.Any())
+                    {
+                        StartCoroutine(EndOfTrial(3));
+                    }
+                    else
+                    {
+                        int index = _random.Next(_rollMovement.MovementPosition.Count);
 
-                    StartCoroutine(StartRoll(_rollMovement.MovementPosition[index], _rollMovement.DelayBeforeStimuli[index]));
+                        StartCoroutine(StartRoll(_rollMovement.MovementPosition[index], _rollMovement.DelayBeforeStimuli[index]));
                     
-                    _rollMovement.MovementPosition.RemoveAt(index);
-                    _isReadyToGo = false;
+                        _rollMovement.MovementPosition.RemoveAt(index);
+                        _isReadyToGo = false;
+                    }
                 }
                 
                 if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
@@ -258,13 +255,27 @@ public class HeadTrackingSpace : MonoBehaviour
     }
     
     
-    IEnumerator MakeReady(float sec)
+    IEnumerator EndOfTrial(float sec)
     {
         if (!_isInResetStatus)
         {
             _isInResetStatus = true;
-            
+
+            foreach (Transform kid in fixationPoint.transform)
+            {
+                foreach (Transform grandKid in kid)
+                {
+                    grandKid.gameObject.SetActive(false);
+                }
+            }
+
             yield return new WaitForSeconds(sec);
+            
+            SetStandByStatus();
+                    
+            _isReadyToGo = false;
+            _isYaw = _isPitch = _isRoll = _experimentStatus = false;
+            ExperimentManager.Instance.TrialEnded();
             
             _isInResetStatus = false;
         }
