@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,12 +40,13 @@ public class FixationCross : MonoBehaviour
     private bool isHorizontal;
     private bool isVertical;
     private bool isReduced;
-    
-    private int correctAligned = 0;
+
+    private List<bool> _alignmentStatus;
     
     void Start()
     {
         CrossElements= new List<GameObject>();
+        _alignmentStatus = new List<bool>();
         
         TargetCrossElements= new List<GameObject>();
         
@@ -69,67 +71,65 @@ public class FixationCross : MonoBehaviour
         TargetCrossElements.Add(TargetCenter);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        correctAligned = 0;
-        
-        for (int i = 0; i < CrossElements.Count; i++)
+        isAligned = false;
+            
+        foreach (var element in CrossElements)
         {
-            RaycastHit[] hits = Physics.BoxCastAll(CrossElements[i].transform.position,
-                CrossElements[i].transform.lossyScale / 1.8f,
-                this.CrossElements[i].transform.forward,
-                CrossElements[i].transform.rotation, 100f,1);
-            
-            foreach (var hit in hits)
+            if (element.activeInHierarchy)
             {
-               Debug.DrawLine(CrossElements[i].transform.position,hit.transform.position);
-            }
+                RaycastHit[] hits = Physics.BoxCastAll(element.transform.position,
+                    element.transform.lossyScale / 1.8f,
+                    element.transform.forward,
+                    element.transform.rotation, 100f,1);
             
-            bool catched=false;
+                bool catched = false;
             
-            if (hits.Length == 0)
-            {
-                CrossElements[i].GetComponent<Renderer>().material.color = Color.grey *  0.6f;
-                continue;
-            }
-            
-            foreach (var hit in hits)
-            {
-                // Todo check if ignore global fixation point layer breaks eye tracking raycast
-                // Todo on the large grid (the most important part of the experiment)
-                
-                if (hit.collider.gameObject == TargetCrossElements[i] || TargetObject)    //interesting point
+                if (hits.Length == 0)
                 {
-                    CrossElements[i].GetComponent<Renderer>().material.color = Color.green * 0.6f;
-                    catched = true;
+                    element.GetComponent<Renderer>().material.color = Color.grey *  0.6f;
+                    _alignmentStatus.Add(catched);
+                    continue;
                 }
-                else
+            
+                foreach (var hit in hits)
                 {
-                    if (catched)
+                    // Todo check if ignore global fixation point layer breaks eye tracking raycast
+                    // Todo on the large grid (the most important part of the experiment)
+            
+                    if (hit.collider.gameObject == element.GetComponent<CrossElement>().targetCrossElement || TargetObject)
                     {
-                        continue;
+                        element.GetComponent<Renderer>().material.color = Color.green * 0.6f;
+                        element.GetComponent<CrossElement>().correctAligned = true;    // todo this seems redundant. Check and if yes, remove
+                        catched = true;
+                        break;
                     }
-                    CrossElements[i].GetComponent<Renderer>().material.color = Color.red * 0.6f;
+                
+                    element.GetComponent<Renderer>().material.color = Color.red * 0.6f;
                 }
-            }
-
-            if (catched)
-            {
-                correctAligned += 1;
+            
+                _alignmentStatus.Add(catched);
             }
         }
         
-        if (correctAligned == CrossElements.Count || (correctAligned == CrossElements.Count - 4 && isReduced))
+        foreach (var value in _alignmentStatus)
         {
+            if (!value)
+            {
+                isAligned = false;
+                break;
+            }
+            
             isAligned = true;
         }
-        else
-        {
-            isAligned = false;
-        }
+    
+        Debug.Log(isAligned);
+        
+        _alignmentStatus.Clear();
     }
     
-    private void ResetCross()
+    public void ResetCross()
     {
         foreach (var cross in CrossElements)
         {
@@ -154,6 +154,7 @@ public class FixationCross : MonoBehaviour
         Lower0.gameObject.SetActive(false);
         Lower1.gameObject.SetActive(false);
 
+        isAligned = false;
         isReduced = true;
     }
     
@@ -171,7 +172,8 @@ public class FixationCross : MonoBehaviour
         
         Lower0.gameObject.SetActive(true);
         Lower1.gameObject.SetActive(true);
-
+        
+        isAligned = false;
         isReduced = true;
     }
     
@@ -183,5 +185,10 @@ public class FixationCross : MonoBehaviour
     public bool GetAlignment()
     {
         return isAligned;
+    }
+
+    public void SetAlignmentStatus(bool alignment)
+    {
+        isAligned = alignment;
     }
 }

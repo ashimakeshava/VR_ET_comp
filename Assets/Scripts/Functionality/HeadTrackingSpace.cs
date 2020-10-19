@@ -22,6 +22,8 @@ public class HeadTrackingSpace : MonoBehaviour
     private bool _isInResetStatus;
     private bool _isPeriodicallyResetting;
     private bool _trialEnded;
+    private bool _done;
+    private bool _spacePressed;
     
     private bool _isYaw;
     private bool _isPitch;
@@ -33,12 +35,9 @@ public class HeadTrackingSpace : MonoBehaviour
     
     private float _counter;
 
-    
     void Start()
     {
         _random = new RandomSystem();
-        
-        SetStandByStatus();
         
         _fixationCross = fixationCrossObject.GetComponent<FixationCross>();
         _yawMovement = new HeadMovement();
@@ -48,12 +47,18 @@ public class HeadTrackingSpace : MonoBehaviour
         _counter = countdownUntilAligned;
         _isPeriodicallyResetting = false;
         _isInResetStatus = false;
+        
+        SetStandByStatus();
     }
 
     void Update()
     {
+        _spacePressed = false || Input.GetKeyDown(KeyCode.Space);
+
         if (_calibrationStatus)
         {
+            _fixationCross.ResetCross();
+
             if (!_isPeriodicallyResetting)
             {
                 StartCoroutine(PeriodicallyResetCameraPosition(2f));
@@ -97,8 +102,10 @@ public class HeadTrackingSpace : MonoBehaviour
                     }
                 }
                 
-                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
+                if (_spacePressed && !_done && _fixationCross.GetAlignment())
                 {
+                    _done = true;
+
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
@@ -115,7 +122,7 @@ public class HeadTrackingSpace : MonoBehaviour
                     else
                     {
                         int index = _random.Next(_pitchMovement.MovementPosition.Count);
-                    
+
                         StartCoroutine(StartPitch(_pitchMovement.MovementPosition[index], _pitchMovement.DelayBeforeStimuli[index]));
                     
                         _pitchMovement.MovementPosition.RemoveAt(index);
@@ -125,8 +132,10 @@ public class HeadTrackingSpace : MonoBehaviour
                     }
                 }
                 
-                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
+                if (_spacePressed && !_done && _fixationCross.GetAlignment())
                 {
+                    _done = true;
+                    
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
@@ -147,12 +156,16 @@ public class HeadTrackingSpace : MonoBehaviour
                         StartCoroutine(StartRoll(_rollMovement.MovementPosition[index], _rollMovement.DelayBeforeStimuli[index]));
                     
                         _rollMovement.MovementPosition.RemoveAt(index);
+                        _rollMovement.DelayBeforeStimuli.RemoveAt(index);
+                        
                         _isReadyToGo = false;
                     }
                 }
-                
-                if (Input.GetKeyDown(KeyCode.Space) && _fixationCross.GetAlignment())
+
+                if (_spacePressed && !_done && _fixationCross.GetAlignment())
                 {
+                    _done = true;
+                    
                     SetStandByStatus();
                     _isReadyToGo = true;
                 }
@@ -165,10 +178,14 @@ public class HeadTrackingSpace : MonoBehaviour
        fixationPoint.SetActive(false);
        fixationCrossObject.SetActive(false);
        orientationCross.SetActive(false);
+       _fixationCross.SetAlignmentStatus(false);
     }
 
     private IEnumerator StartPitch(int objectIndex, float delay)
     {
+        _done = false;
+        _fixationCross.SetTargetObject(pitchSetup.transform.GetChild(objectIndex).gameObject);
+
         yield return new WaitForSeconds(delay);
 
         fixationPoint.SetActive(true);
@@ -185,11 +202,15 @@ public class HeadTrackingSpace : MonoBehaviour
         }
         
         SetPitchPositionActive(objectIndex);
-        _fixationCross.SetTargetObject(pitchSetup.transform.GetChild(objectIndex).gameObject);
+        
+        _done = false;
     }
 
     private IEnumerator StartYaw(int objectIndex, float delay)
     {
+        _done = false;
+        _fixationCross.SetTargetObject(yawSetup.transform.GetChild(objectIndex).gameObject);
+
         yield return new WaitForSeconds(delay);
         
         fixationPoint.SetActive(true);
@@ -206,11 +227,15 @@ public class HeadTrackingSpace : MonoBehaviour
         }
         
         SetYawPositionActive(objectIndex);
-        _fixationCross.SetTargetObject(yawSetup.transform.GetChild(objectIndex).gameObject);
+        
+        _done = false;
     }
 
     private IEnumerator StartRoll(int objectIndex, float delay)
     {
+        _done = false;
+        _fixationCross.SetTargetObject(rollSetup.transform.GetChild(objectIndex).gameObject);
+
         yield return new WaitForSeconds(delay);
 
         fixationPoint.SetActive(true);
@@ -227,7 +252,8 @@ public class HeadTrackingSpace : MonoBehaviour
         }
 
         SetRollPositionActive(objectIndex);
-        _fixationCross.SetTargetObject(rollSetup.transform.GetChild(objectIndex).gameObject);
+        _done = false;
+
     }
 
     private void ResetCameraPosition()
@@ -289,7 +315,6 @@ public class HeadTrackingSpace : MonoBehaviour
         
         while (!_fixationCross.GetAlignment())
         {
-            // Debug.Log("periodic allignment");
             yield return new WaitForSeconds(sec);
             ResetCameraPosition();
         }
@@ -301,6 +326,7 @@ public class HeadTrackingSpace : MonoBehaviour
 
     private void SetExperimentStatus()
     {
+        _fixationCross.SetAlignmentStatus(false);
         orientationCross.SetActive(false);
         fixationPoint.SetActive(true);
 
