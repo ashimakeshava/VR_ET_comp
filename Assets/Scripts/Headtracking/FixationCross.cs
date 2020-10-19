@@ -101,7 +101,7 @@ public class FixationCross : MonoBehaviour
                     if (hit.collider.gameObject == element.GetComponent<CrossElement>().targetCrossElement || TargetObject)
                     {
                         element.GetComponent<Renderer>().material.color = Color.green * 0.6f;
-                        element.GetComponent<CrossElement>().correctAligned = true;
+                        element.GetComponent<CrossElement>().correctAligned = true;    // todo this seems redundant. Check and if yes, remove
                         catched = true;
                         break;
                     }
