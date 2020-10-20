@@ -1932,10 +1932,10 @@ TextMesh:
   m_GameObject: {fileID: 799075606}
   m_Text: 'Next, fixate on the target as long as it is visible.
 
-    
 
-    Press
-    SPACE to continue.'
+
+    Press SPACE
+    to continue.'
   m_OffsetZ: 0
   m_CharacterSize: 0.5
   m_LineSpacing: 1
@@ -2660,14 +2660,14 @@ TextMesh:
   m_GameObject: {fileID: 1160962948}
   m_Text: 'End of Block!
 
-    
+
 
     You can now take a longer  break.
 
-    
 
-    When
-    you are ready to continue, press SPACE.'
+
+    When you
+    are ready to continue, press SPACE.'
   m_OffsetZ: 0
   m_CharacterSize: 0.5
   m_LineSpacing: 1
@@ -3436,14 +3436,14 @@ TextMesh:
   m_GameObject: {fileID: 1415520548}
   m_Text: 'End of Block!
 
-    
+
 
     You can now take a short break.
 
-    
 
-    When
-    you are ready to continue, press SPACE.'
+
+    When you are
+    ready to continue, press SPACE.'
   m_OffsetZ: 0
   m_CharacterSize: 0.5
   m_LineSpacing: 1
