@@ -1,0 +1,98 @@
+## BEGINNING    (Welcome)
+
+Welcome to our experiment.
+This experiment consists of 10 small tasks that will repeat six times. 
+Before each task you will be shown instructions.
+At the beginning of the experiment 
+and before each block, we will calibrate the eye-tracker. 
+At each instruction screen you can take a break for as long as you want.
+
+Whenever you see a fixation circle, 
+it is important that you look at it 
+and don't move your eyes away until the circle disappears.
+
+The experiment will take about 45 minutes to complete.
+Please let us know if there are any open questions. 
+
+Otherwise press SPACE to start.
+
+## Calibration  0
+
+Please follow the instructions 
+shown during the calibration.
+
+Press SPACE to continue.
+
+## Blinks   4
+
+Please fixate on the target circle.
+You will hear 10 beeps. Please blink each time you hear a beep and keep on fixating on the target.
+Press SPACE to continue.
+
+## CONTRAST VARIATION   5
+
+Please fixate on the target and remain fixated until it disappears. 
+The environment luminance will change during the trial. You can ignore this, please keep fixating on the fixation circle.
+
+Press SPACE to continue.
+
+## FREEVIEWING  6
+
+Next, you will see 3 images for 6 seconds each. 
+Please freely explore the image. 
+Please fixate on the target whenever it's visible.
+ 
+Press SPACE to continue.
+
+## Large Grid  1
+
+Next, fixate on the target and follow it with your eyes as it moves around.
+
+Press SPACE to continue.
+
+## Small Grid Viewing  3
+
+Next, fixate on the target and follow it with your eyes as it moves around.
+
+Press SPACE to continue.
+
+## Smooth Pursuit  2
+
+Next, fixate on the target and follow it with your eyes as it moves around.
+
+Press SPACE to continue.
+
+## Prolonged Fixation   10
+
+Next, fixate on the target as long as it is visible.
+
+Press SPACE to continue.
+
+## HEAD MOVEMENTS   7, 8, 9
+
+In the next condition you will see a fixation target at the center of the screen as well as a line.
+Please move your head so that the crosshair is aligned with the line shown and fixate on the target.
+Once you have finished the alignment, press SPACE to continue. 
+
+Press SPACE to continue.
+
+## End of blocks
+
+End of Block!
+
+You can now take a short break.
+
+When you are ready to continue, press SPACE.
+
+## End of block three
+
+End of Block!
+
+You can now take a longer  break.
+
+When you are ready to continue, press SPACE.
+
+## Thank you note
+
+Thank you for your participation!
+
