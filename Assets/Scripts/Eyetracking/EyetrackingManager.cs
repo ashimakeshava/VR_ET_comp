@@ -13,7 +13,7 @@ public class EyetrackingManager : MonoBehaviour
 
     public int SetSampleRate = 90;
     private Transform _hmdTransform;
-    private List<EyeTrackingDataFrame> _eyeTrackingDataFrames;
+    private List<VR_ET_com_EyetrackingDataFrame> _eyeTrackingDataFrames;
     private EyeValidationData _eyeValidationData;
     private EyetrackingValidation _eyetrackingValidation;
     private bool _eyeValidationSucessful;
@@ -144,7 +144,7 @@ public class EyetrackingManager : MonoBehaviour
         _eyeTrackingDataFrames = _eyeTrackingRecorder.GetDataFrames();
     }
 
-    public List<EyeTrackingDataFrame> GetEyeTrackingData()
+    public List<VR_ET_com_EyetrackingDataFrame> GetEyeTrackingData()
     {
         if (_eyeTrackingDataFrames != null)
         {

@@ -148,16 +148,16 @@ public class SavingManager : MonoBehaviour
     {
         Debug.Log("<color=red>Stop recording Data!</color>");
         EyetrackingManager.Instance.StopRecording();
-        RetrieveData();
+       // RetrieveData();
     }
 
-    private void RetrieveData()
-    {
-        StoreEyeTrackingData(EyetrackingManager.Instance.GetEyeTrackingData());
-
-        // TODO check necessity
-        // StoreCalibrationData();
-    }
+//    private void RetrieveData()
+//    {
+//        StoreEyeTrackingData(EyetrackingManager.Instance.GetEyeTrackingData());
+//
+//        // TODO check necessity
+//        // StoreCalibrationData();
+//    }
 
     private bool TestCompleteness()
     {

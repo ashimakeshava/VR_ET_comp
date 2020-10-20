@@ -14,7 +14,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
 {
     // Start is called before the first frame update
     private float _sampleRate;
-    private List<EyeTrackingDataFrame> _recordedEyeTrackingData;
+    private List<VR_ET_com_EyetrackingDataFrame> _recordedEyeTrackingData;
     private List<float> _frameRates;
     private EyetrackingManager _eyetrackingManager;
     private Transform _hmdTransform;
@@ -26,7 +26,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _recordedEyeTrackingData= new List<EyeTrackingDataFrame>();
+        _recordedEyeTrackingData= new List<VR_ET_com_EyetrackingDataFrame>();
         
         _eyetrackingManager= EyetrackingManager.Instance;
         
@@ -100,12 +100,21 @@ public class EyetrackingDataRecorder : MonoBehaviour
                 dataFrame.eyePositionRightWorld = new Vector3((float) gazedata.right.position[0],(float) gazedata.right.position[1], (float) gazedata.right.position[2]);
                 dataFrame.eyeDirectionRightWorld=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
                 
-                dataFrame. eyePositionWorldCombined = new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
-                dataFrame.eyeDirectionWorldCombined = new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
+                var origin= new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
                 
-                /*dataFrame.eyeDirectionLeftLocal.x = (float) gazedata.left.forward[0];//currently not happy about it;
-                dataFrame.eyeDirectionLeftLocal.y = (float) gazedata.left.forward[1];
-                dataFrame.eyeDirectionLeftLocal.z = (float) gazedata.left.forward[2];*/
+                var direction= new Vector3((float) gazedata.gaze.forward[0],(float) gazedata.gaze.forward[1], (float) gazedata.gaze.forward[2]);
+
+                dataFrame.eyePositionWorldCombined = origin;
+                dataFrame.eyeDirectionWorldCombined = direction;
+
+                HitObjectInfo hit= GetFirstHitObjectFromGaze(origin, direction);
+
+                dataFrame.HitPositionOnTarget = hit.HitPointOnObject;
+                dataFrame.PositionOfTarget = ExperimentManager.Instance.GetFixationPoint().transform.position;
+
+                dataFrame.nameOfObject = hit.ObjectName;
+                
+                _recordedEyeTrackingData.Add(dataFrame);
             }
             
             yield return new WaitForSeconds(_sampleRate);
@@ -134,27 +143,24 @@ public class EyetrackingDataRecorder : MonoBehaviour
         return hitObjectInfoList;
     }
 
-    private List<HitObjectInfo> GetFirstHitObjectFromGaze(Vector3 gazeOrigin, Vector3 gazeDirection, float distance)
+    private HitObjectInfo GetFirstHitObjectFromGaze(Vector3 gazeOrigin, Vector3 gazeDirection, float distance = 100f)
     {
         RaycastHit hit;
         bool hitColliders = Physics.Raycast(gazeOrigin, gazeDirection, out hit, distance);
         
-        List<HitObjectInfo> hitObjectInfoList= new List<HitObjectInfo>();
-
+        HitObjectInfo hitInfo = new HitObjectInfo();
         if (hitColliders)
         {
-            HitObjectInfo hitInfo = new HitObjectInfo();
             hitInfo.ObjectName = hit.collider.gameObject.name;
             hitInfo.HitObjectPosition = hit.collider.transform.position;
             hitInfo.HitPointOnObject = hit.point;
-            hitObjectInfoList.Add(hitInfo);
         }
 
-        return hitObjectInfoList;
+        return hitInfo;
     }
 
 
-    public List<EyeTrackingDataFrame> GetDataFrames()
+    public List<VR_ET_com_EyetrackingDataFrame> GetDataFrames()
     {
         if (recordingEnded)
         {
@@ -173,18 +179,18 @@ public class EyetrackingDataRecorder : MonoBehaviour
 
     private void Visualisation()
     {
-        List<EyeTrackingDataFrame> dataFrames = GetDataFrames();
+        List<VR_ET_com_EyetrackingDataFrame> dataFrames = GetDataFrames();
 
         foreach (var dataFrame in dataFrames)
         {
-            if (dataFrame.hitObjects != null)
-            {
-                foreach (var item in dataFrame.hitObjects)
-                {
-                    Debug.Log(item.ObjectName);
-                    Debug.DrawLine(dataFrame.HmdPosition, item.HitPointOnObject, Color.red, 60f);
-                }
-            }
+//            if (dataFrame.hitObjects != null)
+//            {
+//                foreach (var item in dataFrame.hitObjects)
+//                {
+//                    Debug.Log(item.ObjectName);
+//                    Debug.DrawLine(dataFrame.HmdPosition, item.HitPointOnObject, Color.red, 60f);
+//                }
+//            }
         }
     }
 }
