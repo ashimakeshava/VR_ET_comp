@@ -22,15 +22,21 @@ public class FreeViewing : MonoBehaviour
         {
             _fixationPoint.transform.localPosition = Vector3.forward;
             _fixationPoint.gameObject.SetActive(true);
-        
+            ExperimentManager.Instance.SetFixationPointActivationStatus(true);
+            ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+
             yield return new WaitForSeconds(frame.FixationPointDuration);
             
             _fixationPoint.gameObject.SetActive(false);
+            ExperimentManager.Instance.SetFixationPointActivationStatus(false);
+
             _pictures[frame.IndexofTheObject].SetActive(true);
+            ExperimentManager.Instance.SetStimuliActivationStatus(true);
 
             yield return new WaitForSeconds(frame.PhotoFixationDuration);
             
             _pictures[frame.IndexofTheObject].SetActive(false);
+            ExperimentManager.Instance.SetStimuliActivationStatus(false);
         }
         
         ExperimentManager.Instance.TrialEnded();
