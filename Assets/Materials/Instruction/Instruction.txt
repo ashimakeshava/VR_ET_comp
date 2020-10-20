@@ -26,13 +26,17 @@ Press SPACE to continue.
 ## Blinks   4
 
 Please fixate on the target circle.
-You will hear 10 beeps. Please blink each time you hear a beep and keep on fixating on the target.
+You will hear 10 beeps. 
+Please blink each time you hear a beep 
+and keep on fixating on the target.
+
 Press SPACE to continue.
 
 ## CONTRAST VARIATION   5
 
 Please fixate on the target and remain fixated until it disappears. 
-The environment luminance will change during the trial. You can ignore this, please keep fixating on the fixation circle.
+The environment luminance will change during the trial. 
+You can ignore this, please keep fixating on the fixation circle.
 
 Press SPACE to continue.
 
