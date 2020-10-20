@@ -87,16 +87,16 @@ public class ExperimentManager : MonoBehaviour
     
     private void Start()
     {
-        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
-        EyetrackingManager.Instance.StartRecording();
-        
+        _blocks = new List<Block>();
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
+
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
         
-        _blocks = new List<Block>();
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
-        
         GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
+        
+        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
+        EyetrackingManager.Instance.StartRecording();
     }
 
     private void Update()

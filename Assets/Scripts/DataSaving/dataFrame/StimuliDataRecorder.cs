@@ -10,14 +10,13 @@ public class StimuliDataRecorder : MonoBehaviour
     private bool _runningRecording;
 
 
-    private void Start()
+    private void Awake()
     {
         _stimuliDataFrames = new List<StimuliDataFrame>();
     }
 
     public void StartStimuliDataRecording()
     {
-        _stimuliDataFrames.Clear();
         StartCoroutine(RecordStimuliEvents());
         _runningRecording = true;
     }
@@ -27,6 +26,7 @@ public class StimuliDataRecorder : MonoBehaviour
         string fileName = "BlockStimuliData" + number;
         _runningRecording = false;
         DataSavingManager.Instance.SaveList(_stimuliDataFrames, fileName);
+        _stimuliDataFrames.Clear();
     }
 
     private IEnumerator RecordStimuliEvents()
