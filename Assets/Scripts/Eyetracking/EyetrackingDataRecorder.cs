@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using ViveSR.anipal.Eye;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
+using Varjo;
 
 public class EyetrackingDataRecorder : MonoBehaviour
 {
@@ -31,6 +32,12 @@ public class EyetrackingDataRecorder : MonoBehaviour
         
         _sampleRate = _eyetrackingManager.GetSampleRate();
         _hmdTransform = _eyetrackingManager.GetHmdTransform();
+        
+        
+        if (!VarjoPlugin.InitGaze()) {
+            Debug.LogError("Failed to initialize gaze");
+            gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -69,6 +76,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
     {
         int frameCounter = new int();
         Debug.Log("<color=green>Start recording...</color>");
+
         
         _frameRates = new List<float>();
         
@@ -76,15 +84,19 @@ public class EyetrackingDataRecorder : MonoBehaviour
         {
             var dataFrame = new VR_ET_com_EyetrackingDataFrame();
             
-            var eyeTrackingDataWorld = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
-            var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
-            
-            
+            //var eyeTrackingDataWorld = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
+            //var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
+            var gazedata= VarjoPlugin.GetGaze();
+
+            if (gazedata.status != VarjoPlugin.GazeStatus.INVALID)
+            {
+                
+            }
             //SRanipal_GazeRaySample_v2 sample = SRanipal_Eye_v2.GetGazeRay()
-            if (eyeTrackingDataWorld.GazeRay.IsValid)
+            //if (eyeTrackingDataWorld.GazeRay.IsValid)
             {
 //                Debug.Log("valid eyetracking data");
-                Vector3 gazeRayDirection = eyeTrackingDataWorld.GazeRay.Direction;
+                //Vector3 gazeRayDirection = eyeTrackingDataWorld.GazeRay.Direction;
                // dataFrame.TobiiTimeStamp = eyeTrackingDataWorld.Timestamp;
 
                 Ray rayLeft;

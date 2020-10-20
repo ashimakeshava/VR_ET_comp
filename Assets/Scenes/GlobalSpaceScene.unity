@@ -171,6 +171,36 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8099857398529991365}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &150118487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 150118488}
+  m_Layer: 0
+  m_Name: VarjoManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &150118488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150118487}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 464960119}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &298313018 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8099857398274246655, guid: 5a76227dbc42aae4a8d68a29d3d29ade,
@@ -375,6 +405,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1628583673}
+  - {fileID: 150118488}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -390,6 +421,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c9cde299a1fc34a890f7fc10518787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionLeft: {fileID: 0}
+  directionRight: {fileID: 0}
+  directionCombined: {fileID: 0}
 --- !u!1 &596882609 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8099857399040480884, guid: 5a76227dbc42aae4a8d68a29d3d29ade,
@@ -539,6 +573,7 @@ GameObject:
   - component: {fileID: 1127833956}
   - component: {fileID: 1127833955}
   - component: {fileID: 1127833954}
+  - component: {fileID: 1127833957}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -612,6 +647,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1127833957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127833953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7649b8726144ef948949469d926ffce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerEnabled: 1
+  layerOrder: 0
+  faceLocked: 0
+  submitDepth: 0
+  depthTestRangeEnabled: 0
+  depthTestNearZ: 0
+  depthTestFarZ: 50
+  viewportCameras: []
+  contextDisplayFactor: 1
+  focusDisplayFactor: 1
+  flipY: 0
+  opaque: 1
+  depthTesting: 0
+  antiAliasing: 0
+  copyCameraComponents: 0
+  useOcclusionMesh: 1
+  occlusionMaterial: {fileID: 0}
+  varjoCamera: {fileID: 1127833955}
+  forceVRSupport: 1
+  disableVSync: 1
 --- !u!1 &1463910155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1140504084330835635, guid: 0ec939cafa22aa54f94f116e73e1bbb5,
