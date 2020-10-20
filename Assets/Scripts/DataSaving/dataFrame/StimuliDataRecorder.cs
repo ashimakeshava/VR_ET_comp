@@ -1,41 +1,55 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
 public class StimuliDataRecorder : MonoBehaviour
 {
-    private bool runningRecording;
-    
-    public void StartRecording()
+    private List<StimuliDataFrame> _stimuliDataFrames;
+    private bool _runningRecording;
+
+
+    private void Start()
     {
+        _stimuliDataFrames = new List<StimuliDataFrame>();
+    }
+
+    public void StartStimuliDataRecording()
+    {
+        _stimuliDataFrames.Clear();
         StartCoroutine(RecordStimuliEvents());
-        runningRecording = true;
+        _runningRecording = true;
+    }
+
+    public void StopStimuliDataRecording(string number)
+    {
+        string fileName = "BlockStimuliData" + number;
+        _runningRecording = false;
+        DataSavingManager.Instance.SaveList(_stimuliDataFrames, fileName);
     }
 
     private IEnumerator RecordStimuliEvents()
     {
-        while (runningRecording)
+        while (_runningRecording)
         {
             StimuliDataFrame data = new StimuliDataFrame();
 
             data.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
 
-            data.FixationPointOnSet = ExperimentManager.Instance.GetFixationPointOnset();
-            data.FixationPointOffSet = ExperimentManager.Instance.GetFixationPointOffset();
+            data.FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus();
+            data.FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
             
-            data.StimuliOnset = ExperimentManager.Instance.GetStimuliOnset();
-            data.StimuliOffset = ExperimentManager.Instance.GetStimuliOffset();
+            data.StimuliActive = ExperimentManager.Instance.GetStimuliActivationStatus();
 
-            data.HeadMovementStimuliOnSet = ExperimentManager.Instance.GetHeadMovementStimuliOnSet();
-            data.HeadMovementStimuliOffSet = ExperimentManager.Instance.GetHeadMovementStimuliOffSet();
+            data.HeadMovementStimuliActive = ExperimentManager.Instance.GetHeadMovementStimuliActivationStatus();
             data.HeadMovementObjectName = ExperimentManager.Instance.GetHeadMovementObjectName();
 
             data.SpacePressed = ExperimentManager.Instance.GetSpacePressedStatus();
 
-            data.TrialStarted = ExperimentManager.Instance.GetTrialEndStatus();
-            data.TrialEnded = ExperimentManager.Instance.GetTrialEndStatus();
+            data.TrialActive = ExperimentManager.Instance.GetTrialActivationStatus();
 
+            _stimuliDataFrames.Add(data);
             yield return null;
         }
     }

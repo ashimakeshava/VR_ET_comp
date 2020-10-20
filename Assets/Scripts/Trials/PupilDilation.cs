@@ -23,8 +23,11 @@ public class PupilDilation : MonoBehaviour
         _grid.gameObject.SetActive(true);
         _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
-        
+        ExperimentManager.Instance.SetFixationPointActivationStatus(true);
+        ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+
         RenderSettings.skybox = black;
+        ExperimentManager.Instance.SetStimuliActivationStatus(true);
 
         yield return new WaitForSeconds(_blackFixationDuration);
 
@@ -35,6 +38,8 @@ public class PupilDilation : MonoBehaviour
         }
 
         RenderSettings.skybox = ExperimentManager.Instance.GetMainSkybox();
+        ExperimentManager.Instance.SetStimuliActivationStatus(false);
+
         ExperimentManager.Instance.TrialEnded();
     }
     

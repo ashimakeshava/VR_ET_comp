@@ -1,24 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
+[Serializable]
 public class StimuliDataFrame
 {
    public double UnixTimeStamp;
    
-   public bool FixationPointOnSet;
-   public bool FixationPointOffSet;
+   public bool FixationPointActive;
+   public Vector3 FixationPointPosition;
    
-   public bool StimuliOnset;
-   public bool StimuliOffset;
+   public bool StimuliActive;
 
-   public bool HeadMovementStimuliOnSet;
-   public bool HeadMovementStimuliOffSet;
+   public bool HeadMovementStimuliActive;
    public string HeadMovementObjectName;
 
    public bool SpacePressed;
 
-   public bool TrialStarted;
-   public bool TrialEnded;
+   public bool TrialActive;
 }

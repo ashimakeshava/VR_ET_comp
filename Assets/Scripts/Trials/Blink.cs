@@ -11,6 +11,8 @@ public class Blink : MonoBehaviour
     private List<float> _delays;
     private GameObject _grid;
 
+    public delegate void OnsetStimuli();
+    public event OnsetStimuli NotifyStimuliObservers;
 
     private void Start()
     {
@@ -24,6 +26,8 @@ public class Blink : MonoBehaviour
         _grid.gameObject.SetActive(true);
         _fixationPoint.transform.localPosition = Vector3.forward;
         _fixationPoint.gameObject.SetActive(true);
+        ExperimentManager.Instance.SetFixationPointActivationStatus(true);
+        ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
         
         yield return new WaitForSeconds(_delays[0]);
         _delays.RemoveAt(0);
@@ -31,6 +35,7 @@ public class Blink : MonoBehaviour
         foreach (var delay in _delays)
         {
             _audioSource.Play();
+            NotifyStimuliObservers?.Invoke();
             yield return new WaitForSeconds(delay);
         }
         

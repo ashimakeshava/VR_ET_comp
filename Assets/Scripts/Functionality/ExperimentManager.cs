@@ -39,20 +39,17 @@ public class ExperimentManager : MonoBehaviour
     private int _trialIndex;
 
     // Data saving variables
-    private bool _fixationPointOnSet;
-    private bool _fixationPointOffSet;
+    private bool _fixationPointActivationState;
+    private Vector3 _fixationPointPosition;
     
     private bool _stimuliOnset;
-    private bool _stimuliOffset;
     
-    private bool _headMovementStimuliOnSet;
-    private bool _headMovementStimuliOffSet;
+    private bool _headMovementStimuliActivationState;
     private string _headMovementObjectName;
     
     private bool _spacePressed;
     
     private bool _trialStarted;
-    private bool _trialEnded;
 
     
 
@@ -90,15 +87,22 @@ public class ExperimentManager : MonoBehaviour
     
     private void Start()
     {
+        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
+        EyetrackingManager.Instance.StartRecording();
+        
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
         
         _blocks = new List<Block>();
         _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
+        
+        GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
     }
 
     private void Update()
     {
+        SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
+
         if (_welcomeState)
         {
             ResetFixationPoint();
@@ -115,20 +119,21 @@ public class ExperimentManager : MonoBehaviour
             
             if (_trialIndex < 12)
             {
-                // todo save data
-
                 TrialInstructionActivation(true);
                 if (_continue) ExecuteTrials();
             } 
             else if (_endOfBlockState)
             {
+                string blockNum = (_blockIndex+1).ToString();
+                
+                GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(blockNum);
+                EyetrackingManager.Instance.StopRecording();    //todo add name to the file to save + block numbers
+                
                 if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
                 else if (_blockIndex > 4)
                 {
                     thankYou.gameObject.SetActive(true);
                     _endOfExperiment = true;
-                    
-                    // todo save data
                 }
                 else blockEnd.gameObject.SetActive(true);
 
@@ -136,8 +141,9 @@ public class ExperimentManager : MonoBehaviour
                 {
                     if (_continue)
                     {
-                        // todo start recording
-                    
+                        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
+                        EyetrackingManager.Instance.StartRecording();
+                        
                         _endOfBlockState = false;
                     
                         _blockIndex++;
@@ -160,6 +166,7 @@ public class ExperimentManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _continue = true;
+                
             }
         }
     }
@@ -168,6 +175,7 @@ public class ExperimentManager : MonoBehaviour
     {
         fixationPoint.transform.position = Vector3.forward;
         fixationPoint.gameObject.SetActive(false);
+        SetFixationPointActivationStatus(false);
     }
 
 
@@ -181,6 +189,7 @@ public class ExperimentManager : MonoBehaviour
         _trialIsRunning = true;
         _continue = false;
         TrialInstructionActivation(false);
+        SetTrialActivationStatus(true);
 
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
@@ -188,8 +197,7 @@ public class ExperimentManager : MonoBehaviour
                 // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
 
                 _trials = Trials.Calibration;
-                Debug.Log("Eye-calibration");    // todo remove
-                TrialEnded();    // todo remove
+                TrialEnded();
                 
                 break;
             case 1:    // Validation
@@ -247,6 +255,18 @@ public class ExperimentManager : MonoBehaviour
         _trialIndex++;
     }
 
+    private void SetBlinkStimuliOnset()
+    {
+        SetStimuliActivationStatus(true);
+        StartCoroutine(Timer(.1f));
+    }
+
+    IEnumerator Timer(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SetStimuliActivationStatus(false);
+    }
+
     #endregion
     
     #region Getter and Setters
@@ -287,6 +307,7 @@ public class ExperimentManager : MonoBehaviour
     public void TrialEnded()
     {
         _trialIsRunning = false;
+        SetTrialActivationStatus(false);
     }
 
     public GameObject GetFixationPoint()
@@ -306,66 +327,46 @@ public class ExperimentManager : MonoBehaviour
 
     #region DataSaving Setters and Getters
     
-    public void SetFixationPointOnset(bool onsetStatus)
+    public void SetFixationPointActivationStatus(bool onsetStatus)
     {
-        _fixationPointOnSet = onsetStatus;
+        _fixationPointActivationState = onsetStatus;
     }
     
-    public bool GetFixationPointOnset()
+    public bool GetFixationPointActivationStatus()
     {
-        return _fixationPointOnSet;
+        return _fixationPointActivationState;
     }
 
-    public void SetFixationPointOffset(bool offsetStatus)
+    public void SetFixationPointPosition(Vector3 position)
     {
-        _fixationPointOffSet = offsetStatus;
+        _fixationPointPosition = position;
     }
     
-    public bool GetFixationPointOffset()
+    public Vector3 GetFixationPointPosition()
     {
-        return _fixationPointOffSet;
+        return _fixationPointPosition;
     }
-    
-    public void SetStimuliOnset(bool onsetStatus)
+
+    public void SetStimuliActivationStatus(bool onsetStatus)
     {
         _stimuliOnset = onsetStatus;
     }
     
-    public bool GetStimuliOnset()
+    public bool GetStimuliActivationStatus()
     {
         return _stimuliOnset;
     }
-    
-    public void SetStimuliOffset(bool offsetStatus)
+
+    public void SetHeadMovementStimuliActivationStatus(bool onsetStatus)
     {
-        _stimuliOffset = offsetStatus;
+        _headMovementStimuliActivationState = onsetStatus;
     }
     
-    public bool GetStimuliOffset()
+    public bool GetHeadMovementStimuliActivationStatus()
     {
-        return _stimuliOffset;
+        return _headMovementStimuliActivationState;
     }
 
-    public void SetHeadMovementStimuliOnSet(bool onsetStatus)
-    {
-        _headMovementStimuliOnSet = onsetStatus;
-    }
-    
-    public bool GetHeadMovementStimuliOnSet()
-    {
-        return _headMovementStimuliOnSet;
-    }
-    
-    public void SetHeadMovementStimuliOffSet(bool offsetStatus)
-    {
-        _headMovementStimuliOffSet = offsetStatus;
-    }
-    
-    public bool GetHeadMovementStimuliOffSet()
-    {
-        return _headMovementStimuliOffSet;
-    }
-    
     public void SetHeadMovementObjectName(string objectName)
     {
         _headMovementObjectName = objectName;
@@ -386,26 +387,16 @@ public class ExperimentManager : MonoBehaviour
         return _spacePressed;
     }
     
-    public void SetTrialStartStatus(bool status)
+    public void SetTrialActivationStatus(bool status)
     {
         _trialStarted = status;
     }
     
-    public bool GetTrialStartStatus()
+    public bool GetTrialActivationStatus()
     {
         return _trialStarted;
     }
-    
-    public void SetTrialEndStatus(bool status)
-    {
-        _trialEnded = status;
-    }
-    
-    public bool GetTrialEndStatus()
-    {
-        return _trialEnded;
-    }
-    
+
     #endregion
     
     #endregion
