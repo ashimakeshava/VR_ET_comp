@@ -30,6 +30,8 @@ public class VR_ET_com_EyetrackingDataFrame
 
     public Vector3 HitPositionOnTarget;
     public Vector3 PositionOfTarget;
-    public float Distance;
+    public float DistanceToCenter;
+
+    public string nameOfObject;
 
 }
