@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Tobii.XR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Varjo;
 using ViveSR.anipal.Eye;
 
 public class EyetrackingManager : MonoBehaviour
@@ -63,6 +64,17 @@ public class EyetrackingManager : MonoBehaviour
         {
             StartCalibration();
         }
+        
+        
+        
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            var quality = VarjoPlugin.GetGazeCalibrationQuality();
+        
+            Debug.Log("hello, the quality  is left " + (quality.left) + "and right "+  quality.right);
+        }
+
+        
     }
     
     
@@ -86,19 +98,11 @@ public class EyetrackingManager : MonoBehaviour
 
     public void StartCalibration()
     {
+        VarjoPlugin.RequestGazeCalibration();
         
+        var quality = VarjoPlugin.GetGazeCalibrationQuality();
         
-        if (SRanipal_Eye_v2.LaunchEyeCalibration())
-        {
-            Debug.Log("<color=green>calibration successful :)</color>");
-            
-            // TODO check the necessity
-            // CalibrationManager.Instance.EyeCalibrationSuccessful();
-        }
-        else
-        {
-            Debug.Log("<color=red>calibration failed :(</color>");
-        }
+        Debug.Log("hello, the quality  is left " + (quality.left) + "and right "+  quality.right);
     }
 
     public void StartRecording()
