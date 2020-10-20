@@ -90,131 +90,28 @@ public class EyetrackingDataRecorder : MonoBehaviour
 
             if (gazedata.status != VarjoPlugin.GazeStatus.INVALID)
             {
+                dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
+                Debug.Log("position length" +gazedata.left.position.Length);
+                Debug.Log("foward length" +gazedata.left.forward.Length);
                 
+                dataFrame.eyePositionLeftWorld = new Vector3((float) gazedata.left.position[0],(float) gazedata.left.position[1], (float) gazedata.left.position[2]);  //might be also local and not world space need to check that
+                dataFrame.eyeDirectionLeftWorld = new Vector3((float) gazedata.left.forward[0],(float) gazedata.left.forward[1], (float) gazedata.left.forward[2]);
+                
+                dataFrame.eyePositionRightWorld = new Vector3((float) gazedata.right.position[0],(float) gazedata.right.position[1], (float) gazedata.right.position[2]);
+                dataFrame.eyeDirectionRightWorld=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
+                
+                dataFrame. eyePositionWorldCombined = new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
+                dataFrame.eyeDirectionWorldCombined = new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
+                
+                /*dataFrame.eyeDirectionLeftLocal.x = (float) gazedata.left.forward[0];//currently not happy about it;
+                dataFrame.eyeDirectionLeftLocal.y = (float) gazedata.left.forward[1];
+                dataFrame.eyeDirectionLeftLocal.z = (float) gazedata.left.forward[2];*/
             }
-            //SRanipal_GazeRaySample_v2 sample = SRanipal_Eye_v2.GetGazeRay()
-            //if (eyeTrackingDataWorld.GazeRay.IsValid)
-            {
-//                Debug.Log("valid eyetracking data");
-                //Vector3 gazeRayDirection = eyeTrackingDataWorld.GazeRay.Direction;
-               // dataFrame.TobiiTimeStamp = eyeTrackingDataWorld.Timestamp;
-
-                Ray rayLeft;
-
-                Ray rayRight;
-
-                Ray rayCombined;
-
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out rayLeft);
-
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out rayRight);
-                
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayCombined);
-                    
-                //bool isOpen = SRanipal_Eye_v2.GetEyeOpenness()
-                Ray ray;
-                
-                
-                
-                // if (SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out ray))
-                // {
-                //     
-                //     Vector3 origin= eyeTrackingDataLocal.GazeRay.Origin;
-                //     Vector3 direction =eyeTrackingDataLocal.GazeRay.Direction;
-                //     //Vector3 origin = ray.origin;
-                //     //Vector3 direction = ray.direction;
-                //     directionLeft.transform.localRotation= Quaternion.Euler(gazeRayDirection);
-                //
-                //     RaycastHit hit;
-                //     if (Physics.Raycast(directionLeft.transform.position, transform.TransformDirection(direction),
-                //         out hit))
-                //     {
-                //         Debug.Log(hit.collider.gameObject.name + directionLeft.name);
-                //     }
-                //
-                //
-                // }
-                
-                if (SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out ray))
-                {
-                    //Vector3 origin= eyeTrackingDataWorld.GazeRay.Direction;
-                    //Vector3 direction =eyeTrackingDataWorld.GazeRay.Origin;
-                   // directionRight.transform.rotation= Quaternion.FromToRotation(origin,direction);
-                    RaycastHit hit;
-                   // if (Physics.Raycast(directionRight.transform.position, transform.TransformDirection(direction),
-                 //       out hit))
-                   // {
-                   //     Debug.Log(hit.collider.gameObject.name + directionRight.name);
-                   //}
-
-                   
-                }
-                
-                if (SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out ray))
-                {
-                        Vector3 origin = ray.origin;
-                        Vector3 direction = ray.direction;
-                       
-                    
-                    RaycastHit hit;
-                    if (Physics.Raycast(origin, direction,
-                        out hit))
-                    {
-                        Debug.Log(hit.collider.gameObject.name + directionCombined.name);
-                        
-                        
-                        directionCombined.transform.localRotation= Quaternion.FromToRotation(directionCombined.transform.forward, hit.point);
-                    }
-                    
-                    
-                    
-                }
-
-                
-                
-                
-                Vector3 posLeftEye = rayLeft.origin;
-                Vector3 dirLeftEye = rayLeft.direction;
-                
-                Vector3 posRightEye = rayRight.origin;
-                Vector3 dirRightEye = rayRight.direction;
-                
-                Vector3 posCombinedEyes =rayCombined.origin;
-                Vector3 dirCombinedEyes = rayCombined.direction;
-                
-                //Debug.Log(posLeftEye+ dirLeftEye);
-                
-                //Debug.Log(posRightEye+ dirRightEye);
-                
-                
-               // Debug.DrawRay(rayLeft.origin, rayLeft.direction, Color.red,5f);
-                
-                //Debug.DrawLine(rayLeft.origin, rayLeft.direction, Color.green,5f);
-                
-               // Debug.DrawRay(rayRight.origin, rayRight.direction,Color.blue,5f);
-            }
-
-            /*if (eyeTrackingDataLocal.GazeRay.IsValid)
-            {
-                dataFrame.EyePosLocalCombined = eyeTrackingDataLocal.GazeRay.Origin;
-                dataFrame.EyeDirLocalCombined = eyeTrackingDataLocal.GazeRay.Direction;
-                dataFrame.LeftEyeIsBlinkingLocal = eyeTrackingDataLocal.IsLeftEyeBlinking;
-                dataFrame.RightEyeIsBlinkingLocal = eyeTrackingDataLocal.IsRightEyeBlinking;
-            }
-
-            dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-            dataFrame.FPS = SavingManager.Instance.GetCurrentFPS();
-            
-            dataFrame.HmdPosition = EyetrackingManager.Instance.GetHmdTransform().position;
-
-            dataFrame.NoseVector =  EyetrackingManager.Instance.GetHmdTransform().forward;
-            
-            _frameRates.Add(dataFrame.FPS);
-            _recordedEyeTrackingData.Add(dataFrame);
-            frameCounter++;*/
             
             yield return new WaitForSeconds(_sampleRate);
         }
+        
+            
     }
 
 
