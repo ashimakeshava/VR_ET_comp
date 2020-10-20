@@ -102,7 +102,6 @@ public class EyetrackingManager : MonoBehaviour
         
         var quality = VarjoPlugin.GetGazeCalibrationQuality();
         
-        Debug.Log("hello, the quality  is left " + (quality.left) + "and right "+  quality.right);
     }
 
     public void StartRecording()
@@ -113,8 +112,10 @@ public class EyetrackingManager : MonoBehaviour
     
     public void StopRecording()
     {
+        Debug.Log("<color=green> Stop Recording!</color>");
         _eyeTrackingRecorder.StopRecording();
-        //StoreEyeTrackingData();
+        StoreEyeTrackingData();
+        SaveEyetrackingData(_eyeTrackingDataFrames);
     }
     
     

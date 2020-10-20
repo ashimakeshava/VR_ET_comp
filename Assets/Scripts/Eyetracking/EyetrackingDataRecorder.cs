@@ -82,18 +82,42 @@ public class EyetrackingDataRecorder : MonoBehaviour
         
         while (!recordingEnded)
         {
+            frameCounter++;
+            //Debug.Log(frameCounter);
             var dataFrame = new VR_ET_com_EyetrackingDataFrame();
             
             //var eyeTrackingDataWorld = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
             //var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
             var gazedata= VarjoPlugin.GetGaze();
 
+
+
+            if (gazedata.leftStatus == 0)
+            {
+                dataFrame.blinkLeft = true;
+            }
+            else
+            {
+                dataFrame.blinkLeft = false;
+            }
+
+            if (gazedata.rightStatus == 0)
+            {
+                dataFrame.blinkRight = true;
+            }
+            else
+            {
+                dataFrame.blinkRight = false;
+            }
+
             if (gazedata.status != VarjoPlugin.GazeStatus.INVALID)
             {
                 dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-                Debug.Log("position length" +gazedata.left.position.Length);
-                Debug.Log("foward length" +gazedata.left.forward.Length);
+
+                dataFrame.HeadPosition = _hmdTransform.transform.position;
+                dataFrame.NoseVector = _hmdTransform.transform.forward;
                 
+                    
                 dataFrame.eyePositionLeftWorld = new Vector3((float) gazedata.left.position[0],(float) gazedata.left.position[1], (float) gazedata.left.position[2]);  //might be also local and not world space need to check that
                 dataFrame.eyeDirectionLeftWorld = new Vector3((float) gazedata.left.forward[0],(float) gazedata.left.forward[1], (float) gazedata.left.forward[2]);
                 
@@ -101,11 +125,15 @@ public class EyetrackingDataRecorder : MonoBehaviour
                 dataFrame.eyeDirectionRightWorld=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
                 
                 var origin= new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
-                
+
+                for(int i = 0; i<gazedata.gaze.position.Length;i++)
+                    Debug.Log(gazedata.gaze.position[i]);
+
+
                 var direction= new Vector3((float) gazedata.gaze.forward[0],(float) gazedata.gaze.forward[1], (float) gazedata.gaze.forward[2]);
 
-                dataFrame.eyePositionWorldCombined = origin;
-                dataFrame.eyeDirectionWorldCombined = direction;
+                dataFrame.eyePositionCombinedWorld = origin;
+                dataFrame.eyeDirectionCombinedWorld = direction;
 
                 HitObjectInfo hit= GetFirstHitObjectFromGaze(origin, direction);
 
@@ -113,6 +141,8 @@ public class EyetrackingDataRecorder : MonoBehaviour
                 dataFrame.PositionOfTarget = ExperimentManager.Instance.GetFixationPoint().transform.position;
 
                 dataFrame.nameOfObject = hit.ObjectName;
+                
+                
                 
                 _recordedEyeTrackingData.Add(dataFrame);
             }
