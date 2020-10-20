@@ -8,7 +8,7 @@ public class StimuliDataFrame
    public double UnixTimeStamp;
    
    public bool FixationPointOnSet;
-   public bool FixationPointOfSet;
+   public bool FixationPointOffSet;
    
    public bool StimuliOnset;
    public bool StimuliOffset;
@@ -19,6 +19,6 @@ public class StimuliDataFrame
 
    public bool SpacePressed;
 
-   public bool trailStarted;
-   public bool trialEnded;
+   public bool TrialStarted;
+   public bool TrialEnded;
 }

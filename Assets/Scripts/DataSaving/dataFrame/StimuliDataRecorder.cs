@@ -7,13 +7,13 @@ public class StimuliDataRecorder : MonoBehaviour
 {
     private bool runningRecording;
     
-    private void StartRecording()
+    public void StartRecording()
     {
-        StartCoroutine(RecordStimuliEvents);
+        StartCoroutine(RecordStimuliEvents());
         runningRecording = true;
     }
 
-    public IEnumerator RecordStimuliEvents()
+    private IEnumerator RecordStimuliEvents()
     {
         while (runningRecording)
         {
@@ -21,12 +21,22 @@ public class StimuliDataRecorder : MonoBehaviour
 
             data.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
 
-            data.StimuliOnset = ExperimentManager.Instance.GetStimuliOnset()
+            data.FixationPointOnSet = ExperimentManager.Instance.GetFixationPointOnset();
+            data.FixationPointOffSet = ExperimentManager.Instance.GetFixationPointOffset();
+            
+            data.StimuliOnset = ExperimentManager.Instance.GetStimuliOnset();
+            data.StimuliOffset = ExperimentManager.Instance.GetStimuliOffset();
+
+            data.HeadMovementStimuliOnSet = ExperimentManager.Instance.GetHeadMovementStimuliOnSet();
+            data.HeadMovementStimuliOffSet = ExperimentManager.Instance.GetHeadMovementStimuliOffSet();
+            data.HeadMovementObjectName = ExperimentManager.Instance.GetHeadMovementObjectName();
+
+            data.SpacePressed = ExperimentManager.Instance.GetSpacePressedStatus();
+
+            data.TrialStarted = ExperimentManager.Instance.GetTrialEndStatus();
+            data.TrialEnded = ExperimentManager.Instance.GetTrialEndStatus();
+
+            yield return null;
         }
     }
-    
-    
-    
-    public 
-    
 }
