@@ -38,6 +38,24 @@ public class ExperimentManager : MonoBehaviour
     private int _blockIndex;
     private int _trialIndex;
 
+    // Data saving variables
+    private bool _fixationPointOnSet;
+    private bool _fixationPointOffSet;
+    
+    private bool _stimuliOnset;
+    private bool _stimuliOffset;
+    
+    private bool _headMovementStimuliOnSet;
+    private bool _headMovementStimuliOffSet;
+    private string _headMovementObjectName;
+    
+    private bool _spacePressed;
+    
+    private bool _trialStarted;
+    private bool _trialEnded;
+
+    
+
     enum Trials
     {
         Calibration,
@@ -229,6 +247,10 @@ public class ExperimentManager : MonoBehaviour
         _trialIndex++;
     }
 
+    #endregion
+    
+    #region Getter and Setters
+
     public GameObject GetCurrentActiveGrid()
     {
         var gridList = GetGridList();
@@ -262,10 +284,6 @@ public class ExperimentManager : MonoBehaviour
         return gridList;
     }
     
-    #endregion
-    
-    #region Getter and Setters
-
     public void TrialEnded()
     {
         _trialIsRunning = false;
@@ -285,6 +303,110 @@ public class ExperimentManager : MonoBehaviour
     {
         return mainSkyBox;
     }
+
+    #region DataSaving Setters and Getters
+    
+    public void SetFixationPointOnset(bool onsetStatus)
+    {
+        _fixationPointOnSet = onsetStatus;
+    }
+    
+    public bool GetFixationPointOnset()
+    {
+        return _fixationPointOnSet;
+    }
+
+    public void SetFixationPointOffset(bool offsetStatus)
+    {
+        _fixationPointOffSet = offsetStatus;
+    }
+    
+    public bool GetFixationPointOffset()
+    {
+        return _fixationPointOffSet;
+    }
+    
+    public void SetStimuliOnset(bool onsetStatus)
+    {
+        _stimuliOnset = onsetStatus;
+    }
+    
+    public bool GetStimuliOnset()
+    {
+        return _stimuliOnset;
+    }
+    
+    public void SetStimuliOffset(bool offsetStatus)
+    {
+        _stimuliOffset = offsetStatus;
+    }
+    
+    public bool GetStimuliOffset()
+    {
+        return _stimuliOffset;
+    }
+
+    public void SetHeadMovementStimuliOnSet(bool onsetStatus)
+    {
+        _headMovementStimuliOnSet = onsetStatus;
+    }
+    
+    public bool GetHeadMovementStimuliOnSet()
+    {
+        return _headMovementStimuliOnSet;
+    }
+    
+    public void SetHeadMovementStimuliOffSet(bool offsetStatus)
+    {
+        _headMovementStimuliOffSet = offsetStatus;
+    }
+    
+    public bool GetHeadMovementStimuliOffSet()
+    {
+        return _headMovementStimuliOffSet;
+    }
+    
+    public void SetHeadMovementObjectName(string objectName)
+    {
+        _headMovementObjectName = objectName;
+    }
+    
+    public string GetHeadMovementObjectName()
+    {
+        return _headMovementObjectName;
+    }
+    
+    public void SetSpacePressedStatus(bool status)
+    {
+        _spacePressed = status;
+    }
+    
+    public bool GetSpacePressedStatus()
+    {
+        return _spacePressed;
+    }
+    
+    public void SetTrialStartStatus(bool status)
+    {
+        _trialStarted = status;
+    }
+    
+    public bool GetTrialStartStatus()
+    {
+        return _trialStarted;
+    }
+    
+    public void SetTrialEndStatus(bool status)
+    {
+        _trialEnded = status;
+    }
+    
+    public bool GetTrialEndStatus()
+    {
+        return _trialEnded;
+    }
+    
+    #endregion
     
     #endregion
 }
