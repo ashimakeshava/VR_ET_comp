@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Valve.VR;
+using Varjo;
+using VarjoExample;
 using RandomSystem = System.Random;
 
 public class HeadTrackingSpace : MonoBehaviour
@@ -261,6 +263,10 @@ public class HeadTrackingSpace : MonoBehaviour
         //Todd Wassen miracle solution for aligning the WorldSpace to the Camera
         Valve.VR.OpenVR.System.ResetSeatedZeroPose();
         Valve.VR.OpenVR.Compositor.SetTrackingSpace(Valve.VR.ETrackingUniverseOrigin.TrackingUniverseSeated);
+        
+        VarjoPlugin.ResetRotation resetRotation = VarjoPlugin.ResetRotation.YAW;
+        VarjoPlugin.ResetPose(true,resetRotation);
+        
         
         fixationPoint.transform.position = new Vector3(orientationCross.transform.position.x,orientationCross.transform.position.y, orientationCross.transform.position.z);
     }
