@@ -8,6 +8,7 @@ public class StimuliDataRecorder : MonoBehaviour
 {
     private List<StimuliDataFrame> _stimuliDataFrames;
     private bool _runningRecording;
+    private readonly float _sampleRate = 1f / 90f;
 
 
     private void Awake()
@@ -25,6 +26,7 @@ public class StimuliDataRecorder : MonoBehaviour
     {
         string fileName = "BlockStimuliData" + number;
         _runningRecording = false;
+        
         DataSavingManager.Instance.SaveList(_stimuliDataFrames, fileName);
         _stimuliDataFrames.Clear();
     }
@@ -33,24 +35,21 @@ public class StimuliDataRecorder : MonoBehaviour
     {
         while (_runningRecording)
         {
-            StimuliDataFrame data = new StimuliDataFrame();
-
-            data.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-
-            data.FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus();
-            data.FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
+            StimuliDataFrame data = new StimuliDataFrame
+            {
+                UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp(),
+                FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus(),
+                FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition(),
+                StimuliActive = ExperimentManager.Instance.GetStimuliActivationStatus(),
+                HeadMovementStimuliActive = ExperimentManager.Instance.GetHeadMovementStimuliActivationStatus(),
+                HeadMovementObjectName = ExperimentManager.Instance.GetHeadMovementObjectName(),
+                SpacePressed = ExperimentManager.Instance.GetSpacePressedStatus(),
+                TrialActive = ExperimentManager.Instance.GetTrialActivationStatus()
+            };
             
-            data.StimuliActive = ExperimentManager.Instance.GetStimuliActivationStatus();
-
-            data.HeadMovementStimuliActive = ExperimentManager.Instance.GetHeadMovementStimuliActivationStatus();
-            data.HeadMovementObjectName = ExperimentManager.Instance.GetHeadMovementObjectName();
-
-            data.SpacePressed = ExperimentManager.Instance.GetSpacePressedStatus();
-
-            data.TrialActive = ExperimentManager.Instance.GetTrialActivationStatus();
-
             _stimuliDataFrames.Add(data);
-            yield return null;
+            
+            yield return new WaitForSeconds(_sampleRate);
         }
     }
 }
