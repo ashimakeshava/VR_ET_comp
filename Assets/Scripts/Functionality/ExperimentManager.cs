@@ -127,7 +127,7 @@ public class ExperimentManager : MonoBehaviour
                 string blockNum = (_blockIndex+1).ToString();
                 
                 GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(blockNum);
-                EyetrackingManager.Instance.StopRecording();    //todo add name to the file to save + block numbers
+                EyetrackingManager.Instance.StopRecording(blockNum);    //todo add name to the file to save + block numbers
                 
                 if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
                 else if (_blockIndex > 4)

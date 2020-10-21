@@ -57,7 +57,7 @@ public class EyetrackingManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.L))
         {
-            StopRecording();
+            StopRecording(null);
         }
         
         if(Input.GetKeyDown(KeyCode.K))
@@ -110,12 +110,12 @@ public class EyetrackingManager : MonoBehaviour
         _eyeTrackingRecorder.StartRecording();
     }
     
-    public void StopRecording()
+    public void StopRecording(string blockNumber)
     {
         Debug.Log("<color=green> Stop Recording!</color>");
         _eyeTrackingRecorder.StopRecording();
         StoreEyeTrackingData();
-        SaveEyetrackingData(_eyeTrackingDataFrames);
+        SaveEyetrackingData(_eyeTrackingDataFrames, blockNumber);
     }
     
     
@@ -175,9 +175,15 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
-    public void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data)
+    public void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data, string blockNumber=null)
     {
-        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, "hey");
+        if (blockNumber == null)
+        {
+            blockNumber = TimeManager.Instance.GetCurrentUnixTimeStamp().ToString();
+        }
+        
+        string fileName = "EyeTrackingBlock" + blockNumber;
+        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, fileName);
     }
     
     public float GetAverageSceneFPS()

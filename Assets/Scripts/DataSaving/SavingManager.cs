@@ -147,7 +147,7 @@ public class SavingManager : MonoBehaviour
     private void StopRecord()
     {
         Debug.Log("<color=red>Stop recording Data!</color>");
-        EyetrackingManager.Instance.StopRecording();
+        EyetrackingManager.Instance.StopRecording(null);
        // RetrieveData();
     }
 
