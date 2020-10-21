@@ -28,6 +28,8 @@ public class EyetrackingManager : MonoBehaviour
     
     public delegate void OnCompletedEyeValidation(bool wasSuccessful);
     public event OnCompletedEyeValidation NotifyEyeValidationCompletnessObservers;
+
+    private bool _isCalibrated;
     
     private void Awake()
     {
@@ -50,6 +52,17 @@ public class EyetrackingManager : MonoBehaviour
 
     private void Update()
     {
+        if (VarjoPlugin.IsGazeCalibrated())
+        {
+            Debug.Log(VarjoPlugin.IsGazeCalibrated());
+            _isCalibrated = true;
+        }
+        else
+        {
+            _isCalibrated = false;
+        }
+
+
         if (Input.GetKeyDown(KeyCode.R))
         {
            StartRecording();
@@ -195,7 +208,12 @@ public class EyetrackingManager : MonoBehaviour
     {
         return _eyeValidationSucessful;
     }
-    
+
+    public bool IsCalibrated()
+    {
+        return _isCalibrated;
+    }
+
     public double getCurrentTimestamp()
     {
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);

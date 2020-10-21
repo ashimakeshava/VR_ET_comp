@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using System.Threading;
 using UnityEngine.UI;
+using Varjo;
 
 
 public class ExperimentManager : MonoBehaviour
@@ -34,6 +35,7 @@ public class ExperimentManager : MonoBehaviour
     private bool _welcomeState;
     private bool _endOfBlockState;
     private bool _endOfExperiment;
+    private bool _inCalibration;
     
     private int _blockIndex;
     private int _trialIndex;
@@ -96,13 +98,22 @@ public class ExperimentManager : MonoBehaviour
         GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
         
         GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
-        EyetrackingManager.Instance.StartRecording();
     }
 
     private void Update()
     {
         SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
 
+        if (_inCalibration)
+        {
+            if (EyetrackingManager.Instance.IsCalibrated())
+            {
+                _inCalibration = false;
+                EyetrackingManager.Instance.StartRecording();
+                TrialEnded();
+            }
+        }
+        
         if (_welcomeState)
         {
             ResetFixationPoint();
@@ -194,11 +205,10 @@ public class ExperimentManager : MonoBehaviour
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
             case 0:    // calibration
-                // EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
-
                 _trials = Trials.Calibration;
-                TrialEnded();
-                
+                 EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
+                _inCalibration = true;
+
                 break;
             case 1:    // Validation
                 _trials = Trials.Validation;
