@@ -111,6 +111,10 @@ public class HeadTrackingSpace : MonoBehaviour
                     _done = true;
 
                     SetStandByStatus();
+                    
+                    ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(false);
+                    ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(false);
+
                     _isReadyToGo = true;
                 }
             }
@@ -141,6 +145,10 @@ public class HeadTrackingSpace : MonoBehaviour
                     _done = true;
                     
                     SetStandByStatus();
+                    
+                    ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(false);
+                    ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(false);
+                    
                     _isReadyToGo = true;
                 }
             }
@@ -171,6 +179,10 @@ public class HeadTrackingSpace : MonoBehaviour
                     _done = true;
                     
                     SetStandByStatus();
+                    
+                    ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(false);
+                    ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(false);
+                    
                     _isReadyToGo = true;
                 }
             }
@@ -189,10 +201,14 @@ public class HeadTrackingSpace : MonoBehaviour
     {
         _done = false;
         _fixationCross.SetTargetObject(pitchSetup.transform.GetChild(objectIndex).gameObject);
+        ExperimentManager.Instance.SetHeadMovementObjectName(pitchSetup.transform.GetChild(objectIndex).gameObject.name);
 
         yield return new WaitForSeconds(delay);
 
         fixationPoint.SetActive(true);
+        ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(true);
+        ExperimentManager.Instance.SetGlobalFixationPointPosition(fixationPoint.transform.position);
+        
         fixationCrossObject.SetActive(true);
         
         _fixationCross.DisableVertical();
@@ -206,7 +222,8 @@ public class HeadTrackingSpace : MonoBehaviour
         }
         
         SetPitchPositionActive(objectIndex);
-        
+        ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(true);
+
         _done = false;
     }
 
@@ -214,10 +231,14 @@ public class HeadTrackingSpace : MonoBehaviour
     {
         _done = false;
         _fixationCross.SetTargetObject(yawSetup.transform.GetChild(objectIndex).gameObject);
+        ExperimentManager.Instance.SetHeadMovementObjectName(yawSetup.transform.GetChild(objectIndex).gameObject.name);
 
         yield return new WaitForSeconds(delay);
         
         fixationPoint.SetActive(true);
+        ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(true);
+        ExperimentManager.Instance.SetGlobalFixationPointPosition(fixationPoint.transform.position);
+        
         fixationCrossObject.SetActive(true);
 
         _fixationCross.DisableHorizontal();
@@ -231,6 +252,7 @@ public class HeadTrackingSpace : MonoBehaviour
         }
         
         SetYawPositionActive(objectIndex);
+        ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(true);
         
         _done = false;
     }
@@ -239,10 +261,14 @@ public class HeadTrackingSpace : MonoBehaviour
     {
         _done = false;
         _fixationCross.SetTargetObject(rollSetup.transform.GetChild(objectIndex).gameObject);
+        ExperimentManager.Instance.SetHeadMovementObjectName(rollSetup.transform.GetChild(objectIndex).gameObject.name);
 
         yield return new WaitForSeconds(delay);
 
         fixationPoint.SetActive(true);
+        ExperimentManager.Instance.SetGlobalFixationPointActivationStatus(true);
+        ExperimentManager.Instance.SetGlobalFixationPointPosition(fixationPoint.transform.position);
+        
         fixationCrossObject.SetActive(true);
 
         _fixationCross.DisableVertical();
@@ -256,6 +282,8 @@ public class HeadTrackingSpace : MonoBehaviour
         }
 
         SetRollPositionActive(objectIndex);
+        ExperimentManager.Instance.SetHeadMovementStimuliActivationStatus(true);
+
         _done = false;
 
     }
