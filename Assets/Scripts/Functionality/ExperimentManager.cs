@@ -95,6 +95,8 @@ public class ExperimentManager : MonoBehaviour
     {
         _blocks = new List<Block>();
 
+        ResetFixationPoint();
+
         GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
     }
 
@@ -190,7 +192,7 @@ public class ExperimentManager : MonoBehaviour
 
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
-        
+
         GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
     }
     

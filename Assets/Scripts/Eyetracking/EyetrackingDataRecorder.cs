@@ -177,7 +177,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
                     _hmdTransform.rotation * rightDirectionWorld).eulerAngles;
                 
                 
-                dataFrame.ValidationErrorCombined = anglesRight;
+                dataFrame.ValidationErrorCombined = anglesCombined;
                 
                 HitObjectInfo hit= GetFirstHitObjectFromGaze(combinedOriginWorld, combinedDirectionWorld);
 
