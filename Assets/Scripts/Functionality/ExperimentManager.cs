@@ -231,11 +231,12 @@ public class ExperimentManager : MonoBehaviour
                 EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
                 _inCalibration = true;
                 
+                
                 break;
             case 1:    // Validation
                 _trials = Trials.Validation;
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
-                
+
                 break;
             case 2:    // Smooth pursuit
                 _trials = Trials.SmoothPursuit;

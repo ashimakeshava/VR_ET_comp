@@ -55,9 +55,9 @@ public class HeadTrackingSpace : MonoBehaviour
 
     void Update()
     {
-        ExperimentManager.Instance.SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
+        //ExperimentManager.Instance.SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
 
-        _spacePressed = false || Input.GetKeyDown(KeyCode.Space);
+        _spacePressed = ExperimentManager.Instance.GetSpacePressedStatus();
 
         if (_calibrationStatus)
         {
