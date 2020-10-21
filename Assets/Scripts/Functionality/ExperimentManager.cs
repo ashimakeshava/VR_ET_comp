@@ -221,69 +221,58 @@ public class ExperimentManager : MonoBehaviour
         {
             case 0:    // calibration
                 _trials = Trials.Calibration;
-                 //EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
-                //_inCalibration = true;
-
-                TrialEnded();
+                EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
+                _inCalibration = true;
+                
                 break;
             case 1:    // Validation
                 _trials = Trials.Validation;
-                //GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
-                TrialEnded();
+                GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
                 
                 break;
             case 2:    // Smooth pursuit
                 _trials = Trials.SmoothPursuit;
-                //GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
-                TrialEnded();
+                GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
 
                 break;
             case 3:    // Small grid
                 _trials = Trials.SmallGrid;
-                //GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
-                TrialEnded();
+                GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
 
                 break;
             case 4:    // Blink
                 _trials = Trials.Blink;
-                //GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
-                TrialEnded();
+                GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
 
                 break;
             case 5:    // Pupil dilation
                 _trials = Trials.PupilDilation;
-                //GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
-                TrialEnded();
+                GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
 
                 break;
             case 6:    // Free viewing
                 _trials = Trials.FreeViewing;
-                //GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
-                TrialEnded();
+                GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
 
                 break;
             case 7:    // Roll
                 _trials = Trials.Roll;
-                //GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
-                TrialEnded();
+                GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
 
                 break;
             case 8:    // Yaw
                 _trials = Trials.Yaw;
-                //GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
-                TrialEnded();
+                GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
 
                 break;
             case 9:    // Pitch
                 _trials = Trials.Pitch;
-                //GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
-                TrialEnded();
+                GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
 
                 break;
             case 10:    // Micro saccades
                 _trials = Trials.MicroSaccades;
-                //GetComponent<MicroSaccades>().RunMicroSaccades();
-                TrialEnded();
+                GetComponent<MicroSaccades>().RunMicroSaccades();
 
                 break;
         }
