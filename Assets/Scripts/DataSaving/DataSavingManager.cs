@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +13,8 @@ public class DataSavingManager : MonoBehaviour
 
     private List<GridElement> _gridRoute;
     [SerializeField] private String SavePath;
+
+    private string _participantId;
 
     private void Awake()
     {
@@ -138,9 +140,15 @@ public class DataSavingManager : MonoBehaviour
         Debug.Log("saved  " +fileName + " to : " + SavePath );
     }
     
-    private string GetPathForSaveFile(string fileName, string format=".txt")
+    private string GetPathForSaveFile(string fileName, string format=".json")
     {
         string name = fileName + format;
-        return Path.Combine(Application.persistentDataPath, name);
+        // return Path.Combine(Application.persistentDataPath, name);
+        return Path.Combine(Path.Combine(Application.persistentDataPath, "Sub_" + _participantId), name);
+    }
+
+    public void SetParticipantID(string id)
+    {
+        _participantId = id;
     }
 }
