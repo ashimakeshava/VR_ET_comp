@@ -90,8 +90,10 @@ public class EyetrackingDataRecorder : MonoBehaviour
             //var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
             var gazedata= VarjoPlugin.GetGaze();
 
+            var FixationPoint = ExperimentManager.Instance.GetFixationPoint();
 
-
+            dataFrame.fixationPointPosition = FixationPoint.transform.position;
+            
             if (gazedata.leftStatus == 0)
             {
                 dataFrame.blinkLeft = true;
@@ -99,6 +101,8 @@ public class EyetrackingDataRecorder : MonoBehaviour
             else
             {
                 dataFrame.blinkLeft = false;
+                var leftDilation  =(float) gazedata.leftPupilSize;
+                dataFrame.pupilDilationLeft = leftDilation;
             }
 
             if (gazedata.rightStatus == 0)
@@ -108,41 +112,83 @@ public class EyetrackingDataRecorder : MonoBehaviour
             else
             {
                 dataFrame.blinkRight = false;
+                var rightDilation  =(float) gazedata.rightPupilSize;
+                dataFrame.pupilDilationRight = rightDilation;
             }
 
+            dataFrame.CombinedStatus =(int) gazedata.status;
+            dataFrame.LeftStatus = (int) gazedata.leftStatus;
+            dataFrame.RightStatus = (int) gazedata.rightStatus;
+            
+            
+            
             if (gazedata.status != VarjoPlugin.GazeStatus.INVALID)
             {
                 dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-
-                dataFrame.HeadPosition = _hmdTransform.transform.position;
+                dataFrame.DeviceTimeStamp = gazedata.captureTime;
+                
+                Vector3 hmdPosition = _hmdTransform.transform.position;
+                dataFrame.HeadPosition = hmdPosition;
                 dataFrame.NoseVector = _hmdTransform.transform.forward;
+    
                 
-                    
-                dataFrame.eyePositionLeftWorld = new Vector3((float) gazedata.left.position[0],(float) gazedata.left.position[1], (float) gazedata.left.position[2]);  //might be also local and not world space need to check that
-                dataFrame.eyeDirectionLeftWorld = new Vector3((float) gazedata.left.forward[0],(float) gazedata.left.forward[1], (float) gazedata.left.forward[2]);
+                dataFrame.eyePositionLeftLocal = new Vector3((float) gazedata.left.position[0],(float) gazedata.left.position[1], (float) gazedata.left.position[2]);
+                var leftOriginWorld = dataFrame.eyePositionLeftLocal + hmdPosition;
+                dataFrame.eyePositionLeftWorld = leftOriginWorld;
                 
-                dataFrame.eyePositionRightWorld = new Vector3((float) gazedata.right.position[0],(float) gazedata.right.position[1], (float) gazedata.right.position[2]);
-                dataFrame.eyeDirectionRightWorld=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
+                dataFrame.eyeDirectionLeftLocal= new Vector3((float) gazedata.left.forward[0],(float) gazedata.left.forward[1], (float) gazedata.left.forward[2]);
+                var leftDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionLeftLocal);
+                dataFrame.eyeDirectionLeftWorld = leftDirectionWorld;
                 
-                var origin= new Vector3((float) gazedata.gaze.position[0],(float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
+               
 
-                for(int i = 0; i<gazedata.gaze.position.Length;i++)
-                    Debug.Log(gazedata.gaze.position[i]);
+                var anglesLeft = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
+                    _hmdTransform.rotation * leftDirectionWorld).eulerAngles;
+
+                dataFrame.ValidationErrorLeft = anglesLeft;
 
 
-                var direction= new Vector3((float) gazedata.gaze.forward[0],(float) gazedata.gaze.forward[1], (float) gazedata.gaze.forward[2]);
+                dataFrame.eyePositionRightLocal = new Vector3((float) gazedata.right.position[0],(float) gazedata.right.position[1], (float) gazedata.right.position[2]);
+                var rightOriginWorld = dataFrame.eyePositionRightLocal + hmdPosition;
+                dataFrame.eyePositionRightWorld = rightOriginWorld;
 
-                dataFrame.eyePositionCombinedWorld = origin;
-                dataFrame.eyeDirectionCombinedWorld = direction;
+                dataFrame.eyeDirectionRightLocal=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
+                var rightDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionRightLocal);
+                dataFrame.eyeDirectionRightWorld = rightDirectionWorld;
+                
+                
+                var anglesRight = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
+                    _hmdTransform.rotation * rightDirectionWorld).eulerAngles;
 
-                HitObjectInfo hit= GetFirstHitObjectFromGaze(origin, direction);
+                dataFrame.ValidationErrorRight = anglesRight;
 
+
+                
+                
+                dataFrame.eyePositionCombinedLocal = new Vector3((float) gazedata.gaze.position[0], (float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
+                var combinedOriginWorld  = dataFrame.eyePositionCombinedLocal + hmdPosition;
+                dataFrame.eyePositionCombinedWorld = combinedOriginWorld;
+                
+                dataFrame.eyeDirectionCombinedLocal= new Vector3((float) gazedata.gaze.forward[0],(float) gazedata.gaze.forward[1], (float) gazedata.gaze.forward[2]);
+                var combinedDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionCombinedLocal);
+                dataFrame.eyeDirectionCombinedWorld = combinedDirectionWorld;
+                
+                var anglesCombined = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
+                    _hmdTransform.rotation * rightDirectionWorld).eulerAngles;
+                
+                
+                dataFrame.ValidationErrorCombined = anglesRight;
+                
+                HitObjectInfo hit= GetFirstHitObjectFromGaze(combinedOriginWorld, combinedDirectionWorld);
+
+                
+               
                 dataFrame.HitPositionOnTarget = hit.HitPointOnObject;
                 dataFrame.PositionOfTarget = ExperimentManager.Instance.GetFixationPoint().transform.position;
 
                 dataFrame.nameOfObject = hit.ObjectName;
                 
-                Debug.DrawRay(origin,direction);
+                Debug.DrawRay(combinedOriginWorld,combinedDirectionWorld, Color.red,3f);
                 
                 _recordedEyeTrackingData.Add(dataFrame);
             }
