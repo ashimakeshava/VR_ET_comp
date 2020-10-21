@@ -12,6 +12,9 @@ public class StimuliDataFrame
    public bool FixationPointActive;
    public Vector3 FixationPointPosition;
    
+   public bool GlobalFixationPointActive;
+   public Vector3 GlobalFixationPointPosition;
+   
    public bool StimuliActive;
 
    public bool HeadMovementStimuliActive;
