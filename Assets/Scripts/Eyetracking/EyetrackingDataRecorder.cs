@@ -142,7 +142,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
 
                 dataFrame.nameOfObject = hit.ObjectName;
                 
-                
+                Debug.DrawRay(origin,direction);
                 
                 _recordedEyeTrackingData.Add(dataFrame);
             }
