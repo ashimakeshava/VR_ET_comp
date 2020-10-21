@@ -12,7 +12,9 @@ public class ExperimentManager : MonoBehaviour
 {
     #region Fields
 
-    public static ExperimentManager Instance { get ; private set; } 
+    public static ExperimentManager Instance { get ; private set; }
+
+    [SerializeField] private string participantId;
     
     [Space] [Header("Grids and Fixation Point")] 
     [SerializeField] private GameObject fixationPoint;
@@ -37,6 +39,8 @@ public class ExperimentManager : MonoBehaviour
     private bool _endOfExperiment;
     private bool _inCalibration;
     private bool _dataSaved;
+    private bool _participantIdAdded;
+    
     private int _blockIndex;
     private int _trialIndex;
 
@@ -90,109 +94,112 @@ public class ExperimentManager : MonoBehaviour
     private void Start()
     {
         _blocks = new List<Block>();
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>("Blocks Varjo");    // todo handle this name as input
 
-        _welcomeState = true;
-        welcome.gameObject.SetActive(true);
-        
         GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
-        
-        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
     }
 
     private void Update()
     {
-        SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
+        if (_participantIdAdded)
+        {
+            SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
 
-        if (_inCalibration)
-        {
-            if (EyetrackingManager.Instance.IsCalibrated())
+            if (_inCalibration)
             {
-                _inCalibration = false;
-                EyetrackingManager.Instance.StartRecording();
-                TrialEnded();
-            }
-        }
-        
-        if (_welcomeState)
-        {
-            ResetFixationPoint();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                welcome.gameObject.SetActive(false);
-                _welcomeState = false;
-            }
-        }
-        else if (!_trialIsRunning)
-        {
-            ResetFixationPoint();
-            
-            if (_trialIndex < 12)
-            {
-                TrialInstructionActivation(true);
-                if (_continue) ExecuteTrials();
-            } 
-            else if (_endOfBlockState)
-            {
-                if (!_dataSaved)
+                if (EyetrackingManager.Instance.IsCalibrated())
                 {
-                    SaveData();
-                    Debug.Log("calling data saved");
+                    _inCalibration = false;
+                    EyetrackingManager.Instance.StartRecording();
+                    TrialEnded();
                 }
+            }
+        
+            if (_welcomeState)
+            {
+                ResetFixationPoint();
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    welcome.gameObject.SetActive(false);
+                    _welcomeState = false;
+                }
+            }
+            else if (!_trialIsRunning)
+            {
+                ResetFixationPoint();
+            
+                if (_trialIndex < 12)
+                {
+                    TrialInstructionActivation(true);
+                    if (_continue) ExecuteTrials();
+                } 
+                else if (_endOfBlockState)
+                {
+                    if (!_dataSaved)
+                    {
+                        SaveData();
+                    }
                
                 
-                if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
-                else if (_blockIndex > 4)
-                {
-                    thankYou.gameObject.SetActive(true);
-                    _endOfExperiment = true;
-                }
-                else blockEnd.gameObject.SetActive(true);
-
-                if (!_endOfExperiment)
-                {
-                    if (_continue)
+                    if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
+                    else if (_blockIndex > 4)
                     {
-                        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
-                        EyetrackingManager.Instance.StartRecording();
-                        _dataSaved = false;
+                        thankYou.gameObject.SetActive(true);
+                        _endOfExperiment = true;
+                    }
+                    else blockEnd.gameObject.SetActive(true);
+
+                    if (!_endOfExperiment)
+                    {
+                        if (_continue)
+                        {
+                            GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
+                            EyetrackingManager.Instance.StartRecording();
+                            _dataSaved = false;
                         
-                        _endOfBlockState = false;
+                            _endOfBlockState = false;
                     
-                        _blockIndex++;
-                        _trialIndex = 0;
-                        _continue = false;
+                            _blockIndex++;
+                            _trialIndex = 0;
+                            _continue = false;
                     
-                        afterBlockThree.gameObject.SetActive(false);
-                        blockEnd.gameObject.SetActive(false);
-                        TrialInstructionActivation(true);
-                        if (_continue) ExecuteTrials();
+                            afterBlockThree.gameObject.SetActive(false);
+                            blockEnd.gameObject.SetActive(false);
+                            TrialInstructionActivation(true);
+                            if (_continue) ExecuteTrials();
+                        }
                     }
                 }
-            }
-            else
-            {
-                _endOfBlockState = true;
-                _continue = false;
-            }
+                else
+                {
+                    _endOfBlockState = true;
+                    _continue = false;
+                }
             
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _continue = true;
-                
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _continue = true;
+                }
             }
         }
     }
 
+    private void StartExperiment()
+    {
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_Varjo");    // todo handle this name as input
+
+        _welcomeState = true;
+        welcome.gameObject.SetActive(true);
+        
+        GetComponent<StimuliDataRecorder>().StartStimuliDataRecording();
+    }
+    
     private void SaveData()
     {
-        Debug.Log("in save data");
-
-        string blockNum = (_blockIndex+1).ToString();
+        string blockNum = (_blockIndex + 1).ToString();
                 
-        GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(blockNum);
-        EyetrackingManager.Instance.StopRecording(blockNum);    //todo add name to the file to save + block numbers
+        GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(participantId, blockNum);
+        EyetrackingManager.Instance.StopRecording(participantId, blockNum);    //todo add name to the file to save + block numbers
 
         _dataSaved = true;
     }
@@ -314,6 +321,7 @@ public class ExperimentManager : MonoBehaviour
                 Debug.LogWarning("Two Grids are active, this can cause problems, deactivate one");
             }
         }
+        
         return activeGrid;
     }
 
@@ -424,5 +432,24 @@ public class ExperimentManager : MonoBehaviour
 
     #endregion
     
+    #endregion
+
+    #region GUI
+
+    void OnGUI()
+    {
+        if (!_participantIdAdded)
+        {
+            participantId = GUI.TextField(new Rect(10, 10, 100, 20), participantId, 3);
+            
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                DataSavingManager.Instance.SetParticipantID(participantId);
+                StartExperiment();
+                _participantIdAdded = true;
+            }
+        }
+    }
+
     #endregion
 }
