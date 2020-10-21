@@ -48,6 +48,9 @@ public class ExperimentManager : MonoBehaviour
     private bool _fixationPointActivationState;
     private Vector3 _fixationPointPosition;
     
+    private bool _globalFixationPointActivationState;
+    private Vector3 _globalFixationPointPosition;
+    
     private bool _stimuliOnset;
     
     private bool _headMovementStimuliActivationState;
@@ -76,6 +79,7 @@ public class ExperimentManager : MonoBehaviour
 
     private Trials _trials;
     
+
     #endregion
 
 
@@ -383,6 +387,26 @@ public class ExperimentManager : MonoBehaviour
         return _fixationPointPosition;
     }
 
+    public void SetGlobalFixationPointPosition(Vector3 position)
+    {
+        _globalFixationPointPosition = position;
+    }
+    
+    public Vector3 GetGlobalFixationPointPosition()
+    {
+        return _globalFixationPointPosition;
+    }
+
+    public void SetGlobalFixationPointActivationStatus(bool onsetStatus)
+    {
+        _globalFixationPointActivationState = onsetStatus;
+    }
+    
+    public bool GetGlobalFixationPointActivationStatus()
+    {
+        return _globalFixationPointActivationState;
+    }
+    
     public void SetStimuliActivationStatus(bool onsetStatus)
     {
         _stimuliOnset = onsetStatus;
