@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class VR_ET_com_EyetrackingDataFrame
 {
+    //pupildialation
+    
     public double UnixTimeStamp;
     
     public float FPS;

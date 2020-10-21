@@ -129,6 +129,7 @@ public class EyetrackingManager : MonoBehaviour
         _eyeTrackingRecorder.StopRecording();
         StoreEyeTrackingData();
         SaveEyetrackingData(_eyeTrackingDataFrames, blockNumber);
+        _eyeTrackingRecorder.ClearEyeTrackingDataRecordings();
     }
     
     
