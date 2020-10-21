@@ -70,7 +70,7 @@ public class EyetrackingManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.L))
         {
-            StopRecording(null);
+            StopRecording(null,null);
         }
         
         if(Input.GetKeyDown(KeyCode.K))
@@ -123,12 +123,12 @@ public class EyetrackingManager : MonoBehaviour
         _eyeTrackingRecorder.StartRecording();
     }
     
-    public void StopRecording(string blockNumber)
+    public void StopRecording(string id, string blockNumber)
     {
         Debug.Log("<color=green> Stop Recording!</color>");
         _eyeTrackingRecorder.StopRecording();
         StoreEyeTrackingData();
-        SaveEyetrackingData(_eyeTrackingDataFrames, blockNumber);
+        SaveEyetrackingData(_eyeTrackingDataFrames, id, blockNumber);
         _eyeTrackingRecorder.ClearEyeTrackingDataRecordings();
     }
     
@@ -189,14 +189,14 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
-    public void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data, string blockNumber=null)
+    private void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data, string id, string blockNumber=null)
     {
         if (blockNumber == null)
         {
             blockNumber = TimeManager.Instance.GetCurrentUnixTimeStamp().ToString();
         }
         
-        string fileName = "EyeTrackingBlock" + blockNumber;
+        string fileName = id + "_EyeTracking_Varjo_Block_" + blockNumber;
         DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, fileName);
     }
     
