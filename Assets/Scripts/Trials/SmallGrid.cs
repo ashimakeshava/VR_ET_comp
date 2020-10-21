@@ -31,7 +31,7 @@ public class SmallGrid : MonoBehaviour
             _fixationPoint.transform.localPosition = element.Position;
             ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
 
-            yield return new WaitForSeconds(element.MovementDuration);
+            yield return new WaitForSeconds(element.FixationDuration);
         }
         
         ExperimentManager.Instance.TrialEnded();
