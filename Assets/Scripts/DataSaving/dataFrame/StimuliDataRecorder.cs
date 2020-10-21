@@ -23,9 +23,9 @@ public class StimuliDataRecorder : MonoBehaviour
         StartCoroutine(RecordStimuliEvents());
     }
 
-    public void StopStimuliDataRecording(string number)
+    public void StopStimuliDataRecording(string id, string number)
     {
-        string fileName = "BlockStimuliData" + number;
+        string fileName = id + "_Stimuli_Data_Varjo_Block_" + number;
         _runningRecording = false;
         
         DataSavingManager.Instance.SaveList(_stimuliDataFrames, fileName);

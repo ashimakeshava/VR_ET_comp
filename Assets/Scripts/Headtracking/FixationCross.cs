@@ -123,8 +123,6 @@ public class FixationCross : MonoBehaviour
             
             isAligned = true;
         }
-    
-        Debug.Log(isAligned);
         
         _alignmentStatus.Clear();
     }

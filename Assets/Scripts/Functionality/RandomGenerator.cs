@@ -39,9 +39,14 @@ public class RandomGenerator : MonoBehaviour
     
     private int _numberOfBlocks = 7;
     int counter = 1;
+
+    // For generating purpose
+    // private string _participantId = "Dev";
     
     private void Start()
     {
+        // DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating purpose
+
         _random = new Random();
         
         _largeGridCloseRoutes = new List<List<GridElement>>();
@@ -57,6 +62,9 @@ public class RandomGenerator : MonoBehaviour
         _randomizedLargeGridFarVarjo = new List<List<GridElement>>();
         _randomizedSmallGridVarjo = new List<List<GridElement>>();
 
+        
+        // For generating purpose
+        
         _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 1");
         _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 2");
         _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 3");
@@ -148,7 +156,8 @@ public class RandomGenerator : MonoBehaviour
             }
         }
         
-        DataSavingManager.Instance.SaveList(listOfBlocks, "Blocks " + deviceName);
+        // For generating purpose
+        // DataSavingManager.Instance.SaveList(listOfBlocks, _participantId + "_Blocks_" + deviceName);
     }
     
     private Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit, 
