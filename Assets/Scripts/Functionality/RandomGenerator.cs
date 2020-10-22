@@ -38,7 +38,7 @@ public class RandomGenerator : MonoBehaviour
         _randomizedSmallGridVarjo;
     
     
-    private int _numberOfBlocks = 7;
+    private int _numberOfBlocks = 6;
     int counter = 1;
 
     // For generating blocks
@@ -83,7 +83,7 @@ public class RandomGenerator : MonoBehaviour
             counter++;
         }*/
         
-        for (int i = 1; i < 31; i++)
+        for (int i = 1; i < 17; i++)
         {
             _participantId = i.ToString();
             DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating blocks
@@ -160,7 +160,8 @@ public class RandomGenerator : MonoBehaviour
         }
         
         // For generating purpose
-        DataSavingManager.Instance.SaveList(listOfBlocks, _participantId + "_Blocks_" + deviceName);
+        DataSavingManager.Instance.SaveListUnity(listOfBlocks, _participantId + "_Blocks_" + deviceName);
+        DataSavingManager.Instance.SaveList(listOfBlocks, _participantId + "_Blocks_Py_" + deviceName);
     }
     
     private Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit, 
@@ -215,7 +216,7 @@ public class RandomGenerator : MonoBehaviour
         {
             0,1,2,3,4,5,6,7,
             8,9,10,11,12,13,14,
-            15,16,17,18,19,20,21
+            15,16,17
         };
 
         List<List<FreeViewingDataFrame>> list = new List<List<FreeViewingDataFrame>>();
