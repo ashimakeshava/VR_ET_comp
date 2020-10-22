@@ -7,6 +7,7 @@ using UnityEngine;
 
 [Serializable]public class FreeViewingDataFrame
 {
+    public string PictureName;
     public int IndexofTheObject;
     public float PhotoFixationDuration;
     public float FixationPointDuration;
