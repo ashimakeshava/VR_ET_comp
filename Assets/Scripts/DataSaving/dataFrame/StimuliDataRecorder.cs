@@ -43,12 +43,13 @@ public class StimuliDataRecorder : MonoBehaviour
             data.FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus();
             data.FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
             data.GlobalFixationPointActive = ExperimentManager.Instance.GetGlobalFixationPointActivationStatus();
-            data.GlobalFixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
+            data.GlobalFixationPointPosition = ExperimentManager.Instance.GetGlobalFixationPointPosition();
             data.StimuliActive = ExperimentManager.Instance.GetStimuliActivationStatus();
             data.HeadMovementStimuliActive = ExperimentManager.Instance.GetHeadMovementStimuliActivationStatus();
             data.HeadMovementObjectName = ExperimentManager.Instance.GetHeadMovementObjectName();
             data.SpacePressed = ExperimentManager.Instance.GetSpacePressedStatus();
             data.TrialActive = ExperimentManager.Instance.GetTrialActivationStatus();
+            data.ContrastVariationName = ExperimentManager.Instance.GetContrastVariationName();
             
             _stimuliDataFrames.Add(data);
 
