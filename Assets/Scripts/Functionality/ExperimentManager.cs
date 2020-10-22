@@ -521,7 +521,8 @@ public class ExperimentManager : MonoBehaviour
     {
         if (!_participantIdAdded)
         {
-            participantId = GUI.TextField(new Rect(10, 10, 100, 20), participantId, 3);
+            GUI.Label(new Rect(Screen.width/2f, Screen.height/2f - 30, 80, 20), "Participant ID");
+            participantId = GUI.TextField(new Rect(Screen.width/2f, Screen.height/2f, 100, 20), participantId, 3);
             
             if (Input.GetKeyDown(KeyCode.Return))
             {
