@@ -22,6 +22,8 @@ public class StimuliDataFrame
    public bool HeadMovementStimuliActive;
    public string HeadMovementObjectName;
 
+   public string ContrastVariationName;
+
    public bool SpacePressed;
 
    public bool TrialActive;
