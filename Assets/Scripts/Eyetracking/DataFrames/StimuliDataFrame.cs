@@ -7,6 +7,8 @@ using UnityEngine;
 [Serializable]
 public class StimuliDataFrame
 {
+   public string TrialName;
+   
    public double UnixTimeStamp;
    
    public bool FixationPointActive;

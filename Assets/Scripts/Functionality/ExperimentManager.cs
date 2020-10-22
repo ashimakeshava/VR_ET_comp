@@ -45,6 +45,8 @@ public class ExperimentManager : MonoBehaviour
     private int _trialIndex;
 
     // Data saving variables
+    private string _trialName;
+    
     private bool _fixationPointActivationState;
     private Vector3 _fixationPointPosition;
     
@@ -59,7 +61,6 @@ public class ExperimentManager : MonoBehaviour
     private bool _spacePressed;
     
     private bool _trialStarted;
-
     
 
     enum Trials
@@ -78,7 +79,6 @@ public class ExperimentManager : MonoBehaviour
     }
 
     private Trials _trials;
-    
 
     #endregion
 
@@ -232,60 +232,81 @@ public class ExperimentManager : MonoBehaviour
 
         switch (_blocks[_blockIndex].SequenceOfTrials[_trialIndex])
         {
-            case 0:    // calibration
+            case 0:    // Calibration
                 _trials = Trials.Calibration;
-                EyetrackingManager.Instance.StartCalibration(); // todo get the calibration up and running
+                SetTrialName("Calibration");
+
+                EyetrackingManager.Instance.StartCalibration();
                 _inCalibration = true;
-                
-                
+
                 break;
             case 1:    // Validation
                 _trials = Trials.Validation;
+                SetTrialName("Validation");
+
                 GetComponent<Validation>().RunValidation(_blocks[_blockIndex].LargeGridClose, _blocks[_blockIndex].LargeGridFar);
 
                 break;
             case 2:    // Smooth pursuit
                 _trials = Trials.SmoothPursuit;
+                SetTrialName("SmoothPursuit");
+
                 GetComponent<SmoothPursuit>().RunSmoothPursuit(_blocks[_blockIndex].SmoothPursuit);
 
                 break;
             case 3:    // Small grid
                 _trials = Trials.SmallGrid;
+                SetTrialName("SmallGrid");
+
                 GetComponent<SmallGrid>().RunSmallGrid(_blocks[_blockIndex].SmallGrid);
 
                 break;
             case 4:    // Blink
                 _trials = Trials.Blink;
+                SetTrialName("Blink");
+
                 GetComponent<Blink>().RunBeepBlink(_blocks[_blockIndex].Blink);
 
                 break;
             case 5:    // Pupil dilation
                 _trials = Trials.PupilDilation;
+                SetTrialName("PupilDilation");
+
                 GetComponent<PupilDilation>().RunPupilDilation(_blocks[_blockIndex].PupilDilation, _blocks[_blockIndex].PupilDilationBlackFixationDuration);
 
                 break;
             case 6:    // Free viewing
                 _trials = Trials.FreeViewing;
+                SetTrialName("FreeViewing");
+
                 GetComponent<FreeViewing>().RunFreeViewing(_blocks[_blockIndex].FreeViewingPictureList);
 
                 break;
             case 7:    // Roll
                 _trials = Trials.Roll;
+                SetTrialName("Roll");
+
                 GetComponent<HeadTrackingSpace>().RunRoll(_blocks[_blockIndex].Roll);
 
                 break;
             case 8:    // Yaw
                 _trials = Trials.Yaw;
+                SetTrialName("Yaw");
+
                 GetComponent<HeadTrackingSpace>().RunYaw(_blocks[_blockIndex].Yaw);
 
                 break;
             case 9:    // Pitch
                 _trials = Trials.Pitch;
+                SetTrialName("Pitch");
+                
                 GetComponent<HeadTrackingSpace>().RunPitch(_blocks[_blockIndex].Pitch);
 
                 break;
             case 10:    // Micro saccades
                 _trials = Trials.MicroSaccades;
+                SetTrialName("MicroSaccades");
+                
                 GetComponent<MicroSaccades>().RunMicroSaccades();
 
                 break;
@@ -367,6 +388,14 @@ public class ExperimentManager : MonoBehaviour
 
     #region DataSaving Setters and Getters
     
+    public void SetTrialName(string name)
+    {
+        _trialName = name;
+    }
+    public string GetTrialName()
+    {
+        return _trialName;
+    }
     public void SetFixationPointActivationStatus(bool onsetStatus)
     {
         _fixationPointActivationState = onsetStatus;
