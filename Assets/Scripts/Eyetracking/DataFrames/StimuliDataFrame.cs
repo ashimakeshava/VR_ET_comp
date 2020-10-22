@@ -5,6 +5,7 @@ using UnityEngine;
 public class StimuliDataFrame
 {
    public string TrialName;
+   public float FPS;
    
    public double UnixTimeStamp;
    
