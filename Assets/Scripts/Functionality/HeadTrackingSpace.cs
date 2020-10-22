@@ -49,7 +49,7 @@ public class HeadTrackingSpace : MonoBehaviour
         _counter = countdownUntilAligned;
         _isPeriodicallyResetting = false;
         _isInResetStatus = false;
-        
+        //_fixationCross.DisableCrossElements();
         SetStandByStatus();
     }
 
@@ -61,6 +61,7 @@ public class HeadTrackingSpace : MonoBehaviour
 
         if (_calibrationStatus)
         {
+            _fixationCross.gameObject.SetActive(true);
             _fixationCross.ResetCross();
 
             if (!_isPeriodicallyResetting)

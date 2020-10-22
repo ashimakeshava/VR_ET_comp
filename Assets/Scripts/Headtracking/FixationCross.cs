@@ -41,9 +41,11 @@ public class FixationCross : MonoBehaviour
     private bool isVertical;
     private bool isReduced;
 
+    private bool OnStandby;
+
     private List<bool> _alignmentStatus;
     
-    void Start()
+    void Awake()
     {
         CrossElements= new List<GameObject>();
         _alignmentStatus = new List<bool>();
@@ -74,6 +76,7 @@ public class FixationCross : MonoBehaviour
     void FixedUpdate()
     {
         isAligned = false;
+        
             
         foreach (var element in CrossElements)
         {
@@ -136,10 +139,21 @@ public class FixationCross : MonoBehaviour
 
         isReduced = false;
     }
+
+    public void DisableCrossElements()
+    {
+        foreach (var cross in CrossElements)
+        {
+            cross.gameObject.SetActive(false);
+        }
+        
+        
+    }
     
     public void DisableVertical()
     {
         ResetCross();
+       
         Left0.gameObject.SetActive(true);
         Left1.gameObject.SetActive(true);
         
