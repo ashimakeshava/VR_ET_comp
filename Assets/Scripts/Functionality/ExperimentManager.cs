@@ -108,7 +108,7 @@ public class ExperimentManager : MonoBehaviour
 
     private void OnApplicationQuit()        // Alt + f4 also works
     {
-        SaveData();
+        SaveDataManually();
     }
 
     private void Update()
@@ -153,8 +153,7 @@ public class ExperimentManager : MonoBehaviour
                     {
                         SaveData();
                     }
-               
-                
+                    
                     if (_blockIndex == 2) afterBlockThree.gameObject.SetActive(true);
                     else if (_blockIndex > 4)
                     {
@@ -198,6 +197,11 @@ public class ExperimentManager : MonoBehaviour
         }
     }
 
+    public void HeadCalibrationEnded()
+    {
+        StartExperiment();
+    }
+    
     private void StartExperiment()
     {
         _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_Varjo");    // todo handle this name as input
@@ -213,14 +217,24 @@ public class ExperimentManager : MonoBehaviour
         string blockNum = (_blockIndex + 1).ToString();
                 
         GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(participantId, blockNum);
-        EyetrackingManager.Instance.StopRecording(participantId, blockNum);    //todo add name to the file to save + block numbers
+        EyetrackingManager.Instance.StopRecording(participantId, blockNum);
+
+        _dataSaved = true;
+    }
+    
+    private void SaveDataManually()
+    {
+        string incompleteData = "Incomplete";
+                
+        GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(participantId, incompleteData);
+        EyetrackingManager.Instance.StopRecording(participantId, incompleteData);
 
         _dataSaved = true;
     }
 
     private void ResetFixationPoint()
     {
-        fixationPoint.transform.position = Vector3.forward;
+        fixationPoint.transform.position = Vector3.zero;
         fixationPoint.gameObject.SetActive(false);
         SetFixationPointActivationStatus(false);
     }
@@ -403,11 +417,16 @@ public class ExperimentManager : MonoBehaviour
 
     #region DataSaving Setters and Getters
     
+    public int GetTrialsID()
+    {
+        return _trialIndex;
+    }
+    
     public void SetTrialName(string name)
     {
         _trialName = name;
     }
-    public string GetTrialsID()
+    public string GetTrialsName()
     {
         return _trialName;
     }
@@ -527,7 +546,7 @@ public class ExperimentManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 DataSavingManager.Instance.SetParticipantID(participantId);
-                StartExperiment();
+                GetComponent<HeadTrackingSpace>().CalibrateHead();
                 _participantIdAdded = true;
             }
         }
