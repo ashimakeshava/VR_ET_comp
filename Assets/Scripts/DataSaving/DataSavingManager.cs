@@ -56,6 +56,21 @@ public class DataSavingManager : MonoBehaviour
         return list;
     }
     
+    private List <string> ConvertToJsonUnity<T>(List<T> genericList)
+    {
+        List<string> list = new List<string>();
+
+        foreach (var g in genericList)
+        {
+            // Debug.Log(g.ToString());
+            string jsonString = JsonUtility.ToJson(g);
+            
+            list.Add(jsonString);
+        }
+        
+        return list;
+    }
+    
     private string ConvertToJson<T>(T generic)
     {
         string json= JsonUtility.ToJson(generic);
@@ -131,8 +146,26 @@ public class DataSavingManager : MonoBehaviour
                 fileWriter.WriteLine(line);
             }
         }
+
+        Debug.Log("saved  " +fileName + " to : " + SavePath );
+    }
+    
+    public void SaveListUnity<T>(List<T> file, string  fileName)
+    {
+        var stringList = ConvertToJsonUnity(file);
+
+        string path = GetPathForSaveFile(fileName);
         
-        
+        // I implemented the LoopAR Data saving, this time I got Access Violation.  I dont get why,  I needed a new File Stream Implementation 
+        FileStream fileStream= new FileStream(path, FileMode.Create);
+        using (var fileWriter= new StreamWriter(fileStream))
+        {
+            foreach (var line in stringList)
+            {
+                fileWriter.WriteLine(line);
+            }
+        }
+
         Debug.Log("saved  " +fileName + " to : " + SavePath );
     }
     
