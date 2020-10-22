@@ -41,11 +41,11 @@ public class RandomGenerator : MonoBehaviour
     int counter = 1;
 
     // For generating purpose
-    // private string _participantId = "Dev";
+    private string _participantId;
     
     private void Start()
     {
-        // DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating purpose
+        DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating purpose
 
         _random = new Random();
         
@@ -125,12 +125,17 @@ public class RandomGenerator : MonoBehaviour
         _randomizedLargeGridFarVarjo = RandomizeLargeGridFar();
         
         _randomizedPictureList = RandomizeFreeViewingPictures();
+
+
+        for (int i = 1; i < 31; i++)
+        {
+            _participantId = i.ToString();
+            // generate blocks for varjo
+            GenerateBlocks(true);
         
-        // generate blocks for varjo
-        GenerateBlocks(true);
-        
-        // generate blocks for HTC
-        GenerateBlocks();
+            // generate blocks for HTC
+            GenerateBlocks();
+        }
     }
 
     private void GenerateBlocks(bool varjo = false, int numberOfBlocks = 6)
@@ -157,7 +162,7 @@ public class RandomGenerator : MonoBehaviour
         }
         
         // For generating purpose
-        // DataSavingManager.Instance.SaveList(listOfBlocks, _participantId + "_Blocks_" + deviceName);
+        DataSavingManager.Instance.SaveList(listOfBlocks, _participantId + "_Blocks_" + deviceName);
     }
     
     private Block GenerateBlock(List<FreeViewingDataFrame> freeViewingDataFrames, List<GridElement> smoothPursuit, 
