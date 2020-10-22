@@ -17,7 +17,7 @@ public class MicroSaccades : MonoBehaviour
     IEnumerator StartMicroSaccades()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.localPosition = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.zero;
         _fixationPoint.gameObject.SetActive(true);
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);

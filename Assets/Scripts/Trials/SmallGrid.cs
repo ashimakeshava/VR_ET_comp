@@ -20,7 +20,7 @@ public class SmallGrid : MonoBehaviour
     IEnumerator StartSmallGrid()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.localPosition = Vector3.forward;
+        _fixationPoint.transform.localPosition = Vector3.zero;
         _fixationPoint.gameObject.SetActive(true);
         
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);

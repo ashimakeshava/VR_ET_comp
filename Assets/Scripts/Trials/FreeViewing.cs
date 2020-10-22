@@ -20,7 +20,7 @@ public class FreeViewing : MonoBehaviour
     {
         foreach (var frame in _freeViewingDataFrames)
         {
-            _fixationPoint.transform.localPosition = Vector3.forward;
+            _fixationPoint.transform.localPosition = Vector3.zero;
             _fixationPoint.gameObject.SetActive(true);
             ExperimentManager.Instance.SetFixationPointActivationStatus(true);
             ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
