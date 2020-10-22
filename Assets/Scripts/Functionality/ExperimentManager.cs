@@ -106,8 +106,18 @@ public class ExperimentManager : MonoBehaviour
         GetComponent<Blink>().NotifyStimuliObservers += SetBlinkStimuliOnset;
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q) && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Application.Quit();
+        }
+        
         if (_participantIdAdded)
         {
             SetSpacePressedStatus(Input.GetKeyDown(KeyCode.Space));
