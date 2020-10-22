@@ -62,6 +62,8 @@ public class ExperimentManager : MonoBehaviour
     
     private bool _trialStarted;
     
+    private string _contrastVariationName;
+
 
     enum Trials
     {
@@ -133,6 +135,7 @@ public class ExperimentManager : MonoBehaviour
             else if (!_trialIsRunning)
             {
                 ResetFixationPoint();
+                ResetStimuliDataFrame();
             
                 if (_trialIndex < 12)
                 {
@@ -217,6 +220,13 @@ public class ExperimentManager : MonoBehaviour
         SetFixationPointActivationStatus(false);
     }
 
+    private void ResetStimuliDataFrame()
+    {
+        SetTrialName("None");
+        SetFixationPointPosition(Vector3.zero);
+        SetGlobalFixationPointPosition(Vector3.zero);
+        SetHeadMovementObjectName("None");
+    }
 
     private void TrialInstructionActivation(bool activate)
     {
@@ -484,6 +494,16 @@ public class ExperimentManager : MonoBehaviour
     public bool GetTrialActivationStatus()
     {
         return _trialStarted;
+    }
+    
+    public void SetContrastVariationName(string name)
+    {
+        _contrastVariationName = name;
+    }
+    
+    public string GetContrastVariationName()
+    {
+        return _contrastVariationName;
     }
 
     #endregion
