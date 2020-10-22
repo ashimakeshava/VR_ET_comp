@@ -321,7 +321,7 @@ public class RandomGenerator : MonoBehaviour
             int index = _random.Next(pupilDilationSequence.Count);
             float jitter = RandomUnity.Range(-.2f, .2f);
             
-            pupilDilationDataFrame.ColorIndex = index;
+            pupilDilationDataFrame.ColorIndex = pupilDilationSequence[index];
             pupilDilationDataFrame.ColorDuration = 3f + jitter;
 
             pupilDilationDataFrames.Add(pupilDilationDataFrame);
