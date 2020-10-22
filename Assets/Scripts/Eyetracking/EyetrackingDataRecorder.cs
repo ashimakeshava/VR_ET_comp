@@ -126,6 +126,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
             {
                 dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
                 dataFrame.DeviceTimeStamp = gazedata.captureTime;
+                dataFrame.TrialsID = ExperimentManager.Instance.GetTrialsID();
                 
                 Vector3 hmdPosition = _hmdTransform.transform.position;
                 dataFrame.HeadPosition = hmdPosition;

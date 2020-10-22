@@ -8,6 +8,7 @@ public class VR_ET_com_EyetrackingDataFrame
     
     public double UnixTimeStamp;
     public double DeviceTimeStamp;
+    public string TrialsID;
 
     public int LeftStatus;
     public int RightStatus;

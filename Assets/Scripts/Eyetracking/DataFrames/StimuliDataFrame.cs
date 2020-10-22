@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class StimuliDataFrame
 {
-   public string TrialName;
+   public string TrialsID;
    public float FPS;
    
    public double UnixTimeStamp;

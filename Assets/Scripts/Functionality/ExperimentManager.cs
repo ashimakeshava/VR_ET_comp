@@ -407,7 +407,7 @@ public class ExperimentManager : MonoBehaviour
     {
         _trialName = name;
     }
-    public string GetTrialName()
+    public string GetTrialsID()
     {
         return _trialName;
     }
