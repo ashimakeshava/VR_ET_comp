@@ -40,13 +40,11 @@ public class RandomGenerator : MonoBehaviour
     private int _numberOfBlocks = 7;
     int counter = 1;
 
-    // For generating purpose
+    // For generating blocks
     private string _participantId;
     
     private void Start()
     {
-        DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating purpose
-
         _random = new Random();
         
         _largeGridCloseRoutes = new List<List<GridElement>>();
@@ -61,14 +59,6 @@ public class RandomGenerator : MonoBehaviour
         _randomizedLargeGridCloseVarjo = new List<List<GridElement>>();
         _randomizedLargeGridFarVarjo = new List<List<GridElement>>();
         _randomizedSmallGridVarjo = new List<List<GridElement>>();
-
-        
-        // For generating purpose
-        
-        _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 1");
-        _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 2");
-        _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 3");
-        _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 4");
 
         /*List<List<RouteFrame>> routeFrames = new List<List<RouteFrame>>    // todo for pooling 
         {
@@ -91,45 +81,52 @@ public class RandomGenerator : MonoBehaviour
             DataSavingManager.Instance.SaveList(list, "Grid " + counter);
             counter++;
         }*/
-
-        foreach (var route in _routeFramesLargeGridClose)
-        {
-            _largeGridCloseRoutes.Add(route.Route);
-        }
         
-        foreach (var route in _routeFramesLargeGridFar)
-        {
-            _largeGridFarRoutes.Add(route.Route);
-        }
-        
-        foreach (var route in _routeFramesSmallGrid)
-        {
-            _smallGridRoutes.Add(route.Route);
-        }
-        
-        foreach (var route in _routeFramesSmoothPursuit)
-        {
-            _smoothPursuitRoutes.Add(route.Route);
-        }
-
-        _randomizedSmoothPursuitHTC = RandomizeSmoothPursuit();
-        _randomizedSmoothPursuitVarjo = RandomizeSmoothPursuit();
-        
-        _randomizedSmallGridHTC = RandomizeSmallGrid();
-        _randomizedSmallGridVarjo = RandomizeSmallGrid();
-
-        _randomizedLargeGridCloseHTC = RandomizeLargeGridClose();
-        _randomizedLargeGridCloseVarjo = RandomizeLargeGridClose();
-
-        _randomizedLargeGridFarHTC = RandomizeLargeGridFar();
-        _randomizedLargeGridFarVarjo = RandomizeLargeGridFar();
-        
-        _randomizedPictureList = RandomizeFreeViewingPictures();
-
-
         for (int i = 1; i < 31; i++)
         {
             _participantId = i.ToString();
+            DataSavingManager.Instance.SetParticipantID(_participantId);        // For generating blocks
+            
+            // For generating blocks
+            _routeFramesLargeGridClose = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 1");
+            _routeFramesLargeGridFar = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 2");
+            _routeFramesSmallGrid = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 3");
+            _routeFramesSmoothPursuit = DataSavingManager.Instance.LoadFileList<RouteFrame>("Grid 4");
+            
+            foreach (var route in _routeFramesLargeGridClose)
+            {
+                _largeGridCloseRoutes.Add(route.Route);
+            }
+        
+            foreach (var route in _routeFramesLargeGridFar)
+            {
+                _largeGridFarRoutes.Add(route.Route);
+            }
+        
+            foreach (var route in _routeFramesSmallGrid)
+            {
+                _smallGridRoutes.Add(route.Route);
+            }
+        
+            foreach (var route in _routeFramesSmoothPursuit)
+            {
+                _smoothPursuitRoutes.Add(route.Route);
+            }
+
+            _randomizedSmoothPursuitHTC = RandomizeSmoothPursuit();
+            _randomizedSmoothPursuitVarjo = RandomizeSmoothPursuit();
+        
+            _randomizedSmallGridHTC = RandomizeSmallGrid();
+            _randomizedSmallGridVarjo = RandomizeSmallGrid();
+
+            _randomizedLargeGridCloseHTC = RandomizeLargeGridClose();
+            _randomizedLargeGridCloseVarjo = RandomizeLargeGridClose();
+
+            _randomizedLargeGridFarHTC = RandomizeLargeGridFar();
+            _randomizedLargeGridFarVarjo = RandomizeLargeGridFar();
+        
+            _randomizedPictureList = RandomizeFreeViewingPictures();
+            
             // generate blocks for varjo
             GenerateBlocks(true);
         
