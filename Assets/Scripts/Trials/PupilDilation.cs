@@ -27,6 +27,7 @@ public class PupilDilation : MonoBehaviour
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
 
         RenderSettings.skybox = black;
+        ExperimentManager.Instance.SetContrastVariationName("Black");
         ExperimentManager.Instance.SetStimuliActivationStatus(true);
 
         yield return new WaitForSeconds(_blackFixationDuration);
@@ -34,6 +35,9 @@ public class PupilDilation : MonoBehaviour
         foreach (var dataFrame in _pupilDilationDataFrames)
         {
             RenderSettings.skybox = skyBoxes[dataFrame.ColorIndex];
+            
+            ExperimentManager.Instance.SetContrastVariationName(skyBoxes[dataFrame.ColorIndex].name);
+
             yield return new WaitForSeconds(dataFrame.ColorDuration);
         }
 
