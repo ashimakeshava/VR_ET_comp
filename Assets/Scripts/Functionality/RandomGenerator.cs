@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Unity.Collections;
 using UnityEngine;
@@ -251,6 +252,16 @@ public class RandomGenerator : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             int index = _random.Next(_largeGridCloseRoutes.Count);
+
+            foreach (var element in _largeGridCloseRoutes[index])
+            {
+                float duration = (RandomUnity.value <= 0.5) ? 2 : 1.5f;
+                float jitter = RandomUnity.Range(-.2f, .2f);
+                
+                element.Position = new Vector3(element.Position.x, element.Position.y, 0);
+                element.FixationDuration = duration + jitter;
+            }
+            
             list.Add(_largeGridCloseRoutes[index]);
             _largeGridCloseRoutes.RemoveAt(index);
         }
@@ -265,6 +276,16 @@ public class RandomGenerator : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             int index = _random.Next(_largeGridFarRoutes.Count);
+            
+            foreach (var element in _largeGridFarRoutes[index])
+            {
+                float duration = (RandomUnity.value <= 0.5) ? 2 : 1.5f;
+                float jitter = RandomUnity.Range(-.2f, .2f);
+                
+                element.Position = new Vector3(element.Position.x, element.Position.y, 0);
+                element.FixationDuration = duration + jitter;
+            }
+            
             list.Add(_largeGridFarRoutes[index]);
             _largeGridFarRoutes.RemoveAt(index);
         }
@@ -280,6 +301,16 @@ public class RandomGenerator : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             int index = _random.Next(_smallGridRoutes.Count);
+            
+            foreach (var element in _smallGridRoutes[index])
+            {
+                float duration = (RandomUnity.value <= 0.5) ? 2 : 1.5f;
+                float jitter = RandomUnity.Range(-.2f, .2f);
+                
+                element.Position = new Vector3(element.Position.x, element.Position.y, 0);
+                element.FixationDuration = duration + jitter;
+            }
+
             list.Add(_smallGridRoutes[index]);
             _smallGridRoutes.RemoveAt(index);
         }
@@ -302,6 +333,8 @@ public class RandomGenerator : MonoBehaviour
                 
                 jitter = RandomUnity.Range(-.2f, .2f);
                 element.MovementDuration += jitter;
+                
+                element.Position = new Vector3(element.Position.x, element.Position.y, 0);
             }
             
             list.Add(_smoothPursuitRoutes[index]);
