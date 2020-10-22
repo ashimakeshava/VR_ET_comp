@@ -30,6 +30,7 @@ public class HeadTrackingSpace : MonoBehaviour
     private bool _isYaw;
     private bool _isPitch;
     private bool _isRoll;
+    private bool _isMainExperiment;
 
     private RandomSystem _random;
     private FixationCross _fixationCross;
@@ -80,7 +81,14 @@ public class HeadTrackingSpace : MonoBehaviour
             }
             if (_counter <= 0f)
             {
-                SetExperimentStatus();
+                if (_isMainExperiment)
+                {
+                    SetMainExperimentStatus();
+                }
+                else
+                {
+                    SetExperimentStatus();
+                }
             }
         }
 
@@ -378,6 +386,26 @@ public class HeadTrackingSpace : MonoBehaviour
         _experimentStatus = true;
         _isReadyToGo = true;
     }
+    
+    private void SetMainExperimentStatus()
+    {
+        _fixationCross.SetAlignmentStatus(false);
+        orientationCross.SetActive(false);
+        fixationPoint.SetActive(false);
+        fixationCrossObject.SetActive(false);
+
+        foreach (Transform child in orientationCross.transform)
+        {
+            child.transform.gameObject.SetActive(false);
+        }
+
+        _counter = countdownUntilAligned;
+        
+        _calibrationStatus = false;
+        _isMainExperiment = false;
+        
+        ExperimentManager.Instance.HeadCalibrationEnded();
+    }
 
 
 
@@ -424,6 +452,12 @@ public class HeadTrackingSpace : MonoBehaviour
         _isRoll = true;
         _isPitch = false;
         
+        _calibrationStatus = true;
+    }
+
+    public void CalibrateHead()
+    {
+        _isMainExperiment = true;
         _calibrationStatus = true;
     }
 }
