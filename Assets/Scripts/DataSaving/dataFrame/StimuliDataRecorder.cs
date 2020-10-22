@@ -40,7 +40,8 @@ public class StimuliDataRecorder : MonoBehaviour
 
             data.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
             data.FPS = GetComponent<FPSDisplay>().GetCurrentFPS();
-            data.TrialsID = ExperimentManager.Instance.GetTrialsID();
+            data.TrialsName = ExperimentManager.Instance.GetTrialsName();
+            data.TrialID = ExperimentManager.Instance.GetTrialsID();
             data.FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus();
             data.FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
             data.GlobalFixationPointActive = ExperimentManager.Instance.GetGlobalFixationPointActivationStatus();

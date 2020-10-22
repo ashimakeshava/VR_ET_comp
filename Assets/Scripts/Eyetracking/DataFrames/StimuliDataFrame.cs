@@ -4,10 +4,13 @@ using UnityEngine;
 [Serializable]
 public class StimuliDataFrame
 {
-   public string TrialsID;
-   public float FPS;
-   
    public double UnixTimeStamp;
+
+   public int TrialID;
+
+   public string TrialsName;
+
+   public float FPS;
    
    public bool FixationPointActive;
    public Vector3 FixationPointPosition;
