@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class DataSavingManager : MonoBehaviour
@@ -38,15 +39,19 @@ public class DataSavingManager : MonoBehaviour
     private List <string> ConvertToJson<T>(List<T> genericList)
     {
         List<string> list = new List<string>();
-        //list.Add("[");
+        list.Add("[");
         foreach (var g in genericList)
         {
            // Debug.Log(g.ToString());
             string jsonString = JsonUtility.ToJson(g);
-            list.Add(jsonString);
+            
+            if(!genericList.Last().Equals(g))
+                list.Add(jsonString + ",");
+            else
+                list.Add(jsonString);
         }
         
-        //list.Add("]");
+        list.Add("]");
 
         return list;
     }
@@ -57,12 +62,6 @@ public class DataSavingManager : MonoBehaviour
     
         return json;
     }
-
-
-  
-    
-    
-    
 
     public List<T> LoadFileList<T>(string FileName)
     {
