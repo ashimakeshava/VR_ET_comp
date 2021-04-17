@@ -544,6 +544,8 @@ public class ExperimentManager : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.Return)) return;
         DataSavingManager.Instance.SetParticipantID(participantId);
         GetComponent<HeadTrackingSpace>().CalibrateHead();
+        
+        // todo wait for head calibration and then assign true to participant ID
         _participantIdAdded = true;
     }
 
