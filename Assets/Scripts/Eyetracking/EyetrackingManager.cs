@@ -13,7 +13,7 @@ public class EyetrackingManager : MonoBehaviour
 
     public int SetSampleRate = 90;
     private Transform _hmdTransform;
-    private List<VR_ET_com_EyetrackingDataFrame> _eyeTrackingDataFrames;
+    private List<VR_ET_com_EyetrackingDataFrame_vive> _eyeTrackingDataFrames;
     private EyeValidationData _eyeValidationData;
     private EyetrackingValidation _eyetrackingValidation;
     private bool _eyeValidationSucessful;
@@ -159,7 +159,7 @@ public class EyetrackingManager : MonoBehaviour
         _eyeTrackingDataFrames = _eyeTrackingRecorder.GetDataFrames();
     }
 
-    public List<VR_ET_com_EyetrackingDataFrame> GetEyeTrackingData()
+    public List<VR_ET_com_EyetrackingDataFrame_vive> GetEyeTrackingData()
     {
         if (_eyeTrackingDataFrames != null)
         {
@@ -189,7 +189,7 @@ public class EyetrackingManager : MonoBehaviour
         }
     }
 
-    private void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame> data, string id, string blockNumber=null)
+    private void SaveEyetrackingData(List<VR_ET_com_EyetrackingDataFrame_vive> data, string id, string blockNumber=null)
     {
         if (blockNumber == null)
         {
@@ -197,7 +197,7 @@ public class EyetrackingManager : MonoBehaviour
         }
         
         string fileName = id + "_EyeTracking_Varjo_Block_" + blockNumber;
-        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame> (data, fileName);
+        DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame_vive> (data, fileName);
     }
     
     public float GetAverageSceneFPS()
