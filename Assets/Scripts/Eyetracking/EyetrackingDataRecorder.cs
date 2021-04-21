@@ -14,7 +14,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
 {
     // Start is called before the first frame update
     private float _sampleRate;
-    private List<VR_ET_com_EyetrackingDataFrame> _recordedEyeTrackingData;
+    private List<VR_ET_com_EyetrackingDataFrame_vive> _recordedEyeTrackingData;
     private List<float> _frameRates;
     private EyetrackingManager _eyetrackingManager;
     private Transform _hmdTransform;
@@ -26,7 +26,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _recordedEyeTrackingData= new List<VR_ET_com_EyetrackingDataFrame>();
+        _recordedEyeTrackingData= new List<VR_ET_com_EyetrackingDataFrame_vive>();
         
         _eyetrackingManager= EyetrackingManager.Instance;
         
@@ -84,117 +84,125 @@ public class EyetrackingDataRecorder : MonoBehaviour
         {
             frameCounter++;
             //Debug.Log(frameCounter);
-            var dataFrame = new VR_ET_com_EyetrackingDataFrame();
+            var dataFrame = new VR_ET_com_EyetrackingDataFrame_vive();
             
             //var eyeTrackingDataWorld = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
             //var eyeTrackingDataLocal = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.Local);
-            var gazedata= VarjoPlugin.GetGaze();
+            //var gazedata= VarjoPlugin.GetGaze();
+            SRanipal_Eye.GetVerboseData(out VerboseData verboseData);
+            
+            //SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
 
             var FixationPoint = ExperimentManager.Instance.GetFixationPoint();
 
-            dataFrame.fixationPointPosition = FixationPoint.transform.position;
-            
-            if (gazedata.leftStatus == 0)
-            {
-                dataFrame.blinkLeft = true;
-            }
-            else
-            {
-                dataFrame.blinkLeft = false;
-                var leftDilation  =(float) gazedata.leftPupilSize;
-                dataFrame.pupilDilationLeft = leftDilation;
-            }
 
-            if (gazedata.rightStatus == 0)
-            {
-                dataFrame.blinkRight = true;
-            }
-            else
-            {
-                dataFrame.blinkRight = false;
-                var rightDilation  =(float) gazedata.rightPupilSize;
-                dataFrame.pupilDilationRight = rightDilation;
-            }
+            var leftEyeData= verboseData.left;
+            var rightEyeData = verboseData.right;
+            //validity check
+                //left
+            dataFrame.Left_DATA_GAZE_ORIGIN_VALIDITY = leftEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_ORIGIN_VALIDITY);
+            dataFrame.Left_DATA_EYE_OPENNESS_VALIDITY = leftEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_EYE_OPENNESS_VALIDITY);
+            dataFrame.Left_DATA_GAZE_DIRECTION_VALIDITY= leftEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+            dataFrame.Left_DATA_PUPIL_DIAMETER_VALIDITY = leftEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_DIAMETER_VALIDITY);
+            dataFrame.Left_DATA_PUPIL_POSITION_IN_SENSOR_AREA_VALIDITY = leftEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_POSITION_IN_SENSOR_AREA_VALIDITY);
+            
+                //right
+            dataFrame.Right_DATA_GAZE_ORIGIN_VALIDITY = rightEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_ORIGIN_VALIDITY);
+            dataFrame.Right_DATA_EYE_OPENNESS_VALIDITY = rightEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_EYE_OPENNESS_VALIDITY);
+            dataFrame.Right_DATA_GAZE_DIRECTION_VALIDITY = rightEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+            dataFrame.Right_DATA_PUPIL_DIAMETER_VALIDITY = rightEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_DIAMETER_VALIDITY);
+            dataFrame.Right_DATA_PUPIL_POSITION_IN_SENSOR_AREA_VALIDITY = rightEyeData.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_POSITION_IN_SENSOR_AREA_VALIDITY);
 
-            dataFrame.CombinedStatus =(int) gazedata.status;
-            dataFrame.LeftStatus = (int) gazedata.leftStatus;
-            dataFrame.RightStatus = (int) gazedata.rightStatus;
+            
+            
+            dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
+
+            //HMD
+            dataFrame.HmdPosition = _hmdTransform.transform.position;
+            dataFrame.HmdRotation = _hmdTransform.rotation;
+            dataFrame.NoseVector = _hmdTransform.transform.forward;
+
+            Vector3 hmdPosition = _hmdTransform.transform.position;
+
+
+            //Left Data
+            Vector3 coordinateAdaptedGazeDirectionLeft = new Vector3(leftEyeData.gaze_direction_normalized.x * -1,  leftEyeData.gaze_direction_normalized.y, leftEyeData.gaze_direction_normalized.z);
+                //local
+            dataFrame.EyePositionLeftLocal= leftEyeData.gaze_origin_mm;
+            dataFrame.EyeDirectionLeftLocal = coordinateAdaptedGazeDirectionLeft;
+                //global
+            dataFrame.EyePositionLeftWorld= leftEyeData.gaze_origin_mm / 1000 + _hmdTransform.position;
+            dataFrame.EyeDirectionLeftWorld = _hmdTransform.rotation * coordinateAdaptedGazeDirectionLeft;
+            
+            
+
+            dataFrame.EyeOpennessLeftSranipal = leftEyeData.eye_openness;
+            dataFrame.pupilDiameterMillimetersLeft = leftEyeData.pupil_diameter_mm;
+            
+            
+            //Right Data
+            Vector3 coordinateAdaptedGazeDirectionRight = new Vector3(rightEyeData.gaze_direction_normalized.x * -1,  rightEyeData.gaze_direction_normalized.y, rightEyeData.gaze_direction_normalized.z);
+            dataFrame.EyePositionRightLocal = rightEyeData.gaze_origin_mm;
+            dataFrame.EyeDirectionRightLocal = coordinateAdaptedGazeDirectionRight;
+            
+            dataFrame.EyePositionRightWorld = rightEyeData.gaze_origin_mm / 1000 + _hmdTransform.position;
+            dataFrame.EyeDirectionRightWorld = _hmdTransform.rotation * coordinateAdaptedGazeDirectionRight;
+
+
+            dataFrame.EyeOpennessRightSranipal = rightEyeData.eye_openness;
+            dataFrame.pupilDiameterMillimetersRight = rightEyeData.pupil_diameter_mm;
+            
+            //Combined Data
+            var combinedData= verboseData.combined;
+            
+            Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1,  combinedData.eye_data.gaze_direction_normalized.y, combinedData.eye_data.gaze_direction_normalized.z);
+            dataFrame.EyePositionCombinedLocal = combinedData.eye_data.gaze_origin_mm;
+            dataFrame.EyeDirectionCombinedLocal = coordinateAdaptedGazeDirectionCombined;
+
+            dataFrame.EyePositionCombinedWorld = combinedData.eye_data.gaze_origin_mm / 1000 + _hmdTransform.position;
+            dataFrame.EyeDirectionCombinedWorld = _hmdTransform.rotation * coordinateAdaptedGazeDirectionCombined;
             
             
             
-            if (gazedata.status != VarjoPlugin.GazeStatus.INVALID)
-            {
-                dataFrame.UnixTimeStamp = TimeManager.Instance.GetCurrentUnixTimeStamp();
-                dataFrame.DeviceTimeStamp = gazedata.captureTime;
-                dataFrame.TrialsID = ExperimentManager.Instance.GetTrialsName();
-                
-                Vector3 hmdPosition = _hmdTransform.transform.position;
-                dataFrame.HeadPosition = hmdPosition;
-                dataFrame.NoseVector = _hmdTransform.transform.forward;
-    
-                
-                dataFrame.eyePositionLeftLocal = new Vector3((float) gazedata.left.position[0],(float) gazedata.left.position[1], (float) gazedata.left.position[2]);
-                var leftOriginWorld = dataFrame.eyePositionLeftLocal + hmdPosition;
-                dataFrame.eyePositionLeftWorld = leftOriginWorld;
-                
-                dataFrame.eyeDirectionLeftLocal= new Vector3((float) gazedata.left.forward[0],(float) gazedata.left.forward[1], (float) gazedata.left.forward[2]);
-                var leftDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionLeftLocal);
-                dataFrame.eyeDirectionLeftWorld = leftDirectionWorld;
-                
-               
+            
 
                 var anglesLeft = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
-                    _hmdTransform.rotation * leftDirectionWorld).eulerAngles;
+                    _hmdTransform.rotation * dataFrame.EyeDirectionLeftWorld).eulerAngles;
 
                 dataFrame.ValidationErrorLeft = anglesLeft;
-
-
-                dataFrame.eyePositionRightLocal = new Vector3((float) gazedata.right.position[0],(float) gazedata.right.position[1], (float) gazedata.right.position[2]);
-                var rightOriginWorld = dataFrame.eyePositionRightLocal + hmdPosition;
-                dataFrame.eyePositionRightWorld = rightOriginWorld;
-
-                dataFrame.eyeDirectionRightLocal=  new Vector3((float) gazedata.right.forward[0],(float) gazedata.right.forward[1], (float) gazedata.right.forward[2]);
-                var rightDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionRightLocal);
-                dataFrame.eyeDirectionRightWorld = rightDirectionWorld;
                 
                 
                 var anglesRight = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
-                    _hmdTransform.rotation * rightDirectionWorld).eulerAngles;
-
+                    _hmdTransform.rotation * dataFrame.EyeDirectionRightWorld).eulerAngles;
+                
                 dataFrame.ValidationErrorRight = anglesRight;
-
-
                 
                 
-                dataFrame.eyePositionCombinedLocal = new Vector3((float) gazedata.gaze.position[0], (float) gazedata.gaze.position[1], (float) gazedata.gaze.position[2]);
-                var combinedOriginWorld  = dataFrame.eyePositionCombinedLocal + hmdPosition;
-                dataFrame.eyePositionCombinedWorld = combinedOriginWorld;
                 
-                dataFrame.eyeDirectionCombinedLocal= new Vector3((float) gazedata.gaze.forward[0],(float) gazedata.gaze.forward[1], (float) gazedata.gaze.forward[2]);
-                var combinedDirectionWorld = transform.TransformDirection(dataFrame.eyeDirectionCombinedLocal);
-                dataFrame.eyeDirectionCombinedWorld = combinedDirectionWorld;
-                
+                     
                 var anglesCombined = Quaternion.FromToRotation((FixationPoint.transform.position - hmdPosition).normalized,
-                    _hmdTransform.rotation * rightDirectionWorld).eulerAngles;
-                
+                    _hmdTransform.rotation * dataFrame.EyeDirectionCombinedWorld).eulerAngles;
                 
                 dataFrame.ValidationErrorCombined = anglesCombined;
                 
-                HitObjectInfo hit= GetFirstHitObjectFromGaze(combinedOriginWorld, combinedDirectionWorld);
+                
+                
+             
+                
+                HitObjectInfo hit= GetFirstHitObjectFromGaze(dataFrame.EyePositionCombinedWorld, dataFrame.EyeDirectionCombinedWorld);
 
                 
                
                 dataFrame.HitPositionOnTarget = hit.HitPointOnObject;
-                dataFrame.PositionOfTarget = ExperimentManager.Instance.GetFixationPoint().transform.position;
+                dataFrame.PositionOfTarget = FixationPoint.transform.position;
 
                 dataFrame.nameOfObject = hit.ObjectName;
                 
-                Debug.DrawRay(combinedOriginWorld,combinedDirectionWorld, Color.red,3f);
+                Debug.DrawRay(dataFrame.EyePositionCombinedWorld,dataFrame.EyeDirectionCombinedWorld, Color.red,3f);
                 
                 _recordedEyeTrackingData.Add(dataFrame);
-            }
-            
-            yield return new WaitForSeconds(_sampleRate);
+
+                yield return new WaitForSeconds(_sampleRate);
         }
         
             
@@ -237,7 +245,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
     }
 
 
-    public List<VR_ET_com_EyetrackingDataFrame> GetDataFrames()
+    public List<VR_ET_com_EyetrackingDataFrame_vive> GetDataFrames()
     {
         if (recordingEnded)
         {
@@ -256,7 +264,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
 
     private void Visualisation()
     {
-        List<VR_ET_com_EyetrackingDataFrame> dataFrames = GetDataFrames();
+        List<VR_ET_com_EyetrackingDataFrame_vive> dataFrames = GetDataFrames();
 
         foreach (var dataFrame in dataFrames)
         {
