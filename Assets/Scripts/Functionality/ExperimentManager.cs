@@ -65,7 +65,7 @@ public class ExperimentManager : MonoBehaviour
     private string _contrastVariationName;
 
 
-    enum Trials
+    private enum Trials
     {
         Calibration,
         Validation,
@@ -93,8 +93,6 @@ public class ExperimentManager : MonoBehaviour
         {
             Instance = this;
         }
-        
-        // todo load sheet?
     }
     
     private void Start()
@@ -204,7 +202,7 @@ public class ExperimentManager : MonoBehaviour
     
     private void StartExperiment()
     {
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_Varjo");    // todo handle this name as input
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_HTC");
 
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
@@ -214,7 +212,7 @@ public class ExperimentManager : MonoBehaviour
     
     private void SaveData()
     {
-        string blockNum = (_blockIndex + 1).ToString();
+        var blockNum = (_blockIndex + 1).ToString();
                 
         GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(participantId, blockNum);
         EyetrackingManager.Instance.StopRecording(participantId, blockNum);
@@ -224,7 +222,7 @@ public class ExperimentManager : MonoBehaviour
     
     private void SaveDataManually()
     {
-        string incompleteData = "Incomplete";
+        const string incompleteData = "Incomplete";
                 
         GetComponent<StimuliDataRecorder>().StopStimuliDataRecording(participantId, incompleteData);
         EyetrackingManager.Instance.StopRecording(participantId, incompleteData);
@@ -252,7 +250,7 @@ public class ExperimentManager : MonoBehaviour
         trialInstructions[_blocks[_blockIndex].SequenceOfTrials[_trialIndex]].gameObject.SetActive(activate);
     }
 
-    void ExecuteTrials()
+    private void ExecuteTrials()
     {
         _trialIsRunning = true;
         _continue = false;
@@ -350,7 +348,7 @@ public class ExperimentManager : MonoBehaviour
         StartCoroutine(Timer(.1f));
     }
 
-    IEnumerator Timer(float seconds)
+    private IEnumerator Timer(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         SetStimuliActivationStatus(false);
@@ -363,8 +361,9 @@ public class ExperimentManager : MonoBehaviour
     public GameObject GetCurrentActiveGrid()
     {
         var gridList = GetGridList();
-        GameObject activeGrid=new GameObject();
-        bool found = false;
+        var activeGrid=new GameObject();
+        var found = false;
+        
         foreach (var grid in gridList)
         {
             if (grid.activeInHierarchy&& !found)
@@ -384,7 +383,7 @@ public class ExperimentManager : MonoBehaviour
 
     private List<GameObject> GetGridList()
     {
-        List<GameObject> gridList = new List<GameObject>();
+        var gridList = new List<GameObject>();
         foreach (Transform child in mainCamera.transform)
         {
             if (child.gameObject != fixationPoint)
@@ -520,9 +519,9 @@ public class ExperimentManager : MonoBehaviour
         return _trialStarted;
     }
     
-    public void SetContrastVariationName(string name)
+    public void SetContrastVariationName(string cvName)
     {
-        _contrastVariationName = name;
+        _contrastVariationName = cvName;
     }
     
     public string GetContrastVariationName()
@@ -536,20 +535,18 @@ public class ExperimentManager : MonoBehaviour
 
     #region GUI
 
-    void OnGUI()
+    private void OnGUI()
     {
-        if (!_participantIdAdded)
-        {
-            GUI.Label(new Rect(Screen.width/2f, Screen.height/2f - 30, 80, 20), "Participant ID");
-            participantId = GUI.TextField(new Rect(Screen.width/2f, Screen.height/2f, 100, 20), participantId, 3);
-            
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                DataSavingManager.Instance.SetParticipantID(participantId);
-                GetComponent<HeadTrackingSpace>().CalibrateHead();
-                _participantIdAdded = true;
-            }
-        }
+        if (_participantIdAdded) return;
+        GUI.Label(new Rect(Screen.width/2f, Screen.height/2f - 30, 80, 20), "Participant ID");
+        participantId = GUI.TextField(new Rect(Screen.width/2f, Screen.height/2f, 100, 20), participantId, 3);
+
+        if (!Input.GetKeyDown(KeyCode.Return)) return;
+        DataSavingManager.Instance.SetParticipantID(participantId);
+        GetComponent<HeadTrackingSpace>().CalibrateHead();
+        
+        // todo wait for head calibration and then assign true to participant ID
+        _participantIdAdded = true;
     }
 
     #endregion
