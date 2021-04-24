@@ -40,7 +40,8 @@ public class ExperimentManager : MonoBehaviour
     private bool _inCalibration;
     private bool _dataSaved;
     private bool _participantIdAdded;
-    
+    private bool _IdAdded;
+
     private int _blockIndex;
     private int _trialIndex;
 
@@ -59,9 +60,8 @@ public class ExperimentManager : MonoBehaviour
     private string _headMovementObjectName;
     
     private bool _spacePressed;
-    
     private bool _trialStarted;
-    
+
     private string _contrastVariationName;
 
 
@@ -197,6 +197,8 @@ public class ExperimentManager : MonoBehaviour
 
     public void HeadCalibrationEnded()
     {
+        _participantIdAdded = true;
+        
         StartExperiment();
     }
     
@@ -537,16 +539,15 @@ public class ExperimentManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (_participantIdAdded) return;
+        if (_IdAdded) return;
         GUI.Label(new Rect(Screen.width/2f, Screen.height/2f - 30, 80, 20), "Participant ID");
         participantId = GUI.TextField(new Rect(Screen.width/2f, Screen.height/2f, 100, 20), participantId, 3);
 
         if (!Input.GetKeyDown(KeyCode.Return)) return;
         DataSavingManager.Instance.SetParticipantID(participantId);
         GetComponent<HeadTrackingSpace>().CalibrateHead();
-        
-        // todo wait for head calibration and then assign true to participant ID
-        _participantIdAdded = true;
+
+        _IdAdded = true;
     }
 
     #endregion
