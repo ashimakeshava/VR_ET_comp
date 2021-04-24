@@ -115,6 +115,7 @@ public class EyetrackingManager : MonoBehaviour
         
         var quality = VarjoPlugin.GetGazeCalibrationQuality();
         
+        // todo add the Vive calibration
     }
 
     public void StartRecording()
