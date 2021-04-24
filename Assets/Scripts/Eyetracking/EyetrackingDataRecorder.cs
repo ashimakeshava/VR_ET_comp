@@ -35,7 +35,7 @@ public class EyetrackingDataRecorder : MonoBehaviour
         
         
         if (!VarjoPlugin.InitGaze()) {
-            Debug.LogError("Failed to initialize gaze");
+            Debug.LogWarning("Varjo Failed to initialize gaze");
             gameObject.SetActive(false);
         }
     }
