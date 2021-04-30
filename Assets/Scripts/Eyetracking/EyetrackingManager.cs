@@ -52,16 +52,7 @@ public class EyetrackingManager : MonoBehaviour
 
     private void Update()
     {
-        if (VarjoPlugin.IsGazeCalibrated())
-        {
-            Debug.Log(VarjoPlugin.IsGazeCalibrated());
-            _isCalibrated = true;
-        }
-        else
-        {
-            _isCalibrated = false;
-        }
-
+        
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -111,13 +102,24 @@ public class EyetrackingManager : MonoBehaviour
 
     public void StartCalibration()
     {
-        VarjoPlugin.RequestGazeCalibration();
+        /*VarjoPlugin.RequestGazeCalibration();
         
-        var quality = VarjoPlugin.GetGazeCalibrationQuality();
+        var quality = VarjoPlugin.GetGazeCalibrationQuality();*/
+
         
+        if (SRanipal_Eye.LaunchEyeCalibration())
+        {
+            _isCalibrated = true;
+        }
+        else
+        {
+            _isCalibrated = false;
+        };
+
         // todo add the Vive calibration
     }
-
+    
+    
     public void StartRecording()
     {
         Debug.Log("<color=green>Recording eye-tracking Data!</color>");
