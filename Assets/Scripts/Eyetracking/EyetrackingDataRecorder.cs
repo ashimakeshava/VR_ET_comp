@@ -34,10 +34,10 @@ public class EyetrackingDataRecorder : MonoBehaviour
         _hmdTransform = _eyetrackingManager.GetHmdTransform();
         
         
-        if (!VarjoPlugin.InitGaze()) {
+        /*if (!VarjoPlugin.InitGaze()) {
             Debug.LogWarning("Varjo Failed to initialize gaze");
             gameObject.SetActive(false);
-        }
+        }*/
     }
 
     void Update()
