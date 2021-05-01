@@ -81,7 +81,7 @@ TextMesh:
   m_GameObject: {fileID: 237989815824394362}
   m_Text: "In the next condition you will see a fixation target \nat the center of
     the screen as well as a line.\r\nPlease move your head so that the crosshair
-    is \naligned with the line shown while fixatint on the green dot.\r\nOnce you
+    is \naligned with the line shown while fixating on the green dot.\r\nOnce you
     have finished the alignment, press SPACE to continue. \r\n\r\nPress SPACE to
     continue."
   m_OffsetZ: 0
@@ -178,7 +178,7 @@ TextMesh:
   m_GameObject: {fileID: 237989815833316346}
   m_Text: "In the next condition you will see a fixation target \nat the center of
     the screen as well as a line.\r\nPlease move your head so that the crosshair
-    is \naligned with the line shown while fixatint on the green dot.\r\nOnce you
+    is \naligned with the line shown while fixating on the green dot.\r\nOnce you
     have finished the alignment, press SPACE to continue. \r\n\r\nPress SPACE to
     continue."
   m_OffsetZ: 0
@@ -1200,7 +1200,7 @@ TextMesh:
   m_GameObject: {fileID: 237989816314432281}
   m_Text: "In the next condition you will see a fixation target \nat the center of
     the screen as well as a line.\r\nPlease move your head so that the crosshair
-    is \naligned with the line shown while fixatint on the green dot.\r\nOnce you
+    is \naligned with the line shown while fixating on the green dot.\r\nOnce you
     have finished the alignment, press SPACE to continue. \r\n\r\nPress SPACE to
     continue."
   m_OffsetZ: 0
