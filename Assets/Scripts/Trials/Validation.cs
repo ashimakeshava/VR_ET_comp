@@ -35,7 +35,7 @@ public class Validation : MonoBehaviour
             yield return new WaitForSeconds(element.FixationDuration);
         }
         
-        _grid.gameObject.transform.position = new Vector3(0, 0, 2);
+        _grid.gameObject.transform.localPosition = new Vector3(0, 0, 2);
         
         yield return new WaitForSeconds(2f);
             
@@ -55,7 +55,7 @@ public class Validation : MonoBehaviour
             yield return new WaitForSeconds(element.FixationDuration);
         }
 
-        _grid.gameObject.transform.position = new Vector3(0, 0, 1);
+        _grid.gameObject.transform.localPosition = new Vector3(0, 0, 1);
         ExperimentManager.Instance.TrialEnded();
     }
 
