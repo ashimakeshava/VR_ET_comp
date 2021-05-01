@@ -22,7 +22,7 @@ public class SmoothPursuit : MonoBehaviour
     IEnumerator StartSmoothPursuit()
     {
         _grid.gameObject.SetActive(true);
-        _fixationPoint.transform.localPosition = Vector3.zero;
+        _fixationPoint.transform.localPosition = new Vector3(0,0,1);
         _fixationPoint.gameObject.SetActive(true);
         
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
