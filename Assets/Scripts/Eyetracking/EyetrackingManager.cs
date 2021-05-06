@@ -199,7 +199,7 @@ public class EyetrackingManager : MonoBehaviour
             blockNumber = TimeManager.Instance.GetCurrentUnixTimeStamp().ToString();
         }
         
-        string fileName = id + "_EyeTracking_Varjo_Block_" + blockNumber;
+        string fileName = id + "_EyeTracking_HTC_Block_" + blockNumber;
         DataSavingManager.Instance.SaveList<VR_ET_com_EyetrackingDataFrame_vive> (data, fileName);
     }
     
