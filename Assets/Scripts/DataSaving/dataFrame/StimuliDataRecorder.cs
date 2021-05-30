@@ -25,7 +25,7 @@ public class StimuliDataRecorder : MonoBehaviour
 
     public void StopStimuliDataRecording(string id, string number)
     {
-        string fileName = id + "_Stimuli_Data_Varjo_Block_" + number;
+        string fileName = id + "_Stimuli_Data_HTC_Block_" + number;
         _runningRecording = false;
         
         DataSavingManager.Instance.SaveList(_stimuliDataFrames, fileName);
