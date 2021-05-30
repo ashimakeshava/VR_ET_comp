@@ -25,6 +25,7 @@ public class PupilDilation : MonoBehaviour
         _fixationPoint.gameObject.SetActive(true);
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+        ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
 
         RenderSettings.skybox = black;
         ExperimentManager.Instance.SetContrastVariationName("Black");

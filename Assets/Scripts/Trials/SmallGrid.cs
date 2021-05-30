@@ -25,11 +25,13 @@ public class SmallGrid : MonoBehaviour
         
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+        ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
 
         foreach (var element in _smallGridElements)
         {
             _fixationPoint.transform.localPosition = element.Position;
             ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+            ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
 
             yield return new WaitForSeconds(element.FixationDuration);
         }
