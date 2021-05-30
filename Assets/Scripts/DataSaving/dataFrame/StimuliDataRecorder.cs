@@ -44,6 +44,7 @@ public class StimuliDataRecorder : MonoBehaviour
             data.TrialID = ExperimentManager.Instance.GetTrialsID();
             data.FixationPointActive = ExperimentManager.Instance.GetFixationPointActivationStatus();
             data.FixationPointPosition = ExperimentManager.Instance.GetFixationPointPosition();
+            data.FixationPointPositionLocal = ExperimentManager.Instance.GetFixationPointLocalPosition();
             data.GlobalFixationPointActive = ExperimentManager.Instance.GetGlobalFixationPointActivationStatus();
             data.GlobalFixationPointPosition = ExperimentManager.Instance.GetGlobalFixationPointPosition();
             data.StimuliActive = ExperimentManager.Instance.GetStimuliActivationStatus();
