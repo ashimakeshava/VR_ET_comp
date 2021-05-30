@@ -50,7 +50,8 @@ public class ExperimentManager : MonoBehaviour
     
     private bool _fixationPointActivationState;
     private Vector3 _fixationPointPosition;
-    
+    private Vector3 _fixationPointLocalPosition;
+
     private bool _globalFixationPointActivationState;
     private Vector3 _globalFixationPointPosition;
     
@@ -243,6 +244,7 @@ public class ExperimentManager : MonoBehaviour
     {
         SetTrialName("None");
         SetFixationPointPosition(Vector3.zero);
+        SetFixationPointLocalPosition(Vector3.zero);
         SetGlobalFixationPointPosition(Vector3.zero);
         SetHeadMovementObjectName("None");
     }
@@ -446,9 +448,19 @@ public class ExperimentManager : MonoBehaviour
         _fixationPointPosition = position;
     }
     
+    public void SetFixationPointLocalPosition(Vector3 position)
+    {
+        _fixationPointLocalPosition = position;
+    }
+    
     public Vector3 GetFixationPointPosition()
     {
         return _fixationPointPosition;
+    }
+    
+    public Vector3 GetFixationPointLocalPosition()
+    {
+        return _fixationPointLocalPosition;
     }
 
     public void SetGlobalFixationPointPosition(Vector3 position)
