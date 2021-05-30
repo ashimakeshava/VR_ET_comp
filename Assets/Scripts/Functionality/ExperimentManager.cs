@@ -204,7 +204,7 @@ public class ExperimentManager : MonoBehaviour
     
     private void StartExperiment()
     {
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_HTC");
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_Varjo");
 
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
