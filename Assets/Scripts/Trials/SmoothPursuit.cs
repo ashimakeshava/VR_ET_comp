@@ -27,6 +27,7 @@ public class SmoothPursuit : MonoBehaviour
         
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+        ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
         
         yield return new WaitForSeconds(1);
 
@@ -40,6 +41,7 @@ public class SmoothPursuit : MonoBehaviour
             {
                 _fixationPoint.transform.localPosition = Vector3.Lerp(_smoothPursuit[i - 1].Position, _smoothPursuit[i].Position, timeDiff / 1f);
                 ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+                ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
 
                 yield return new WaitForEndOfFrame();
 

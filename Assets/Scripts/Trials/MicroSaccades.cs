@@ -21,6 +21,7 @@ public class MicroSaccades : MonoBehaviour
         _fixationPoint.gameObject.SetActive(true);
         ExperimentManager.Instance.SetFixationPointActivationStatus(true);
         ExperimentManager.Instance.SetFixationPointPosition(_fixationPoint.transform.position);
+        ExperimentManager.Instance.SetFixationPointLocalPosition(_fixationPoint.transform.localPosition);
 
         yield return new WaitForSeconds(30);
         

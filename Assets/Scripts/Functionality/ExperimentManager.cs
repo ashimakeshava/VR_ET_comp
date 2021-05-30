@@ -24,11 +24,11 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private Material mainSkyBox;
     
     [Space] [Header("Instructions")] 
-    [SerializeField] private TextMesh welcome;    // todo write the welcome message and give instruction for calibration
-    [SerializeField] private TextMesh blockEnd;    // todo write the block ended message
-    [SerializeField] private TextMesh afterBlockThree;    // todo write the force break message
-    [SerializeField] private TextMesh thankYou;    // todo write the experiment ended message
-    [SerializeField] private List<TextMesh> trialInstructions;    // todo edit message
+    [SerializeField] private TextMesh welcome;
+    [SerializeField] private TextMesh blockEnd;
+    [SerializeField] private TextMesh afterBlockThree;
+    [SerializeField] private TextMesh thankYou;
+    [SerializeField] private List<TextMesh> trialInstructions;
     
     private List<Block> _blocks;
 
@@ -50,7 +50,8 @@ public class ExperimentManager : MonoBehaviour
     
     private bool _fixationPointActivationState;
     private Vector3 _fixationPointPosition;
-    
+    private Vector3 _fixationPointLocalPosition;
+
     private bool _globalFixationPointActivationState;
     private Vector3 _globalFixationPointPosition;
     
@@ -204,7 +205,7 @@ public class ExperimentManager : MonoBehaviour
     
     private void StartExperiment()
     {
-        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_HTC");
+        _blocks = DataSavingManager.Instance.LoadFileList<Block>(participantId + "_Blocks_Varjo");
 
         _welcomeState = true;
         welcome.gameObject.SetActive(true);
@@ -243,6 +244,7 @@ public class ExperimentManager : MonoBehaviour
     {
         SetTrialName("None");
         SetFixationPointPosition(Vector3.zero);
+        SetFixationPointLocalPosition(Vector3.zero);
         SetGlobalFixationPointPosition(Vector3.zero);
         SetHeadMovementObjectName("None");
     }
@@ -446,9 +448,19 @@ public class ExperimentManager : MonoBehaviour
         _fixationPointPosition = position;
     }
     
+    public void SetFixationPointLocalPosition(Vector3 position)
+    {
+        _fixationPointLocalPosition = position;
+    }
+    
     public Vector3 GetFixationPointPosition()
     {
         return _fixationPointPosition;
+    }
+    
+    public Vector3 GetFixationPointLocalPosition()
+    {
+        return _fixationPointLocalPosition;
     }
 
     public void SetGlobalFixationPointPosition(Vector3 position)
