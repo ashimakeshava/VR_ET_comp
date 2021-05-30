@@ -24,11 +24,11 @@ public class ExperimentManager : MonoBehaviour
     [SerializeField] private Material mainSkyBox;
     
     [Space] [Header("Instructions")] 
-    [SerializeField] private TextMesh welcome;    // todo write the welcome message and give instruction for calibration
-    [SerializeField] private TextMesh blockEnd;    // todo write the block ended message
-    [SerializeField] private TextMesh afterBlockThree;    // todo write the force break message
-    [SerializeField] private TextMesh thankYou;    // todo write the experiment ended message
-    [SerializeField] private List<TextMesh> trialInstructions;    // todo edit message
+    [SerializeField] private TextMesh welcome;
+    [SerializeField] private TextMesh blockEnd;
+    [SerializeField] private TextMesh afterBlockThree;
+    [SerializeField] private TextMesh thankYou;
+    [SerializeField] private List<TextMesh> trialInstructions;
     
     private List<Block> _blocks;
 
